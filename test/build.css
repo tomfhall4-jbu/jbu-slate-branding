@@ -1,0 +1,123 @@
+.jbu-admissions-cont{
+	position:relative;
+	width:100%;
+	height: 100%;
+}
+.jbu-admissions-cont-width{
+	max-width: 1366px;
+	margin: 0 auto;
+}
+.jbu-admissions-header-cont {
+	position: relative;
+	width: 100%;
+	min-height: 375px;
+}
+.jbu-admissions-header{
+	width:inherit;
+	background:#003767;
+	min-height: 100px;
+	max-height: 125px;
+}
+.jbu-admissions-header-items {
+	display: flex;
+	width: 100%;
+	align-content: center;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+	flex-direction: row;
+	padding: 0 .5rem;
+}
+.jbu-admissions-header,.jbu-admissions-header-items{
+	height: 115px;
+}
+.jbu-admissions-header-logo {
+	width: 20%;
+	min-width: 225px;
+	cursor:pointer;
+}
+.jbu-admissions-header-action-items {
+	display: none;
+}
+.jbu-admissions-header-action-item {
+	padding: 0 1rem;
+}
+.jbu-admissions-body a, .jbu-admissions-body a:link, .jbu-admissions-body a:visited {
+	font-weight: bold;
+	text-decoration: none!important;
+	font-family: ProximaNova-Regular,sans-serif;
+	font-style: normal;
+	color: #199ddc!important;
+	font-size: 16px;
+}
+.jbu-admissions-header-action-item a, .jbu-admissions-header-items-row2 a {
+	color: #ffffff !important;
+	font-size: 80%;
+	font-weight: 100;
+}
+.jbu-admissions-header-items-row2 a:hover, .jbu-admissions-header-items-row2 a:focus {
+	color: #ffffff !important;
+	font-weight: 100;
+}
+.jbu-admissions-header-action-item:nth-child(2),.jbu-admissions-header-action-item:nth-child(3),  
+.jbu-admissions-header-action-item-row2:nth-child(2),.jbu-admissions-header-action-item-row2:nth-child(3),
+.jbu-admissions-header-action-item-row2:nth-child(4),.jbu-admissions-header-action-item-row2:nth-child(5){
+	border-left-style: solid;
+	border-color: #ffffff;
+}
+.jbu-admissions-header-items-row2 {
+	display: flex;
+	background: #199ddc;
+	height: 75px;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-content: center;
+	align-items: center;
+	justify-content: space-evenly;
+}
+.jbu-admissions-header-action-item-row2 {
+	width: 20%;
+	display: flex;
+	justify-content: center;
+}
+.jbu-admissions-header-items-image {
+	height: 125%;
+}
+.jbu-admissions-body {
+	width: 100%;
+	padding: 0 1rem 3rem;
+}
+select {
+	margin-left: 0 !important;
+}
+@media (min-width: 768px)  {
+	.jbu-admissions-header-cont {
+		min-height: 400px;
+	}
+	.jbu-admissions-header-items {
+		padding: 0 2rem;
+	}
+	.jbu-admissions-header-action-items {
+		display: flex;
+		align-items: flex-end;
+		height: 50px;
+	}
+	.jbu-admissions-header-action-item a, .jbu-admissions-header-items-row2 a {
+		color: #ffffff !important;
+		font-size: 125%;
+		font-weight: 100;
+	}
+}
+@media (min-width: 1024px)  {
+	.jbu-admissions-header-items-image {
+		height: 200%;
+	}
+	.jbu-admissions-header-cont {
+		min-height: 475px;
+	}
+}
+@media (min-width: 1280px)  {
+	.jbu-admissions-header-cont {
+		min-height: 525px;
+	}
+}
