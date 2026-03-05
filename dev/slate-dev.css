@@ -77,6 +77,10 @@
   line-height: var(--lh-body);
 }
 
+#content form p {
+  margin-bottom: 0.75rem;
+}
+
 /* Headings in the form content area */
 #content form h1,
 #content form .h1 {
@@ -198,4 +202,70 @@
 #content form .form-group,
 #content form .field {
   margin-top: 0;
+}
+
+/* ================================
+   Form controls – normalize sizing
+   Scope: Slate-hosted forms only
+   ================================ */
+
+.form_page {
+  --control-font-size: 1rem;      /* 16px */
+  --control-line-height: 1.25;
+  --control-pad-y: 0.5rem;        /* 8px */
+  --control-pad-x: 0.75rem;       /* 12px */
+  --control-min-height: 2.5rem;   /* 40px */
+}
+
+/* Text-ish inputs + selects + textarea (includes most Slate date inputs) */
+.form_page form input[type="text"],
+.form_page form input[type="email"],
+.form_page form input[type="tel"],
+.form_page form input[type="number"],
+.form_page form input[type="password"],
+.form_page form input[type="search"],
+.form_page form input[type="url"],
+.form_page form input:not([type]),
+.form_page form select,
+.form_page form textarea {
+  font-size: var(--control-font-size);
+  line-height: var(--control-line-height);
+  padding: var(--control-pad-y) var(--control-pad-x);
+}
+
+/* Make single-line controls consistent */
+.form_page form input[type="text"],
+.form_page form input[type="email"],
+.form_page form input[type="tel"],
+.form_page form input[type="number"],
+.form_page form input[type="password"],
+.form_page form input[type="search"],
+.form_page form input[type="url"],
+.form_page form input:not([type]),
+.form_page form select {
+  min-height: var(--control-min-height);
+}
+
+/* Textarea: readable but not huge */
+.form_page form textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+/* De-inflate select menu typography where supported */
+.form_page form select,
+.form_page form select option {
+  font-size: var(--control-font-size);
+}
+
+/* Optional: reduce excessive vertical gaps caused by control margins */
+.form_page form input[type="text"],
+.form_page form input[type="email"],
+.form_page form input[type="tel"],
+.form_page form input[type="number"],
+.form_page form input[type="password"],
+.form_page form input:not([type]),
+.form_page form select,
+.form_page form textarea {
+  margin: 0; /* let .form_response spacing control rhythm instead */
 }
