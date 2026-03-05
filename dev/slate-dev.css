@@ -1,55 +1,37 @@
-/* Slate development overrides */
+/* ==========================================================================
+   Slate development overrides – Default Branding + Slate Forms
+   Scope model (two layers):
+   A) Default branding baseline for ALL forms in default branding pages
+      .jbu-admissions-body #content form ...
+      - Typography tokens + base text + heading defaults + general label styling
+      - Safe to apply broadly because default branding is opt-in
+
+   B) Slate-only mechanics (only Slate-generated forms + Slate markup)
+      .jbu-admissions-body #content form[id^="form_"][id$="_container"] ...
+      - Restore form-builder widths
+      - .form_page control sizing + spacing
+      - .form_question rhythm
+      - checkbox/radio normalization + selectable options
+      - Keep !important ONLY where needed to beat institutional !important rules
+   ========================================================================== */
+
 
 /* --------------------------------------------------------------------------
-   Slate forms – restore form-builder control widths overridden by institutional CSS
-   Problem: institutional template_main.min.css forces width:100% on all form inputs/selects/textareas.
-   Scope: only Slate-hosted admissions form pages (jbu-admissions-body) + Slate form markup (.form_question).
--------------------------------------------------------------------------- */
+   A) Default branding – baseline form system (applies to ALL forms in #content)
+   -------------------------------------------------------------------------- */
 
-.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="email"],
-.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="file"],
-.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="number"],
-.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="password"],
-.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="tel"],
-.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="text"],
-.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question select,
-.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question textarea {
-  width: auto;        /* allow size/cols + Slate form CSS to control width */
-  max-width: 100%;    /* prevent overflow in narrow containers */
-}
-
-/* Optional: if any controls become too small, enforce a reasonable floor without forcing full-width.
-   Keep this conservative; remove if it changes Slate-intended widths. */
-.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="text"],
-.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="tel"],
-.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="email"] {
-  min-width: 12em;
-}
-
-/* Set max-width for forms */
-.jbu-admissions-cont form {
-   max-width: 860px;
-   margin: 0 auto;
-}
-
-/* =========================================
-   Form page type + spacing scale (TEST)
-   Use rem so sizes don't compound in nested containers
-   Assumes 1rem = 16px
-========================================= */
-
-/* Scope as tightly as possible to Slate form pages */
-#content form {
+.jbu-admissions-body #content form{
+  /* Type + spacing tokens (used throughout this file) */
   --fs-body: 1rem;          /* 16px */
   --lh-body: 1.5;
 
-  --fs-h1: 2.375rem;        /* 38px (within 36–40px range) */
-  --fs-h2: 1.625rem;        /* 26px (within 24–28px range) */
-  --fs-h3: 1.1875rem;       /* 19px (within 18–20px range) */
+  --fs-h1: 2.375rem;        /* 38px */
+  --fs-h2: 1.625rem;        /* 26px */
+  --fs-h3: 1.1875rem;       /* 19px */
   --fs-h4: 1.0625rem;       /* 17px */
   --fs-h5: 0.9375rem;       /* 15px */
-  --fs-label: 0.9375rem;    /* 15px (within 14–15px range) */
-   
+  --fs-label: 0.9375rem;    /* 15px */
+
   --fw-body: 400;
   --fw-h1: 700;
   --fw-h2: 600;
@@ -66,109 +48,176 @@
   --space-xl: 2.25rem;      /* 36px */
 }
 
-/* Body text defaults inside the form */
-#content form,
-#content form p,
-#content form li,
-#content form td,
-#content form th {
+/* Base text inside default branding forms */
+.jbu-admissions-body #content form,
+.jbu-admissions-body #content form p,
+.jbu-admissions-body #content form li,
+.jbu-admissions-body #content form td,
+.jbu-admissions-body #content form th{
   font-size: var(--fs-body);
   font-weight: var(--fw-body);
   line-height: var(--lh-body);
 }
 
-#content form p {
-  margin-bottom: 0.75rem;
+.jbu-admissions-body #content form p{
+  margin: 0 0 0.75rem 0;
 }
 
-/* Headings in the form content area */
-#content form h1,
-#content form .h1 {
+/* Headings (native headings + generic utility headings) */
+.jbu-admissions-body #content form h1,
+.jbu-admissions-body #content form .h1{
   font-size: var(--fs-h1);
   font-weight: var(--fw-h1);
   line-height: 1.15;
-  margin: 0 0 var(--space-s) 0; /* 16px bottom */
+  margin: 0 0 var(--space-s) 0;
 }
 
-#content form .form_h1 .form_label {
-  font-size: var(--fs-h1) !important;
-  font-weight: var(--fw-h1) !important;
-  line-height: 1.15 !important;
-  margin: 0 0 var(--space-s) 0 !important; /* 16px bottom */
-}
-
-#content form h2,
-#content form .h2 {
+.jbu-admissions-body #content form h2,
+.jbu-admissions-body #content form .h2{
   font-size: var(--fs-h2);
   font-weight: var(--fw-h2);
   line-height: 1.2;
-  margin: var(--space-l) 0 var(--space-s) 0; /* 32px top, 16px bottom */
+  margin: var(--space-l) 0 var(--space-s) 0;
 }
 
-#content form .form_h2 .form_label {
-  font-size: var(--fs-h2) !important;
-  font-weight: var(--fw-h2) !important;
-  line-height: 1.2 !important;
-  margin: var(--space-l) 0 var(--space-s) 0 !important; /* 32px top, 16px bottom */
-}
-
-#content form h3,
-#content form .h3 {
+.jbu-admissions-body #content form h3,
+.jbu-admissions-body #content form .h3{
   font-size: var(--fs-h3);
   font-weight: var(--fw-h3);
   line-height: 1.25;
-  margin: var(--space-m) 0 var(--space-xxs) 0; /* 20px top, 4px bottom */
+  margin: var(--space-m) 0 var(--space-xxs) 0;
 }
 
-#content form .form_h3 .form_label {
-  font-size: var(--fs-h3) !important;
-  font-weight: var(--fw-h3) !important;
-  line-height: 1.25 !important;
-  margin: var(--space-m) 0 var(--space-xxs) 0 !important; /* 20px top, 4px bottom */
-}
-
-#content form h4,
-#content form .h4 {
+.jbu-admissions-body #content form h4,
+.jbu-admissions-body #content form .h4{
   font-size: var(--fs-h4);
   font-weight: var(--fw-h4);
   line-height: 1.25;
-  margin: var(--space-s) 0 var(--space-xxs) 0; /* 16px top, 4px bottom */
+  margin: var(--space-s) 0 var(--space-xxs) 0;
 }
 
-#content form .form_h4 .form_label {
-  font-size: var(--fs-h4) !important;
-  font-weight: var(--fw-h4) !important;
-  line-height: 1.25 !important;
-  margin: var(--space-s) 0 var(--space-xxs) 0 !important; /* 16px top, 4px bottom */
-}
-
-#content form h5,
-#content form .h5 {
+.jbu-admissions-body #content form h5,
+.jbu-admissions-body #content form .h5{
   font-size: var(--fs-h5);
   font-weight: var(--fw-h5);
   line-height: 1.25;
-  margin: var(--space-s) 0 var(--space-xxs) 0; /* 16px top, 4px bottom */
+  margin: var(--space-s) 0 var(--space-xxs) 0;
 }
 
-#content form .form_h5 .form_label {
+/* Labels (broad baseline; keep !important on font-size to beat institutional !important sizing) */
+.jbu-admissions-body #content form label,
+.jbu-admissions-body #content form .form_label,
+.jbu-admissions-body #content form .field_label{
+  font-size: var(--fs-label) !important;
+  font-weight: var(--fw-label);
+  line-height: 1.25;
+  margin: 0 0 var(--space-xxs) 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   B) Slate-only mechanics (Slate-generated forms only)
+   -------------------------------------------------------------------------- */
+
+/* Control + choice tokens (Slate only) */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]{
+  --control-font-size: 1rem;      /* 16px */
+  --control-line-height: 1.25;
+  --control-pad-y: 0.5rem;        /* 8px */
+  --control-pad-x: 0.75rem;       /* 12px */
+  --control-min-height: 2.5rem;   /* 40px */
+
+  --choice-size: 1.125rem;        /* ~18px */
+  --choice-gap: 0.5rem;           /* 8px */
+}
+
+/* Form max-width (Slate forms only; avoid constraining other forms unless intended) */
+.jbu-admissions-cont #content form[id^="form_"][id$="_container"]{
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+
+/* --------------------------------------------------------------------------
+   B1) Restore Slate form-builder control widths
+   Institutional CSS forces width:100% on inputs/selects/textareas; revert to auto.
+   -------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="email"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="file"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="number"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="password"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="tel"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="text"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question select,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question textarea{
+  width: auto;
+  max-width: 100%;
+}
+
+/* Conservative minimum for common short-text controls (remove if it changes intended widths) */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="text"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="tel"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="email"]{
+  min-width: 12em;
+}
+
+
+/* --------------------------------------------------------------------------
+   B2) Slate heading blocks (.form_h1–.form_h5)
+   Keep !important because institutional styles often use !important here.
+   -------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_h1 .form_label{
+  font-size: var(--fs-h1) !important;
+  font-weight: var(--fw-h1) !important;
+  line-height: 1.15 !important;
+  margin: 0 0 var(--space-s) 0 !important;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_h2 .form_label{
+  font-size: var(--fs-h2) !important;
+  font-weight: var(--fw-h2) !important;
+  line-height: 1.2 !important;
+  margin: var(--space-l) 0 var(--space-s) 0 !important;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_h3 .form_label{
+  font-size: var(--fs-h3) !important;
+  font-weight: var(--fw-h3) !important;
+  line-height: 1.25 !important;
+  margin: var(--space-m) 0 var(--space-xxs) 0 !important;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_h4 .form_label{
+  font-size: var(--fs-h4) !important;
+  font-weight: var(--fw-h4) !important;
+  line-height: 1.25 !important;
+  margin: var(--space-s) 0 var(--space-xxs) 0 !important;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_h5 .form_label{
   font-size: var(--fs-h5) !important;
   font-weight: var(--fw-h5) !important;
   line-height: 1.25 !important;
-  margin: var(--space-s) 0 var(--space-xxs) 0 !important; /* 16px top, 4px bottom */
+  margin: var(--space-s) 0 var(--space-xxs) 0 !important;
 }
 
-/* Header container */
 
-#content form .form_question.form_header {
+/* --------------------------------------------------------------------------
+   B3) Slate header-row questions (.form_question.form_header)
+   Keep !important on margins because institutional CSS can zero margins.
+   -------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question.form_header{
   margin-top: var(--space-l) !important;
   margin-bottom: var(--space-xs) !important;
   padding-top: var(--space-xxs);
   position: relative;
 }
 
-/* Horizontal rule above header */
-
-#content form .form_question.form_header::before {
+/* Rule above header */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question.form_header::before{
   content: "";
   display: block;
   border-top: 1px solid rgba(0,0,0,0.18);
@@ -179,114 +228,144 @@
 }
 
 /* Header label */
-
-#content form .form_question.form_header > .form_label {
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question.form_header > .form_label{
   font-size: var(--fs-h3) !important;
   font-weight: var(--fw-h3);
+  line-height: 1.25;
   color: #043768;
   margin: 0;
 }
 
-/* Labels: stronger than body text */
-#content form label,
-#content form .form_label,
-#content form .field_label {
-  font-size: var(--fs-label) !important;
-  font-weight: var(--fw-label);
-  line-height: 1.25;
-  margin: 0 0 var(--space-xxs) 0; /* 4px bottom */
-}
 
-/* Optional: reduce “double spacing” when Slate wraps labels in blocks */
-#content form .form_question,
-#content form .form-group,
-#content form .field {
-  margin-top: 0;
-}
+/* --------------------------------------------------------------------------
+   B4) Controls: sizing + margin normalization (Slate .form_page only)
+   We remove control margins to prevent “double spacing”; question rhythm handles spacing.
+   Keep !important on margin reset only (institutional adds margins).
+   -------------------------------------------------------------------------- */
 
-/* ================================
-   Form controls – normalize sizing
-   Scope: Slate-hosted forms only
-   ================================ */
-
-.form_page {
-  --control-font-size: 1rem;      /* 16px */
-  --control-line-height: 1.25;
-  --control-pad-y: 0.5rem;        /* 8px */
-  --control-pad-x: 0.75rem;       /* 12px */
-  --control-min-height: 2.5rem;   /* 40px */
-}
-
-/* Text-ish inputs + selects + textarea (includes most Slate date inputs) */
-.form_page input[type="text"],
-.form_page input[type="email"],
-.form_page input[type="tel"],
-.form_page input[type="number"],
-.form_page input[type="password"],
-.form_page input[type="search"],
-.form_page input[type="url"],
-.form_page input:not([type]),
-.form_page select,
-.form_page textarea {
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="text"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="email"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="tel"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="number"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="password"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="search"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="url"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input:not([type]),
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page select,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page textarea{
   font-size: var(--control-font-size);
   line-height: var(--control-line-height);
   padding: var(--control-pad-y) var(--control-pad-x);
+  margin: 0 !important;
 }
 
-/* Make single-line controls consistent */
-.form_page input[type="text"],
-.form_page input[type="email"],
-.form_page input[type="tel"],
-.form_page input[type="number"],
-.form_page input[type="password"],
-.form_page input[type="search"],
-.form_page input[type="url"],
-.form_page input:not([type]),
-.form_page select {
+/* Single-line controls consistent height */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="text"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="email"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="tel"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="number"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="password"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="search"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="url"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input:not([type]),
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page select{
   min-height: var(--control-min-height);
 }
 
 /* Textarea: readable but not huge */
-.form_page textarea {
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page textarea{
   min-height: 6rem;
   resize: vertical;
 }
 
-/* De-inflate select menu typography where supported */
-.form_page select,
-.form_page select option {
+/* Select menu typography can be forced by institutional CSS; keep !important here */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page select,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page select option{
   font-size: var(--control-font-size) !important;
 }
 
-/* Optional: reduce excessive vertical gaps caused by control margins */
-.form_page input[type="text"],
-.form_page input[type="email"],
-.form_page input[type="tel"],
-.form_page input[type="number"],
-.form_page input[type="password"],
-.form_page input:not([type]),
-.form_page select,
-.form_page textarea {
-  margin: 0 !important; /* let .form_response spacing control rhythm instead */
+
+/* --------------------------------------------------------------------------
+   B5) Question spacing system (Slate .form_page only)
+   Institutional CSS can apply: div.form_question { margin:0 !important; }
+   We intentionally beat that within Slate form pages.
+   -------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page .form_responses{
+  margin-top: 0.35rem; /* label → control group */
 }
 
-.form_page .form_responses { 
-  margin-top: 0.35rem; /* space between label and control group */
-}
-
-.form_page .form_question {
-  margin-bottom: 1rem; /* space between questions */
-}
-
-/* For checkbox/radio lists: space between option rows */
-.form_page .form_responses .form_response + .form_response {
-  margin-top: 0.4rem;
-}
-
-/* Re-introduce question spacing on Slate form pages (beats div.form_question { margin:0 !important; }) */
-.form_page div.form_question {
+/* Primary question-to-question rhythm */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page div.form_question{
   margin: 0 0 1rem 0 !important;
 }
 
+/* For checkbox/radio lists: prevent extra gaps between option rows */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page .form_responses .form_response + .form_response{
+  margin-top: 0;
+}
 
 
+/* --------------------------------------------------------------------------
+   B6) Choice controls (checkbox / radio)
+   Consolidated to avoid conflicts.
+   - Restore native appearance (institutional custom controls in TEST)
+   - Normalize size + alignment
+   - Make choice labels read like body text
+   -------------------------------------------------------------------------- */
+
+/* Inputs: restore native + consistent dimensions */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="checkbox"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="radio"]{
+  -webkit-appearance: auto !important;
+  appearance: auto !important;
+
+  width: var(--choice-size) !important;
+  height: var(--choice-size) !important;
+
+  border: initial !important;
+  border-radius: initial !important;
+  background: initial !important;
+  color: initial !important;
+
+  position: static !important;
+  top: auto !important;
+
+  margin: 0 var(--choice-gap) 0 0 !important;
+  vertical-align: top;
+  transform: translateY(0.15em);
+}
+
+/* Option rows: tighten spacing without redesign */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page .form_responses .form_response{
+  padding: 0;
+}
+
+/* Choice labels only: override institutional label-weight specifically for choice rows */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page .form_responses .form_response > label{
+  font-weight: var(--fw-body) !important;
+  line-height: 1.35;
+  margin: 0 !important;
+  display: inline-block;
+}
+
+
+/* --------------------------------------------------------------------------
+   B7) Slate “selectable” options (option-button pattern)
+   Light touch: reduce heaviness/density without changing the concept.
+   -------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page .form_selectable .form_response{
+  padding: 0.25rem 0;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page .form_selectable .form_response input + label{
+  font-weight: 500;
+  line-height: 1.2;
+
+  height: auto !important;
+  min-height: 2.25rem;
+
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+}
