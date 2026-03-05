@@ -1,0 +1,1397 @@
+.visit.visit-adult {
+	margin-bottom: 50px !important;
+    width: calc(100% + 20px);
+    margin-left: -10px;
+    background-color: #ffffff;
+}
+
+.visit.visit-adult .visit-title {
+	padding: 10px 0 30px 0; 
+}
+
+.visit.visit-adult .visit-title h3 {
+    color: #003767;
+    font-size: 40px;
+    line-height: 48px;
+    font-weight: 900;
+}
+
+.visit.visit-adult .visit-grid {
+	border-bottom: 1px solid #3F3F3F;
+}
+
+.visit.visit-adult .visit-grid .visit__btn {
+    color: #003767 !important;
+}
+
+.visit.visit-adult .visit-grid .visit__btn::after {
+    background: center / contain no-repeat url('https://admissions.jbu.edu/www/images/applicant/arrowRightBlue.svg');
+    width: 20px;
+    height: 16px;
+}
+
+.visit.visit-adult .visit-grid p {
+    color: #003767;
+}
+
+@media (max-width: 991.98px) {
+    .visit.visit-adult .visit-grid {
+        padding-bottom: 35px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .part.visit.visit-adult .visit-title h3 {
+		text-align: left;
+		color: #003767;
+		font-size: 34px;
+		line-height: 42px;
+		padding: 0 10px;
+    }
+	.visit.visit-adult .visit-grid {
+        max-width: 480px;
+    }
+}
+
+div.part.fin-aid {
+	margin-bottom: 70px !important
+}
+
+.fin-aid__container {
+	border: 1px solid #001B41;
+	border-radius: 0px;
+	padding: 46px 54px;
+	background: #fff;
+}
+
+.fin-aid__container > div {
+	display: grid;
+	grid-template-columns: 1fr 200px;
+	gap: 120px;
+	align-items: center;
+}
+
+.fin-aid__item-line {
+	padding-top: 35px;
+	margin-top: 35px;
+	border-top: 1px solid #001B41;
+}
+
+.fin-aid__container .fin-aid__descr h3 {
+    font-size: 26px !important;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 31px !important;
+    color: #003767;
+	margin-bottom: 16px;
+}
+
+.fin-aid__container .fin-aid__descr p {
+    color: #3F3F3F !important;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 0px;
+    padding: 0;
+}
+
+.fin-aid__container .fin-aid__descr p a {
+	color: #3F3F3F !important;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+	text-decoration: underline;
+}
+
+.fin-aid__btn {
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: center;
+	gap: 15px;
+}
+
+.fin-aid__btn p {
+	color: #001B41 !important;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    margin-bottom: 0px;
+	text-align: center;
+}
+
+.fin-aid__btn p a {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 46px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    background-color: #00B5EF !important;
+    border-radius: 0px;
+    transition: 0.5s all;
+}
+
+@media (max-width: 1599.98px) {
+	.fin-aid__container {
+		gap: 100px;
+	}
+}
+
+@media (max-width: 1199.98px) {
+	.fin-aid__container {
+		padding: 30px;
+	}
+	.fin-aid__container > div {
+		gap: 80px;
+	}
+	.fin-aid__item-second {
+		padding-top: 30px;
+		margin-top: 30px;
+	}
+}
+
+@media (max-width: 991.98px) {
+	.fin-aid__container > div {
+		grid-template-columns: 1fr;
+		gap: 30px;
+	}
+	.fin-aid__btn {
+		align-items: flex-start
+	}
+	.fin-aid__btn p {
+		text-align: left;
+	}
+	.fin-aid__container .fin-aid__descr h3 {
+	    font-size: 24px !important;
+	    line-height: 30px !important;
+		letter-spacing: 0px;
+	}
+}
+
+@media (max-width: 575.98px) {
+	div.part.fin-aid {
+		margin-bottom: 35px !important
+	}
+	.fin-aid__container {
+	    width: calc(100% + 60px);
+		margin-left: -30px;
+	}
+}
+
+div.part.extra-simple {
+	margin-bottom: 50px !important;
+}
+
+.extra-simple__container {
+	padding:0;
+	display: grid;
+	grid-template-columns: 1fr 50%;
+	gap: 100px;
+}
+
+.extra-simple__container h3 {
+    font-size: 40px !important;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 46px !important;
+    margin-bottom: 20px;
+    margin-top: 0;
+    color: #003767;
+}
+
+.extra-simple__container p {
+    color: #3F3F3F;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    margin-bottom: 19px;
+    padding: 0;
+}
+
+.extra-simple__container p a {
+	color: #3F3F3F !important;
+	font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+	border: unset;
+    text-decoration: underline;
+}
+
+.extra-simple__container a.extra-simple__link {
+	font-size: 16px;
+	line-height: 19px;
+	color: #3F3F3F;
+	text-transform: uppercase;
+	font-weight: 700;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.extra-simple__line {
+	padding: 50px 0 0 0;
+	border-bottom: 1px solid #001B41;
+}
+
+@media (max-width: 991.98px) {
+	.extra-simple__container {
+		grid-template-columns: 100%;
+		gap: 20px;
+	}
+	.extra-simple__container h3 {
+	    font-size: 30px !important;
+	    line-height: 38px !important;
+		letter-spacing: 0px;
+	}
+}
+
+@media (max-width: 575.98px) {
+	div.part.extra-simple {
+		margin-bottom: 35px !important;
+	}
+	.extra-simple__line {
+		padding: 35px 0 0 0;
+	}
+}
+
+.major-widget__pros {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 30px;
+	margin-top: 35px;
+}
+
+.major-widget__prosImg {
+	width: 35px !important;
+	height: 25px !important;
+	object-fit: contain;
+	margin-right: 10px;
+}
+
+.major-widget__prosItem {
+	color: #3F3F3F;
+	font-size: 16px;
+	line-height: 19px;
+}
+
+@media (max-width: 991.98px) {
+	.major-widget__pros {
+		grid-template-columns: 100%;
+		gap: 25px;
+		margin-top: 25px;
+	}
+}
+
+div.part.event {
+	margin-bottom: 50px !important;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	z-index: 1;
+	padding-bottom: 100px;
+}
+
+.event-background-img {
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	left: 0;
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover;
+	border-radius: 0px;
+}
+
+#page #content .ui-datepicker .ui-datepicker-header {
+    position: relative !important;
+}
+
+.part.event .portal_datepicker_container {
+	margin-top: 130px;
+	background: rgb(255 255 255 / 90%);
+	padding: 35px 30px 35px 30px;
+	border-radius: 0px;
+	max-width: 460px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 50px;
+	border-radius: 0px;
+}
+
+.part.event .portal_datepicker_container::before {
+	content: 'Browse All Events';
+	font-weight: 900;
+	font-size: 26px;
+	line-height: 31px;
+	text-align: center;
+	margin-bottom: 26px;
+	width: 400px;
+	color: #003767;
+}
+
+.part.event .portal_datepicker_sidebar {
+    order: 2;
+    width: 400px;
+}
+
+.part.event .portal_events {
+    order: 1;
+    width: 400px;
+}
+
+.part.event .ui-datepicker {
+    color: #001B41;
+    width: 400px;
+	display: flex !important;
+	flex-direction: column;
+}
+
+.part.event .ui-widget-header {
+    background: #ffffff00;
+}
+
+.part.event .ui-datepicker-title {
+	width: 140px;
+	height: 28px;
+	margin: 0 auto;
+	margin-bottom: 20px;
+	background: #001B41;
+	border-radius: 5px;
+	font-size: 12px;
+    padding-top: 3px;
+	color: #fff;
+	font-weight: 700;
+}
+
+.part.event .ui-widget-header .ui-icon {
+	height: 18px;
+	width: 14px;
+    background: center/contain no-repeat url('https://admissions.jbu.edu/www/images/applicant/chevronRightBlue.svg');
+}
+
+.part.event .ui-widget-header .ui-datepicker-prev .ui-icon {
+	transform: rotate(180deg)
+}
+
+.part.event .ui-datepicker .ui-datepicker-prev span, .part.event .ui-datepicker .ui-datepicker-next span {
+    display: block;
+    position: absolute;
+    left: 50%;
+    margin-left: -8px;
+    top: 50%;
+}
+
+.part.event .ui-datepicker .ui-datepicker-prev {
+    left: calc((100% - 140px) / 2 - 45px);
+	top: 2px;
+}
+
+.part.event .ui-datepicker .ui-datepicker-prev:hover, .part.event .ui-datepicker .ui-datepicker-next:hover {
+	background: unset
+}
+
+.part.event .ui-datepicker .ui-datepicker-next {
+    right: calc((100% - 140px) / 2 - 45px);
+	top: 2px;
+}
+
+.part.event .ui-datepicker-calendar td {
+	margin-bottom: 0;
+}
+
+.part.event .ui-datepicker-calendar {
+    background-color: unset !important;
+}
+
+.part.event .ui-datepicker th {
+	font-size: 12px;
+	line-height: 26px;
+	color: #001B41 !important
+}
+
+.part.event .ui-datepicker td span, .part.event .ui-datepicker td a {
+    font-weight: 400;
+	font-size: 12px;
+	line-height: 22px;
+	color: #000 !important;
+}
+
+.part.event .ui-datepicker td.unavailable a.ui-state-active {
+	color: #ffffff !important;
+}
+
+.part.event .ui-datepicker-calendar .available {
+    background: #001B41 !important;
+	color: #ffffff !important;
+	border-radius: 5px;
+}
+
+.part.event .ui-datepicker-calendar .unavailable {
+	color: #ffffff !important;
+	border-radius: 5px;
+}
+
+.part.event .portal_datepicker_sidebar {
+	font-size: 18px;
+}
+
+.part.event .ui-datepicker-calendar .available + .available {
+	box-shadow: -22px 0 0 #001B41;
+}
+
+.part.event .ui-datepicker-calendar .unavailable + .unavailable {
+	box-shadow: -22px 0 0 #cccccc;
+}
+
+.part.event .ui-datepicker-calendar .available + .unavailable {
+	box-shadow: -8px 0 0 #cccccc, -22px 0 0 #001B41;
+}
+
+.part.event .ui-datepicker-calendar .unavailable + .available {
+	box-shadow:  -8px 0 0 #001B41, -22px 0 0 #cccccc;
+}
+
+.part.event .ui-datepicker-calendar .available.ui-datepicker-current-day {
+    background: #009DDC !important;
+	border-radius: 5px;
+	padding: 0 !important;
+}
+
+.part.event .ui-datepicker-calendar .unavailable.ui-datepicker-current-day {
+    background: #009DDC !important;
+	border-radius: 5px;
+	padding: 0px !important;
+}
+
+.part.event .ui-datepicker-calendar .unavailable.ui-datepicker-current-day .ui-state-default.ui-state-active {
+	color: #fff !important;
+	border-radius: 5px;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active {
+    background: #009DDC;
+    color: #fff;
+}
+
+.part.event .ui-datepicker-calendar .available.ui-datepicker-current-day .ui-state-default.ui-state-active {
+	color: #fff !important;
+}
+
+.part.event .ui-datepicker-calendar .available + .available.ui-datepicker-current-day {
+	box-shadow: -8px 0 0 #009DDC, -22px 0 0 #001B41;
+	padding: 0 !important;
+}
+
+.part.event .ui-datepicker-calendar .unavailable + .unavailable.ui-datepicker-current-day {
+	box-shadow:  -8px 0 0 #009DDC, -22px 0 0 #cccccc;
+	padding: 0 !important;
+}
+
+.part.event .ui-datepicker-calendar .available + .unavailable.ui-datepicker-current-day {
+	box-shadow: -8px 0 0 #009DDC, -22px 0 0 #001B41;
+	padding: 0 !important;
+}
+
+.part.event .ui-datepicker-calendar .unavailable + .available.ui-datepicker-current-day {
+	box-shadow:  -8px 0 0 #009DDC, -22px 0 0 #cccccc;
+	padding: 0 !important;
+}
+
+.part.event .ui-datepicker-calendar .available.ui-datepicker-current-day + .available {
+	box-shadow:  -8px 0 0 #001B41, -22px 0 0 #009DDC;
+	padding: 0 !important;
+}
+
+.part.event .ui-datepicker-calendar .unavailable.ui-datepicker-current-day + .unavailable {
+	box-shadow: -8px 0 0 #cccccc, -22px 0 0 #009DDC;
+	padding: 0 !important;
+}
+
+.part.event .ui-datepicker-calendar .available.ui-datepicker-current-day + .unavailable {
+	box-shadow: -8px 0 0 #cccccc, -22px 0 0 #009DDC;
+	padding: 0 !important;
+}
+
+.part.event .ui-datepicker-calendar .unavailable.ui-datepicker-current-day + .available {
+	box-shadow:  -8px 0 0 #001B41, -22px 0 0 #009DDC;
+	padding: 0 !important;
+}
+
+
+.part.event .ui-datepicker-calendar .ui-datepicker-current-day, .part.event .ui-datepicker-calendar .unavailable, .part.event .ui-datepicker-calendar .available {
+    display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.part.event .ui-datepicker-calendar .ui-datepicker-current-day a, .part.event .ui-datepicker-calendar .unavailable .ui-state-default, .part.event .ui-datepicker-calendar .available .ui-state-default {
+	width: 100%;
+}
+
+.part.event .ui-datepicker-calendar .unavailable .ui-state-default:hover {
+    background-color: #cccccc !important;
+	border-radius: 5px;
+	transition: 0.2s all;
+	padding: 0 !important;
+	position: relative;
+	z-index: 99;
+}
+
+.part.event .ui-datepicker-calendar .available .ui-state-default:hover {
+    background-color: #001B41 !important;
+	transition: 0.2s all;
+	padding: 0 !important;
+	border-radius: 5px;
+	position: relative;
+	z-index: 99;
+}
+
+.part.event .ui-datepicker-calendar .unavailable.ui-datepicker-current-day .ui-state-default:hover {
+    background-color: #009DDC !important;
+	border-radius: 5px;
+	transition: 0.2s all;
+	position: relative;
+	z-index: 99;
+}
+
+.part.event .ui-datepicker-calendar .available.ui-datepicker-current-day .ui-state-default:hover {
+    background-color: #009DDC !important;
+	transition: 0.2s all;
+	border-radius: 5px;
+	position: relative;
+	z-index: 99;
+}
+
+.part.event .ui-datepicker-calendar .available.ui-datepicker-current-day .ui-state-default {
+    background-color: #009DDC !important;
+    border-radius: 5px;
+    position: relative;
+    color: #fff !important;
+    z-index: 99;
+}
+
+.part.event .ui-datepicker-calendar .available a {
+    color: #fff !important;
+}
+
+.part.event .ui-datepicker-calendar tr {
+	display: grid;
+	width: 100%;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+	margin-bottom: 5px;
+	column-gap: 15px;
+}
+
+.part.event .portal_datepicker_sidebar > div + div {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.part.event .portal_datepicker_sidebar > div + div > div {
+	margin-top: 0 !important;
+	display: flex;
+	align-items: center;
+	font-size: 12px;
+}
+
+.part.event .portal_datepicker_sidebar > div + div .calendar_legend {
+	margin-top: 0 !important;
+	height: 20px;
+	width: 20px;
+	border: unset;
+	border-radius: 5px;
+}
+
+.part.event .portal_datepicker_sidebar > div + div > div:first-child {
+	display: none;
+}
+
+.part.event .event_list_display {
+	padding: 0;
+	margin: 0;
+}
+
+.part.event .event_list_display > div {
+	background: rgb(255 255 255 / 90%);
+	width: 460px;
+	padding: 15px;
+	border-radius: 0px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 50px;
+}
+
+.part.event .event_list_display .item {
+	width: 100%;
+    margin-bottom: 10px;
+}
+
+.part.event .event_list_display .item .event {
+	font-size: 18px;
+	line-height: 28px;
+	background: #009DDC;
+	border-radius: 0px;
+	padding: 10px !important;
+}
+
+.part.event .event_list_display .item .unavailable + .event {
+	background: #cccccc;
+}
+
+.part.event .event_list_display .item:last-child {
+	margin-bottom: 0px;
+}
+
+.part.event .event_list_display .item a {
+	font-weight: 700;
+	text-decoration: underline;
+	color: #ffffff !important;
+	text-align: center;
+	display: block;
+	margin-bottom: 10px;
+	font-size: 18px;
+	line-height: 24px;
+}
+
+.part.event .ui-datepicker-calendar {
+	border: unset;
+}
+
+.part.event .event_list_display .item p {
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+	text-align: center;
+	color: #ffffff;
+}
+
+.part.event .event_list_display .item p br {
+	display: none;
+}
+
+.part.event .event_list_display .calendar_legend {
+	display: none;
+}
+
+.part.event .portal_datepicker_sidebar > div + div > div:last-child .calendar_legend {
+    background-color: #ffffff00 !important;
+    border: 1px solid #4A4A4A !important;
+}
+
+@media ( max-width: 767.98px ) {
+	.part.event {
+		margin-bottom: 25px !important;
+	}
+	.part.event.container {
+		width: 100%;
+		padding: 35px 30px;
+		box-sizing: border-box;
+	}
+	.part.event .portal_datepicker_container {
+		margin-top: 0px;
+		padding: 35px 15px;
+		margin-bottom: 35px;
+		width: 100%;
+	}
+	.part.event .portal_datepicker_sidebar {
+	    width: 100%;
+	}
+	.part.event__tab.active {
+		margin-bottom: 35px !important;
+	}
+	.part.event .portal_events {
+	    width: 100%;
+	}
+	.part.event .ui-datepicker {
+	    width: 100%;
+	}
+	.part.event .event_list_display > div {
+		width: 100%;
+		padding: 35px 25px;
+		margin-bottom: 35px;
+	}
+	.part.event .event_list_display {
+		width: 100%;
+	}
+	.part.event .portal_datepicker_sidebar > div + div > div {
+	    margin-top: 10px !important;
+		margin-right: 10px !important;
+	}
+	.part.event .portal_datepicker_sidebar > div + div > div:last-child {
+		margin-right: 0px !important;
+	}
+}
+
+@media ( max-width: 575.98px ) {
+	div.part.event  {
+	    margin-bottom: 35px !important;
+		margin-left: -10px;
+		width: calc(100% + 20px) !important;
+	}
+	.part.event.collapsibleSiblingEvents[style="max-height: 0px;"] {
+        margin-bottom: 0px !important;
+		padding: 0 !important;
+    }
+	.part.event .ui-datepicker-calendar .available + .available {
+		box-shadow: -5px 0 0 #001B41;
+	}
+	.part.event .ui-datepicker-calendar .unavailable + .unavailable {
+		box-shadow: -5px 0 0 #cccccc;
+	}
+	
+	.part.event .ui-datepicker-calendar .available + .unavailable {
+		box-shadow: -2.5px 0 0 #cccccc, -5px 0 0 #001B41;
+	}
+	
+	.part.event .ui-datepicker-calendar .unavailable + .available {
+		box-shadow:  -2.5px 0 0 #001B41, -5px 0 0 #cccccc;
+	}
+	.part.event .ui-datepicker-calendar .available + .available.ui-datepicker-current-day {
+		box-shadow: -2.5px 0 0 #009DDC, -5px 0 0 #001B41;
+		padding: 0 !important;
+	}
+	.part.event .ui-datepicker-calendar .unavailable + .unavailable.ui-datepicker-current-day {
+		box-shadow:  -2.5px 0 0 #009DDC, -5px 0 0 #cccccc;
+		padding: 0 !important;
+	}
+	
+	.part.event .ui-datepicker-calendar .available + .unavailable.ui-datepicker-current-day {
+		box-shadow: -2.5px 0 0 #009DDC, -5px 0 0 #001B41;
+		padding: 0 !important;
+	}
+	
+	.part.event .ui-datepicker-calendar .unavailable + .available.ui-datepicker-current-day {
+		box-shadow:  -2.5px 0 0 #009DDC, -5px 0 0 #cccccc;
+		padding: 0 !important;
+	}
+	
+	.part.event .ui-datepicker-calendar .available.ui-datepicker-current-day + .available {
+		box-shadow:  -2.5px 0 0 #001B41, -5px 0 0 #009DDC;
+		padding: 0 !important;
+	}
+	
+	.part.event .ui-datepicker-calendar .unavailable.ui-datepicker-current-day + .unavailable {
+		box-shadow: -2.5px 0 0 #cccccc, -5px 0 0 #009DDC;
+		padding: 0 !important;
+	}
+	
+	.part.event .ui-datepicker-calendar .available.ui-datepicker-current-day + .unavailable {
+		box-shadow: -2.5px 0 0 #cccccc, -5px 0 0 #009DDC;
+		padding: 0 !important;
+	}
+	
+	.part.event .ui-datepicker-calendar .unavailable.ui-datepicker-current-day + .available {
+		box-shadow:  -2.5px 0 0 #001B41, -5px 0 0 #009DDC;
+		padding: 0 !important;
+	}
+
+	.part.event .ui-datepicker-calendar tr {
+		margin-bottom: 2px;
+		column-gap: 0px;
+	}
+	.part.event .portal_datepicker_container::before {
+	    font-size: 22px;
+	    line-height: 25px;
+	}
+    .part.event .ui-datepicker-title {
+    	max-width: 140px;
+        width: 50vw;
+    }
+}
+
+@media ( max-width: 429.98px ) {
+    .part.event .ui-datepicker .ui-datepicker-prev {
+        left: calc((100% - 50vw) / 2 - 40px);
+    }
+
+    .part.event .ui-datepicker .ui-datepicker-prev:hover, .part.event .ui-datepicker .ui-datepicker-next:hover {
+    	background: unset
+    }
+
+    .part.event .ui-datepicker .ui-datepicker-next {
+        right: calc((100% - 50vw) / 2 - 40px);
+    	top: 5px;
+    }
+	.part.event.container {
+	    width: 100%;
+	    padding: 25px 10px;
+	}
+}
+
+.part.events-header {
+	margin-bottom: 35px !important;
+}
+
+.part.events-header h3 {
+	margin-bottom: 0;
+	font-size: 40px;
+	line-height: 46px;
+	font-weight: 900;
+	color: #003767;
+}
+
+@media ( max-width: 575.98px ) {
+	.part.events-header h3 {
+		font-size: 32px;
+		line-height: 42px;
+	}
+}
+
+div.cr.c_master-header.cr, div.cr.c_master-menu.cr, div.cr.c_master-content-container.cr {
+    max-width: 1920px;
+}
+
+#global {
+    display: none;
+}
+
+.c_navigationPrimary-160, .c_siteHeader-160.c_center-160, #content > div[role="banner"] {
+    display: none;
+}
+
+#c_navigation, .c_master-header-spacer.cr, .c_master-header-container.cr {
+    display: none;
+}
+
+.jbu-admissions-header-cont {
+	display: none;
+}
+
+.fixed.one_column {
+	margin-top: 0 !important
+}
+
+.c_jbu-content-block {
+	padding-top: 0 !important;
+}
+
+.part.new-header {
+    top: 0px;
+    left: 0;
+    width: 100%;
+	z-index: 20;
+	margin-bottom: 0 !important;
+	width: calc(100% + 40px) !important;
+	margin-left: -20px;
+}
+
+div.part.new-header {
+	margin-bottom: 0 !important;
+}
+
+.new-header__bottom {
+	background-color: #3F3F3F;
+}
+
+.new-header__logo img {
+    height: 61px !important;
+	width: 160px !important;
+	padding: 0;
+    object-fit: contain;
+}
+
+.new-header__bottom-humburger {
+    display: none;
+}
+
+.new-header__bottom-container {
+    display: flex;
+	width: 100%;
+    justify-content: space-between;
+	position: relative;
+	align-items: center;
+	height: 96px;
+	z-index: 11;
+}
+
+.new-header__bottom-menu {
+	flex-grow: 1;
+}
+
+.new-header__bottom-menu ul {
+	margin-left: 0;
+}
+
+.new-header__nav-item::before {
+    display: none;
+}
+.new-header__nav {
+    display: flex;
+    list-style: none;
+    justify-content: flex-end;
+	margin-bottom: 0;
+}
+
+.new-header__nav .new-header__nav-item .new-header__nav-link {
+    color: #ffffff !important;
+	text-decoration: unset;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+    margin-left: 20px;
+    letter-spacing: 0px;
+}
+
+@media (max-width: 1399.98px) {
+	.new-header__nav .new-header__nav-item .new-header__nav-link {
+		font-size: 12px;
+	}
+}
+
+@media (max-width: 1199.98px) {
+	.new-header__bottom-container {
+	    justify-content: space-between;
+        align-items: center;
+		padding: 0px;
+	}
+	#page #content .new-header__bottom-menu {
+		position: fixed !important;
+		top: 0px !important;
+		bottom: 0;
+		padding-top: 75px;
+		right: -110vw !important;
+		z-index: 210;
+		width: 100%;
+		height: 100vh;
+		background: #3F3F3F;
+		transition: 0.5s all;
+	}
+	.new-header__bottom-container {
+		z-index: 241;
+	}
+	.hamb-active #page #content .new-header__bottom-menu {
+		right: 0 !important;
+		transition: 0.5s all;
+		z-index: 240;
+	}
+	.new-header__nav {
+	    display: flex;
+	    list-style: none;
+		flex-direction: column;
+		align-items: center;
+	}
+	.new-header__nav .new-header__nav-item .new-header__nav-link {
+	    margin-left: 0px;
+		padding: 0;
+	}
+	.new-header__nav-item {
+		margin-bottom: 30px;
+		margin-left: 0px;
+		padding: 0;
+	}
+	.new-header__nav {
+		margin: 0;
+		padding: 20px 24px;
+	}
+
+	.new-header__bottom-humburger {
+		display: flex;
+		height: 38px;
+		padding: 10px 10px;
+		width: 50px;
+		flex-direction: column;
+		justify-content: space-between;
+		cursor: pointer;
+		position: relative;
+		z-index: 241;
+	}
+	.new-header__upperBtn .new-header__upperLink {
+		background: #fff;
+		color: #fff;
+		height: 60px;
+	}
+	.new-header__bottom-humburger span {
+		width: 100%;
+		height: 2px;
+		background-color: #ffffff;
+		transition: 0.5s all;
+	}
+	.hamb-active .new-header__bottom-humburger span:nth-child(2) {
+		display: none;
+	}
+	.hamb-active .new-header__bottom-humburger span:nth-child(1) {
+		transform: rotate(45deg) translateY(11px);
+		transition: 0.5s all;
+        background-color: #ffffff;
+	}
+	.hamb-active .new-header__bottom-humburger span:nth-child(3) {
+		transform: rotate(-45deg) translateY(-11px);
+		transition: 0.5s all;
+        background-color: #ffffff;
+	}
+    .new-header__top-container {
+        height: 90px;
+    }
+    body.hamb-active {
+        overflow: hidden;
+        max-height: 100vh;
+    }
+}
+
+@media (max-width: 767.98px) {
+    a.new-header__top-btn {
+        position: absolute;
+        right: -110vw;
+        transition: 0.5s all;
+		z-index: 204;
+    }
+    .hamb-active a.new-header__top-btn {
+        right: calc(50% - 135px);
+        transition: 0.5s all;
+    }
+}
+
+@media (max-width: 575.98px) {
+	.new-header__nav {
+		align-items: flex-start;
+		margin-left: 45px;
+	}
+	.new-header__upperBtn {
+		padding: 40px 45px;
+		align-items: flex-start;
+	}
+	.new-header__logo img {
+	    height: 60px !important;
+		width: 130px !important;
+		padding: 0;
+	    object-fit: contain;
+	}
+}
+
+.new-header__bottom-container.selector-here .new-header__bottom-menu-container {
+	padding-right: 260px;
+}
+
+div.part.applicant-selector {
+	margin-bottom: 0 !important;
+}
+
+.applicant-selector {
+    position: relative;
+    height: 0;
+    margin: 0 !important;
+}
+.applicant-selector select {
+	border: 1px solid #ffffff;
+	padding: 2px 35px 2px 15px;
+	width: 220px;
+	color: #ffffff;
+	height: 34px;
+	font-weight: 400;
+	line-height: 26px;
+	font-size: 12px;
+	letter-spacing: -0.5px;
+	background: url('https://admissions.jbu.edu/www/images/applicant/chevron-down.svg') no-repeat calc(100% - 10px) 50%;
+	background-size: auto 8px;
+	background-color: #ffffff00;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	position: absolute;
+	top: 30px;
+	right: calc((1920px - 1140px) / 2);
+	left: unset;
+	border-radius: 0px;
+	z-index: 200;
+	float: unset !important;
+}
+.applicant-selector select option {
+	color: #000;
+}
+
+@media (max-width: 1920.98px) {
+    .applicant-selector select {
+        right: calc((100vw - 1140px) / 2);
+	}
+}
+
+@media (max-width: 1399.98px) {
+	.applicant-selector select {
+		right: calc((100vw - 1140px) / 2);
+	}
+}
+
+@media (max-width: 1199.98px) {
+	.applicant-selector select {
+		right: calc(50% - 125px);
+        top: 102px;
+		box-shadow: 0px 0px 10px #000000;
+		background-color: #00000099;
+	}
+	.new-header__bottom-container.selector-here .new-header__nav-link {
+	    margin-left: 0px;
+		letter-spacing: 0px;
+	}
+	.new-header__bottom-container.selector-here .new-header__bottom-menu-container {
+		padding-right: 0px;
+	}
+}
+
+@media (max-width: 767.98px) {
+    .applicant-selector select {
+		right: calc(50% - 125px);
+	}
+}
+
+.c_hero--simple {
+	display: none;
+}
+
+.new-header__bottom-menu-container {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 35px;
+}
+
+#page #content .new-header__image-container, #page #content .new-header__bell-container {
+	position: relative !important;
+}
+
+.new-header__img-head {
+	width: 30px !important;
+	height: 30px !important;
+	object-fit: cover;
+	position: relative;
+	z-index: 230;
+	cursor: pointer;
+	border-radius: 50%;
+}
+
+.new-header__img-message {
+	background: #FFFFFF;
+	border: 1px solid #001B41;
+	padding: 20px; 
+	border-radius: 5px;
+}
+
+.new-header__img-inner {
+	position: absolute;
+	width: 300px;
+	top: 0;
+	padding-top: 60px;
+	left: -115px;
+	transform: scale(0);
+	z-index: 220;
+}
+
+.new-header__img-head.active + .new-header__img-inner {
+		transform: scale(1);
+		transition: 0.5s all;
+}
+
+#page .new-header__img-message h3, #page .new-header__bell-container h3 {
+	color: #001B41 !important;
+	font-size: 16px !important;
+	line-height: 26px !important;
+	font-weight: 700 !important;
+	margin-bottom: 22px;
+}
+
+.new-header__img-message p {
+	color: #001B41;
+	font-size: 16px;
+	line-height: 26px;
+	margin-bottom: 22px;
+}
+
+.new-header__bell-container p {
+	color: #001B41;
+	font-size: 16px;
+	line-height: 26px;
+	margin-bottom: 20px;
+}
+
+.new-header__img-message p strong, .new-header__bell-container p strong {
+	color: #001B41;
+	font-size: 16px;
+	line-height: 26px;
+	font-weight: 700;
+}
+
+.new-header__bell-message .new-header__bel-status {
+	color: #009DDC !important;
+	border-bottom: 1px solid #009DDC;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.new-header__bell-message .new-header__bel-status:hover {
+	text-decoration: none
+}
+.new-header__bell-message .new-header__bel-status::after {
+	content: url('https://admissions.jbu.edu/www/images/applicant/arrow.svg');
+	margin-left: 10px;
+	width: 20px;
+	transition: 0.5s all
+}
+
+.new-header__bell-yiled {
+	margin-top: 25px;
+	padding-top: 25px;
+	border-top: 1px solid #707070;
+}
+
+.new-header__img-message p:last-child {
+	margin-bottom: 0;
+}
+.new-header__notif-container {
+	display: flex;
+	gap: 25px;
+}
+
+.selector-here .new-header__bell-inner {
+	left: -110px;
+}
+
+@media (max-width: 1199.98px) {
+	.new-header__bottom-menu-container {
+		position: absolute;
+		top: 50px;
+		right: calc((100% - 960px)/2 + 80px);
+	}
+}
+
+@media (max-width: 1699.98px) {
+	.new-header__nav .new-header__nav-item .new-header__nav-link {
+	    line-height: 26px;
+	    margin-left: 40px;
+	}
+}
+
+@media (max-width: 1399.98px) {
+	.new-header__nav .new-header__nav-item .new-header__nav-link {
+		font-size: 14px;
+	    line-height: 20px;
+	    margin-left: 10px;
+	}
+}
+
+@media (max-width: 1199.98px) {
+	.new-header__bottom-menu-container {
+		position: absolute;
+		top: 34px;
+		right: calc((100% - 960px)/2 + 80px);
+	}
+	.selector-here .new-header__bell-inner {
+		left: -160px;
+	}
+}
+
+@media (max-width: 991.98px) {
+	.new-header__bottom-menu-container {
+		position: absolute;
+		top: 34px;
+		right: calc((100% - 720px)/2 + 80px);
+	}
+}
+
+@media (max-width: 767.98px) {
+	.new-header__bottom-menu-container {
+		position: absolute;
+		right: calc((100% - 540px)/2 + 80px);
+	}
+	.applicant-selector select {
+	    right: calc(50% - 135px);
+	}
+}
+
+@media (max-width: 575.98px) {
+	.new-header__bottom-menu-container {
+		position: absolute;
+		right: 60px;
+	}
+	.new-header__img-inner {
+		left: -180px;
+	}
+	.new-header__logo img {
+	    height: 70px !important;
+	    width: 135px !important;
+	}
+	.new-header__notif-container {
+		gap: 15px;
+	}
+	.new-header__img-inner {
+		width: calc(100vw - 20px);
+		max-width: 300px;
+		left: unset;
+		right: -105px
+	}
+}
+
+.new-header__img-bell, .new-header__img-bel-checked {
+	width: 30px !important;
+	height: 30px !important;
+	object-fit: contain;
+	position: relative;
+	z-index: 230;
+	cursor: pointer;
+}
+
+.new-header__bell-message {
+	background: #FFFFFF;
+	border: 1px solid #001B41;
+	padding: 20px; 
+	border-radius: 5px;
+}
+
+.new-header__bell-inner {
+	position: absolute;
+	width: 260px;
+	top: 0;
+	padding-top: 60px;
+	left: -160px;
+	transform: scale(0);
+	z-index: 220;
+}
+
+.new-header__img-bell.active + .new-header__bell-inner {
+	transform: scale(1);
+	transition: 0.5s all;
+}
+
+.new-header__image-container .acc-tools__container {
+    padding: 10px 0 0 0;
+    display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.new-header__image-container .acc-tools__container a {
+    margin-right: 0px;
+	text-decoration: underline;
+}
+
+@media only screen and (max-width: 736px) {
+    table.fixed>tbody>tr>td {
+        padding-top: 0px !important;
+    }
+}
+
+.quote-alumny .quote__inner-container {
+	padding-right: 360px;
+}
+.quote-alumny .quote__photo {
+	width: 300px;
+}
+
+@media (max-width: 991.98px) {
+	.quote-alumny .quote__photo {
+		max-width: 360px;
+		width: 100%;
+	}
+	.quote-alumny .quote__inner-container {
+		padding-right: 0;
+	}
+}
