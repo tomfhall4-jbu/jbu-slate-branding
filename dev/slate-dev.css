@@ -80,8 +80,7 @@
   margin: 0 0 var(--space-s) 0; /* 16px bottom */
 }
 
-#content form .form_h1 .form_label,
-{
+#content form .form_h1 .form_label {
   font-size: var(--fs-h1) !important;
   font-weight: var(--fw-h1) !important;
   line-height: 1.15 !important;
