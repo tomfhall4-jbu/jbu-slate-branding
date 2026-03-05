@@ -156,7 +156,7 @@
 #content form label,
 #content form .form_label,
 #content form .field_label {
-  font-size: var(--fs-label);
+  font-size: var(--fs-label) !important;
   font-weight: var(--fw-label);
   line-height: 1.25;
   margin: 0 0 var(--space-xxs) 0; /* 4px bottom */
