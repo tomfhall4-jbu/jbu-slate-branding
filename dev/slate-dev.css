@@ -255,7 +255,7 @@
 /* De-inflate select menu typography where supported */
 .form_page form select,
 .form_page form select option {
-  font-size: var(--control-font-size);
+  font-size: var(--control-font-size) !important;
 }
 
 /* Optional: reduce excessive vertical gaps caused by control margins */
@@ -267,5 +267,18 @@
 .form_page form input:not([type]),
 .form_page form select,
 .form_page form textarea {
-  margin: 0; /* let .form_response spacing control rhythm instead */
+  margin: 0 !important; /* let .form_response spacing control rhythm instead */
+}
+
+.form_page .form_responses { 
+  margin-top: 0.35rem; /* space between label and control group */
+}
+
+.form_page .form_question {
+  margin-bottom: 1rem; /* space between questions */
+}
+
+/* For checkbox/radio lists: space between option rows */
+.form_page .form_responses .form_response + .form_response {
+  margin-top: 0.4rem;
 }
