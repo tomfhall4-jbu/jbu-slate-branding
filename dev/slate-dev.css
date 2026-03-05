@@ -1,5 +1,27 @@
 /* Slate development overrides */
 
-h1 {
-  font-size: 2rem;
+/* --------------------------------------------------------------------------
+   Slate forms – restore form-builder control widths overridden by institutional CSS
+   Problem: institutional template_main.min.css forces width:100% on all form inputs/selects/textareas.
+   Scope: only Slate-hosted admissions form pages (jbu-admissions-body) + Slate form markup (.form_question).
+-------------------------------------------------------------------------- */
+
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="email"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="file"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="number"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="password"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="tel"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="text"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question select,
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question textarea {
+  width: auto;        /* allow size/cols + Slate form CSS to control width */
+  max-width: 100%;    /* prevent overflow in narrow containers */
+}
+
+/* Optional: if any controls become too small, enforce a reasonable floor without forcing full-width.
+   Keep this conservative; remove if it changes Slate-intended widths. */
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="text"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="tel"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="email"] {
+  min-width: 12em;
 }
