@@ -155,9 +155,9 @@
 /* Header container */
 
 #content form .form_question.form_header {
-  margin-top: var(--space-l);
-  margin-bottom: var(--space-s);
-  padding-top: var(--space-s);
+  margin-top: var(--space-l) !important;
+  margin-bottom: var(--space-s) !important;
+  padding-top: var(--space-xxs);
   position: relative;
 }
 
@@ -176,8 +176,8 @@
 /* Header label */
 
 #content form .form_question.form_header > .form_label {
-  font-size: var(--fs-h4) !important;
-  font-weight: var(--fw-h4);
+  font-size: var(--fs-h3) !important;
+  font-weight: var(--fw-h3);
   color: #043768;
   margin: 0;
 }
