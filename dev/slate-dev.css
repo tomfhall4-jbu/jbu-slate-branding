@@ -46,15 +46,20 @@
   --fs-h1: 2.375rem;        /* 38px (within 36–40px range) */
   --fs-h2: 1.625rem;        /* 26px (within 24–28px range) */
   --fs-h3: 1.1875rem;       /* 19px (within 18–20px range) */
+  --fs-h4: 1.0625rem;       /* 17px */
+  --fs-h5: 0.9375rem;       /* 15px */
   --fs-label: 0.9375rem;    /* 15px (within 14–15px range) */
-
+   
   --fw-body: 400;
   --fw-h1: 700;
   --fw-h2: 600;
   --fw-h3: 600;
+  --fw-h4: 600;
+  --fw-h5: 600;
   --fw-label: 600;
 
   --space-xxs: 0.25rem;     /* 4px */
+  --space-xs: 0.75rem;      /* 12px */
   --space-s: 1rem;          /* 16px */
   --space-m: 1.25rem;       /* 20px */
   --space-l: 2rem;          /* 32px */
@@ -95,12 +100,56 @@
   margin: var(--space-l) 0 var(--space-s) 0; /* 32px top, 16px bottom */
 }
 
+#content form .form_h2 .form_label {
+  font-size: var(--fs-h2) !important;
+  font-weight: var(--fw-h2) !important;
+  line-height: 1.2 !important;
+  margin: var(--space-l) 0 var(--space-s) 0 !important; /* 32px top, 16px bottom */
+}
+
 #content form h3,
 #content form .h3 {
   font-size: var(--fs-h3);
   font-weight: var(--fw-h3);
   line-height: 1.25;
   margin: var(--space-m) 0 var(--space-xxs) 0; /* 20px top, 4px bottom */
+}
+
+#content form .form_h3 .form_label {
+  font-size: var(--fs-h3) !important;
+  font-weight: var(--fw-h3) !important;
+  line-height: 1.25 !important;
+  margin: var(--space-m) 0 var(--space-xxs) 0 !important; /* 20px top, 4px bottom */
+}
+
+#content form h4,
+#content form .h4 {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-h4);
+  line-height: 1.25;
+  margin: var(--space-s) 0 var(--space-xxs) 0; /* 16px top, 4px bottom */
+}
+
+#content form .form_h4 .form_label {
+  font-size: var(--fs-h4) !important;
+  font-weight: var(--fw-h4) !important;
+  line-height: 1.25 !important;
+  margin: var(--space-s) 0 var(--space-xxs) 0 !important; /* 16px top, 4px bottom */
+}
+
+#content form h5,
+#content form .h5 {
+  font-size: var(--fs-h5);
+  font-weight: var(--fw-h5);
+  line-height: 1.25;
+  margin: var(--space-s) 0 var(--space-xxs) 0; /* 16px top, 4px bottom */
+}
+
+#content form .form_h5 .form_label {
+  font-size: var(--fs-h5) !important;
+  font-weight: var(--fw-h5) !important;
+  line-height: 1.25 !important;
+  margin: var(--space-s) 0 var(--space-xxs) 0 !important; /* 16px top, 4px bottom */
 }
 
 /* Labels: stronger than body text */
