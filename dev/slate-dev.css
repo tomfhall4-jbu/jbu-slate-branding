@@ -25,3 +25,90 @@
 .jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="email"] {
   min-width: 12em;
 }
+
+/* Set max-width for forms */
+.jbu-admissions-cont form {
+   max-width: 860px;
+   margin: 0 auto;
+}
+
+/* =========================================
+   Form page type + spacing scale (TEST)
+   Use rem so sizes don't compound in nested containers
+   Assumes 1rem = 16px
+========================================= */
+
+/* Scope as tightly as possible to Slate form pages */
+#c_content form {
+  --fs-body: 1rem;          /* 16px */
+  --lh-body: 1.5;
+
+  --fs-h1: 2.375rem;        /* 38px (within 36–40px range) */
+  --fs-h2: 1.625rem;        /* 26px (within 24–28px range) */
+  --fs-h3: 1.1875rem;       /* 19px (within 18–20px range) */
+  --fs-label: 0.9375rem;    /* 15px (within 14–15px range) */
+
+  --fw-body: 400;
+  --fw-h1: 700;
+  --fw-h2: 600;
+  --fw-h3: 600;
+  --fw-label: 600;
+
+  --space-xxs: 0.25rem;     /* 4px */
+  --space-s: 1rem;          /* 16px */
+  --space-m: 1.25rem;       /* 20px */
+  --space-l: 2rem;          /* 32px */
+}
+
+/* Body text defaults inside the form */
+#c_content form,
+#c_content form p,
+#c_content form li,
+#c_content form td,
+#c_content form th {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-body);
+  line-height: var(--lh-body);
+}
+
+/* Headings in the form content area */
+#c_content form h1,
+#c_content form .h1 {
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-h1);
+  line-height: 1.15;
+  margin: 0 0 var(--space-s) 0; /* 16px bottom */
+}
+
+#c_content form h2,
+#c_content form .h2 {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-h2);
+  line-height: 1.2;
+  margin: var(--space-l) 0 var(--space-s) 0; /* 32px top, 16px bottom */
+}
+
+#c_content form h3,
+#c_content form .h3 {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-h3);
+  line-height: 1.25;
+  margin: var(--space-m) 0 var(--space-xxs) 0; /* 20px top, 4px bottom */
+}
+
+/* Labels: stronger than body text */
+#c_content form label,
+#c_content form .form_label,
+#c_content form .field_label {
+  font-size: var(--fs-label);
+  font-weight: var(--fw-label);
+  line-height: 1.25;
+  margin: 0 0 var(--space-xxs) 0; /* 4px bottom */
+}
+
+/* Optional: reduce “double spacing” when Slate wraps labels in blocks */
+#c_content form .form_question,
+#c_content form .form-group,
+#c_content form .field {
+  margin-top: 0;
+}
