@@ -152,6 +152,36 @@
   margin: var(--space-s) 0 var(--space-xxs) 0 !important; /* 16px top, 4px bottom */
 }
 
+/* Header container */
+
+#content form .form_question.form_header {
+  margin-top: var(--space-l);
+  margin-bottom: var(--space-s);
+  padding-top: var(--space-s);
+  position: relative;
+}
+
+/* Horizontal rule above header */
+
+#content form .form_question.form_header::before {
+  content: "";
+  display: block;
+  border-top: 1px solid rgba(0,0,0,0.18);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Header label */
+
+#content form .form_question.form_header > .form_label {
+  font-size: var(--fs-h4) !important;
+  font-weight: var(--fw-h4);
+  color: #043768;
+  margin: 0;
+}
+
 /* Labels: stronger than body text */
 #content form label,
 #content form .form_label,
