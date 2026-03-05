@@ -39,7 +39,7 @@
 ========================================= */
 
 /* Scope as tightly as possible to Slate form pages */
-#c_content form {
+#content form {
   --fs-body: 1rem;          /* 16px */
   --lh-body: 1.5;
 
@@ -61,35 +61,35 @@
 }
 
 /* Body text defaults inside the form */
-#c_content form,
-#c_content form p,
-#c_content form li,
-#c_content form td,
-#c_content form th {
+#content form,
+#content form p,
+#content form li,
+#content form td,
+#content form th {
   font-size: var(--fs-body);
   font-weight: var(--fw-body);
   line-height: var(--lh-body);
 }
 
 /* Headings in the form content area */
-#c_content form h1,
-#c_content form .h1 {
+#content form h1,
+#content form .h1 {
   font-size: var(--fs-h1);
   font-weight: var(--fw-h1);
   line-height: 1.15;
   margin: 0 0 var(--space-s) 0; /* 16px bottom */
 }
 
-#c_content form h2,
-#c_content form .h2 {
+#content form h2,
+#content form .h2 {
   font-size: var(--fs-h2);
   font-weight: var(--fw-h2);
   line-height: 1.2;
   margin: var(--space-l) 0 var(--space-s) 0; /* 32px top, 16px bottom */
 }
 
-#c_content form h3,
-#c_content form .h3 {
+#content form h3,
+#content form .h3 {
   font-size: var(--fs-h3);
   font-weight: var(--fw-h3);
   line-height: 1.25;
@@ -97,9 +97,9 @@
 }
 
 /* Labels: stronger than body text */
-#c_content form label,
-#c_content form .form_label,
-#c_content form .field_label {
+#content form label,
+#content form .form_label,
+#content form .field_label {
   font-size: var(--fs-label);
   font-weight: var(--fw-label);
   line-height: 1.25;
@@ -107,8 +107,8 @@
 }
 
 /* Optional: reduce “double spacing” when Slate wraps labels in blocks */
-#c_content form .form_question,
-#c_content form .form-group,
-#c_content form .field {
+#content form .form_question,
+#content form .form-group,
+#content form .field {
   margin-top: 0;
 }
