@@ -218,55 +218,55 @@
 }
 
 /* Text-ish inputs + selects + textarea (includes most Slate date inputs) */
-.form_page form input[type="text"],
-.form_page form input[type="email"],
-.form_page form input[type="tel"],
-.form_page form input[type="number"],
-.form_page form input[type="password"],
-.form_page form input[type="search"],
-.form_page form input[type="url"],
-.form_page form input:not([type]),
-.form_page form select,
-.form_page form textarea {
+.form_page input[type="text"],
+.form_page input[type="email"],
+.form_page input[type="tel"],
+.form_page input[type="number"],
+.form_page input[type="password"],
+.form_page input[type="search"],
+.form_page input[type="url"],
+.form_page input:not([type]),
+.form_page select,
+.form_page textarea {
   font-size: var(--control-font-size);
   line-height: var(--control-line-height);
   padding: var(--control-pad-y) var(--control-pad-x);
 }
 
 /* Make single-line controls consistent */
-.form_page form input[type="text"],
-.form_page form input[type="email"],
-.form_page form input[type="tel"],
-.form_page form input[type="number"],
-.form_page form input[type="password"],
-.form_page form input[type="search"],
-.form_page form input[type="url"],
-.form_page form input:not([type]),
-.form_page form select {
+.form_page input[type="text"],
+.form_page input[type="email"],
+.form_page input[type="tel"],
+.form_page input[type="number"],
+.form_page input[type="password"],
+.form_page input[type="search"],
+.form_page input[type="url"],
+.form_page input:not([type]),
+.form_page select {
   min-height: var(--control-min-height);
 }
 
 /* Textarea: readable but not huge */
-.form_page form textarea {
+.form_page textarea {
   min-height: 6rem;
   resize: vertical;
 }
 
 /* De-inflate select menu typography where supported */
-.form_page form select,
-.form_page form select option {
+.form_page select,
+.form_page select option {
   font-size: var(--control-font-size) !important;
 }
 
 /* Optional: reduce excessive vertical gaps caused by control margins */
-.form_page form input[type="text"],
-.form_page form input[type="email"],
-.form_page form input[type="tel"],
-.form_page form input[type="number"],
-.form_page form input[type="password"],
-.form_page form input:not([type]),
-.form_page form select,
-.form_page form textarea {
+.form_page input[type="text"],
+.form_page input[type="email"],
+.form_page input[type="tel"],
+.form_page input[type="number"],
+.form_page input[type="password"],
+.form_page input:not([type]),
+.form_page select,
+.form_page textarea {
   margin: 0 !important; /* let .form_response spacing control rhythm instead */
 }
 
@@ -282,3 +282,11 @@
 .form_page .form_responses .form_response + .form_response {
   margin-top: 0.4rem;
 }
+
+/* Re-introduce question spacing on Slate form pages (beats div.form_question { margin:0 !important; }) */
+.form_page div.form_question {
+  margin: 0 0 1rem 0 !important;
+}
+
+
+
