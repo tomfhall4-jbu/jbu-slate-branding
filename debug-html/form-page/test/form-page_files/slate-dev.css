@@ -1,0 +1,271 @@
+/* Slate development overrides */
+
+/* --------------------------------------------------------------------------
+   Slate forms – restore form-builder control widths overridden by institutional CSS
+   Problem: institutional template_main.min.css forces width:100% on all form inputs/selects/textareas.
+   Scope: only Slate-hosted admissions form pages (jbu-admissions-body) + Slate form markup (.form_question).
+-------------------------------------------------------------------------- */
+
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="email"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="file"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="number"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="password"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="tel"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="text"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question select,
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question textarea {
+  width: auto;        /* allow size/cols + Slate form CSS to control width */
+  max-width: 100%;    /* prevent overflow in narrow containers */
+}
+
+/* Optional: if any controls become too small, enforce a reasonable floor without forcing full-width.
+   Keep this conservative; remove if it changes Slate-intended widths. */
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="text"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="tel"],
+.jbu-admissions-body form[id^="form_"][id$="_container"] .form_question input[type="email"] {
+  min-width: 12em;
+}
+
+/* Set max-width for forms */
+.jbu-admissions-cont form {
+   max-width: 860px;
+   margin: 0 auto;
+}
+
+/* =========================================
+   Form page type + spacing scale (TEST)
+   Use rem so sizes don't compound in nested containers
+   Assumes 1rem = 16px
+========================================= */
+
+/* Scope as tightly as possible to Slate form pages */
+#content form {
+  --fs-body: 1rem;          /* 16px */
+  --lh-body: 1.5;
+
+  --fs-h1: 2.375rem;        /* 38px (within 36–40px range) */
+  --fs-h2: 1.625rem;        /* 26px (within 24–28px range) */
+  --fs-h3: 1.1875rem;       /* 19px (within 18–20px range) */
+  --fs-h4: 1.0625rem;       /* 17px */
+  --fs-h5: 0.9375rem;       /* 15px */
+  --fs-label: 0.9375rem;    /* 15px (within 14–15px range) */
+   
+  --fw-body: 400;
+  --fw-h1: 700;
+  --fw-h2: 600;
+  --fw-h3: 600;
+  --fw-h4: 600;
+  --fw-h5: 600;
+  --fw-label: 600;
+
+  --space-xxs: 0.25rem;     /* 4px */
+  --space-xs: 0.75rem;      /* 12px */
+  --space-s: 1rem;          /* 16px */
+  --space-m: 1.25rem;       /* 20px */
+  --space-l: 1.75rem;       /* 28px */
+  --space-xl: 2.25rem;      /* 36px */
+}
+
+/* Body text defaults inside the form */
+#content form,
+#content form p,
+#content form li,
+#content form td,
+#content form th {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-body);
+  line-height: var(--lh-body);
+}
+
+#content form p {
+  margin-bottom: 0.75rem;
+}
+
+/* Headings in the form content area */
+#content form h1,
+#content form .h1 {
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-h1);
+  line-height: 1.15;
+  margin: 0 0 var(--space-s) 0; /* 16px bottom */
+}
+
+#content form .form_h1 .form_label {
+  font-size: var(--fs-h1) !important;
+  font-weight: var(--fw-h1) !important;
+  line-height: 1.15 !important;
+  margin: 0 0 var(--space-s) 0 !important; /* 16px bottom */
+}
+
+#content form h2,
+#content form .h2 {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-h2);
+  line-height: 1.2;
+  margin: var(--space-l) 0 var(--space-s) 0; /* 32px top, 16px bottom */
+}
+
+#content form .form_h2 .form_label {
+  font-size: var(--fs-h2) !important;
+  font-weight: var(--fw-h2) !important;
+  line-height: 1.2 !important;
+  margin: var(--space-l) 0 var(--space-s) 0 !important; /* 32px top, 16px bottom */
+}
+
+#content form h3,
+#content form .h3 {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-h3);
+  line-height: 1.25;
+  margin: var(--space-m) 0 var(--space-xxs) 0; /* 20px top, 4px bottom */
+}
+
+#content form .form_h3 .form_label {
+  font-size: var(--fs-h3) !important;
+  font-weight: var(--fw-h3) !important;
+  line-height: 1.25 !important;
+  margin: var(--space-m) 0 var(--space-xxs) 0 !important; /* 20px top, 4px bottom */
+}
+
+#content form h4,
+#content form .h4 {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-h4);
+  line-height: 1.25;
+  margin: var(--space-s) 0 var(--space-xxs) 0; /* 16px top, 4px bottom */
+}
+
+#content form .form_h4 .form_label {
+  font-size: var(--fs-h4) !important;
+  font-weight: var(--fw-h4) !important;
+  line-height: 1.25 !important;
+  margin: var(--space-s) 0 var(--space-xxs) 0 !important; /* 16px top, 4px bottom */
+}
+
+#content form h5,
+#content form .h5 {
+  font-size: var(--fs-h5);
+  font-weight: var(--fw-h5);
+  line-height: 1.25;
+  margin: var(--space-s) 0 var(--space-xxs) 0; /* 16px top, 4px bottom */
+}
+
+#content form .form_h5 .form_label {
+  font-size: var(--fs-h5) !important;
+  font-weight: var(--fw-h5) !important;
+  line-height: 1.25 !important;
+  margin: var(--space-s) 0 var(--space-xxs) 0 !important; /* 16px top, 4px bottom */
+}
+
+/* Header container */
+
+#content form .form_question.form_header {
+  margin-top: var(--space-l) !important;
+  margin-bottom: var(--space-xs) !important;
+  padding-top: var(--space-xxs);
+  position: relative;
+}
+
+/* Horizontal rule above header */
+
+#content form .form_question.form_header::before {
+  content: "";
+  display: block;
+  border-top: 1px solid rgba(0,0,0,0.18);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Header label */
+
+#content form .form_question.form_header > .form_label {
+  font-size: var(--fs-h3) !important;
+  font-weight: var(--fw-h3);
+  color: #043768;
+  margin: 0;
+}
+
+/* Labels: stronger than body text */
+#content form label,
+#content form .form_label,
+#content form .field_label {
+  font-size: var(--fs-label) !important;
+  font-weight: var(--fw-label);
+  line-height: 1.25;
+  margin: 0 0 var(--space-xxs) 0; /* 4px bottom */
+}
+
+/* Optional: reduce “double spacing” when Slate wraps labels in blocks */
+#content form .form_question,
+#content form .form-group,
+#content form .field {
+  margin-top: 0;
+}
+
+/* ================================
+   Form controls – normalize sizing
+   Scope: Slate-hosted forms only
+   ================================ */
+
+.form_page {
+  --control-font-size: 1rem;      /* 16px */
+  --control-line-height: 1.25;
+  --control-pad-y: 0.5rem;        /* 8px */
+  --control-pad-x: 0.75rem;       /* 12px */
+  --control-min-height: 2.5rem;   /* 40px */
+}
+
+/* Text-ish inputs + selects + textarea (includes most Slate date inputs) */
+.form_page form input[type="text"],
+.form_page form input[type="email"],
+.form_page form input[type="tel"],
+.form_page form input[type="number"],
+.form_page form input[type="password"],
+.form_page form input[type="search"],
+.form_page form input[type="url"],
+.form_page form input:not([type]),
+.form_page form select,
+.form_page form textarea {
+  font-size: var(--control-font-size);
+  line-height: var(--control-line-height);
+  padding: var(--control-pad-y) var(--control-pad-x);
+}
+
+/* Make single-line controls consistent */
+.form_page form input[type="text"],
+.form_page form input[type="email"],
+.form_page form input[type="tel"],
+.form_page form input[type="number"],
+.form_page form input[type="password"],
+.form_page form input[type="search"],
+.form_page form input[type="url"],
+.form_page form input:not([type]),
+.form_page form select {
+  min-height: var(--control-min-height);
+}
+
+/* Textarea: readable but not huge */
+.form_page form textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+/* De-inflate select menu typography where supported */
+.form_page form select,
+.form_page form select option {
+  font-size: var(--control-font-size);
+}
+
+/* Optional: reduce excessive vertical gaps caused by control margins */
+.form_page form input[type="text"],
+.form_page form input[type="email"],
+.form_page form input[type="tel"],
+.form_page form input[type="number"],
+.form_page form input[type="password"],
+.form_page form input:not([type]),
+.form_page form select,
+.form_page form textarea {
+  margin: 0; /* let .form_response spacing control rhythm instead */
+}
