@@ -1057,8 +1057,460 @@ textarea:focus{
 }
 
 
+/* --------------------------------------------------------------------------
+   B15) Form action buttons – pill-style CTA system
+   -------------------------------------------------------------------------- */
 
 
+/* Action row spacing only */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action{
+  margin-top: 1.5rem;
+}
+
+/* Button spacing without flex/gap */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action > button,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action > input[type="submit"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action > input[type="button"]{
+  margin: 0 0.75rem 0.75rem 0 !important;
+  vertical-align: middle;
+}
+
+/* Base button styling */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action input[type="submit"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action input[type="button"]{
+  -webkit-appearance: none;
+  appearance: none;
+
+  width: auto !important;
+  max-width: 100%;
+  min-width: 10rem;
+  min-height: 3rem;
+
+  padding: 0.75rem 1.5rem !important;
+
+  border: 1px solid transparent !important;
+  border-radius: 9999px !important;
+
+  font-family: inherit !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  text-decoration: none !important;
+  text-transform: none;
+  text-align: center;
+
+  cursor: pointer;
+  white-space: normal;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Kill any older full-width submit rule */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button.form_button_submit{
+  width: auto !important;
+}
+
+/* Primary – Continue / Submit */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button.default:not(.form_action_back),
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button.form_button_submit,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action input[type="submit"]{
+  background: #199ddc !important;
+  border-color: #199ddc !important;
+  color: #ffffff !important;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button.default:not(.form_action_back):hover,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button.form_button_submit:hover,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action input[type="submit"]:hover{
+  background: #1591cc !important;
+  border-color: #1591cc !important;
+  color: #ffffff !important;
+}
+
+/* Secondary – Back */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button.form_action_back,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button.form_action_back.default{
+  background: rgba(4,55,104,0.08) !important;
+  border-color: #043768 !important;
+  color: #043768 !important;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button.form_action_back:hover,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button.form_action_back.default:hover{
+  background: rgba(4,55,104,0.14) !important;
+  border-color: #043768 !important;
+  color: #043768 !important;
+}
+
+/* Tertiary – Save For Later */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button.form_button_save{
+  background: #ffffff !important;
+  border-color: rgba(4,55,104,0.22) !important;
+  color: #043768 !important;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button.form_button_save:hover{
+  background: rgba(4,55,104,0.04) !important;
+  border-color: rgba(4,55,104,0.32) !important;
+  color: #043768 !important;
+}
+
+/* Focus */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button:focus-visible,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action input[type="submit"]:focus-visible,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action input[type="button"]:focus-visible{
+  outline: 2px solid #043768;
+  outline-offset: 2px;
+}
+
+/* Disabled */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action button:disabled,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action input[type="submit"]:disabled,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .action input[type="button"]:disabled{
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Mobile */
+@media (max-width: 640px){
+  .jbu-admissions-body #content form[id^="form_"][id$="_container"] .action > button,
+  .jbu-admissions-body #content form[id^="form_"][id$="_container"] .action > input[type="submit"],
+  .jbu-admissions-body #content form[id^="form_"][id$="_container"] .action > input[type="button"]{
+    display: block;
+    width: 100% !important;
+    min-width: 0;
+    margin-right: 0 !important;
+  }
+}
 
 
+/* --------------------------------------------------------------------------
+   B15) JBU message / alert system
+   Modern documentation-style notice pattern
+   -------------------------------------------------------------------------- */
+
+/* Message tokens */
+.jbu-admissions-body #content{
+  --msg-pad-y: 0.875rem;
+  --msg-pad-x: 1rem;
+  --msg-border-width: 4px;
+  --msg-margin: 0 0 1rem 0;
+
+  --msg-info-bg: #eef7fc;
+  --msg-info-border: #6bb6dd;
+  --msg-info-text: #0b4f6c;
+
+  --msg-warning-bg: #fff6db;
+  --msg-warning-border: #f2c94c;
+  --msg-warning-text: #664d03;
+
+  --msg-error-bg: #fdecec;
+  --msg-error-border: #e55353;
+  --msg-error-text: #842029;
+
+  --msg-success-bg: #edf8f2;
+  --msg-success-border: #27ae60;
+  --msg-success-text: #0f5132;
+}
+
+
+/* --------------------------------------------------------------------------
+   Base message
+-------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content .jbu-message,
+.jbu-admissions-body #content form .error,
+.jbu-admissions-body #content form .success,
+.jbu-admissions-body #content form .alert{
+
+  display: block;
+  margin: var(--msg-margin);
+
+  padding: var(--msg-pad-y) var(--msg-pad-x);
+
+  border-left: var(--msg-border-width) solid transparent;
+
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+
+/* Prevent extra spacing in message content */
+
+.jbu-admissions-body #content .jbu-message p{
+  margin: 0 0 .5rem 0;
+}
+
+.jbu-admissions-body #content .jbu-message p:last-child{
+  margin-bottom: 0;
+}
+
+
+/* Links inherit message color */
+
+.jbu-admissions-body #content .jbu-message a,
+.jbu-admissions-body #content .jbu-message a:link,
+.jbu-admissions-body #content .jbu-message a:visited,
+.jbu-admissions-body #content form .error a,
+.jbu-admissions-body #content form .success a,
+.jbu-admissions-body #content form .alert a{
+
+  color: inherit !important;
+  text-decoration: underline !important;
+  font-weight: 700;
+}
+
+/* Round right corners on messages */
+.jbu-admissions-body #content .jbu-message,
+.jbu-admissions-body #content form .error,
+.jbu-admissions-body #content form .success,
+.jbu-admissions-body #content form .alert{
+  border-radius: 0 .375rem .375rem 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   Variants
+-------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content .jbu-message--info{
+  background: var(--msg-info-bg);
+  border-left-color: var(--msg-info-border);
+  color: var(--msg-info-text);
+}
+
+.jbu-admissions-body #content .jbu-message--warning{
+  background: var(--msg-warning-bg);
+  border-left-color: var(--msg-warning-border);
+  color: var(--msg-warning-text);
+}
+
+.jbu-admissions-body #content .jbu-message--error{
+  background: var(--msg-error-bg);
+  border-left-color: var(--msg-error-border);
+  color: var(--msg-error-text);
+}
+
+.jbu-admissions-body #content .jbu-message--success{
+  background: var(--msg-success-bg);
+  border-left-color: var(--msg-success-border);
+  color: var(--msg-success-text);
+}
+
+
+/* Instruction / informational notes */
+
+.jbu-admissions-body #content .jbu-message--note{
+  border-left-width: 0;
+  border: 1px solid var(--msg-info-border);
+}
+
+
+/* --------------------------------------------------------------------------
+   Normalize Slate-generated messages
+-------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content form .alert{
+  background: var(--msg-info-bg);
+  border-left-color: var(--msg-info-border);
+  color: var(--msg-info-text);
+}
+
+.jbu-admissions-body #content form .error{
+  background: var(--msg-error-bg);
+  border-left-color: var(--msg-error-border);
+  color: var(--msg-error-text);
+}
+
+.jbu-admissions-body #content form .success{
+  background: var(--msg-success-bg);
+  border-left-color: var(--msg-success-border);
+  color: var(--msg-success-text);
+}
+
+/* --------------------------------------------------------------------------
+   B16) Slate account banner
+-------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content #form_response_banner{
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: .75rem 1rem !important;
+
+  background: #043768 !important;
+  color: #ffffff !important;
+
+  margin-bottom: 1.25rem !important;
+
+  font-size: var(--fs-h4);
+  line-height: 1.4;
+
+  border-radius: .375rem;
+}
+
+.jbu-admissions-body #content #form_response_banner a{
+  color: #ffffff !important;
+  text-decoration: underline !important;
+  float: none !important;
+}
+
+.jbu-admissions-body #content #form_response_banner a:hover{
+  text-decoration: none !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   B17) Required field flags
+-------------------------------------------------------------------------- */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required{
+  background: transparent;
+  border-left: 0.25rem solid #c62828;
+  padding-left: 0.875rem;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required > .form_label .form-label-text{
+  color: #8b1e1e;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="text"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="email"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="tel"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="number"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="password"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="search"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="url"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input:not([type]),
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required select,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required textarea{
+  border-color: #c62828 !important;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required{
+  background: #fdf2f2;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid #efc7c7;
+  border-radius: 0.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   B17) dialog stylying
+-------------------------------------------------------------------------- */
+
+.dialog_host .dialog[role="dialog"]{
+  width: min(32rem, calc(100vw - 2rem)) !important;
+  border-radius: 0.75rem;
+  box-shadow: 0 1rem 2rem rgba(0,0,0,0.18);
+}
+
+.dialog_host .dialog[role="dialog"] > div{
+  padding: 1.25rem 1.25rem !important;
+}
+
+.dialog_host [role="alert"]{
+  color: #8b1e1e !important;
+  font-size: 1rem;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+/* Error fields – red focus state */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="text"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="email"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="number"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="tel"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="password"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="url"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required input[type="search"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required select:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.required textarea:focus{
+  border: 1px solid #c62828 !important;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   Field-level validation errors (Slate validate_error class)
+   Align with form_question.required error pattern
+-------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page input.validate_error,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page select.validate_error,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page textarea.validate_error{
+  border-color: #c62828 !important;
+}
+
+/* Focus state for invalid fields */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page input.validate_error:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page select.validate_error:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page textarea.validate_error:focus{
+  border-color: #a61b1b !important;
+  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   Field helper text (character counters + validation helpers)
+-------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page [id$="_maxlength"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page [id$="_minlength_characters"]{
+  display: block;
+
+  margin-top: 0.25rem;
+
+  font-size: 0.8125rem !important;
+  line-height: 1.35;
+
+  color: var(--c-text-muted, #666) !important;
+}
+
+/* Remaining characters – neutral helper */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page [id$="_maxlength"]{
+  color: rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Minimum requirement warning */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page [id$="_minlength_characters"]{
+  color: #c62828 !important;
+  font-weight: 500;
+}
 
