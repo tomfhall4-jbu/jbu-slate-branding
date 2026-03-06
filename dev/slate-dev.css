@@ -31,6 +31,7 @@
   --fs-h4: 1.0625rem;       /* 17px */
   --fs-h5: 0.9375rem;       /* 15px */
   --fs-label: 0.9375rem;    /* 15px */
+  --fs-help: 0.875rem;
 
   --fw-body: 400;
   --fw-h1: 700;
@@ -39,6 +40,10 @@
   --fw-h4: 600;
   --fw-h5: 600;
   --fw-label: 600;
+  --fw-help: 400;
+
+  --fc-body: #000;
+  --fc-help: rgba(0,0,0,0.72);
 
   --space-xxs: 0.25rem;     /* 4px */
   --space-xs: 0.75rem;      /* 12px */
@@ -127,12 +132,12 @@
   --control-pad-x: 0.75rem;       /* 12px */
   --control-min-height: 2.5rem;   /* 40px */
 
-  --choice-size: 1.125rem;        /* ~18px */
+  --choice-size: 1rem;        /* 16px */
   --choice-gap: 0.5rem;           /* 8px */
 }
 
 /* Form max-width (Slate forms only; avoid constraining other forms unless intended) */
-.jbu-admissions-cont #content form[id^="form_"][id$="_container"]{
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]{
   max-width: 860px;
   margin: 0 auto;
 }
@@ -142,6 +147,7 @@
    B1) Restore Slate form-builder control widths
    Institutional CSS forces width:100% on inputs/selects/textareas; revert to auto.
    -------------------------------------------------------------------------- */
+
 
 .jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="email"],
 .jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="file"],
@@ -155,12 +161,6 @@
   max-width: 100%;
 }
 
-/* Conservative minimum for common short-text controls (remove if it changes intended widths) */
-.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="text"],
-.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="tel"],
-.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question input[type="email"]{
-  min-width: 12em;
-}
 
 
 /* --------------------------------------------------------------------------
@@ -254,6 +254,7 @@
 .jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page select,
 .jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page textarea{
   font-size: var(--control-font-size);
+  color: var(--fc-body);
   line-height: var(--control-line-height);
   padding: var(--control-pad-y) var(--control-pad-x);
   margin: 0 !important;
@@ -305,7 +306,78 @@
   margin-top: 0;
 }
 
+/* Remove baseline gap under inline controls inside form_responses */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_responses > textarea,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_responses > input,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_responses > select{
+  display: block;
+}
 
+/* B5.1) Help text for material upload questions */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question[data-type="plugin:material"] > .form_label + div{
+
+  font-size: var(--fs-help);
+  line-height: 1.4;
+  font-weight: var(--fw-help);
+  color: var(--fc-help);
+
+  margin-top: 0.25rem;
+  margin-bottom: 0.375rem;
+
+  max-width: 65ch;
+}
+
+/* --------------------------------------------------------------------------
+   B5.2) Required indicator and general helper text – reusable microcopy pattern
+   Intended for HTML placed inside Slate label fields
+   -------------------------------------------------------------------------- */
+
+/* 1) Default fallback for normal labels */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question[data-required="1"] .form_label::after{
+  content: " *";
+  font-weight: 600;
+}
+
+/* 2) If a technical user wraps the main label text, suppress fallback */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question[data-required="1"] .form_label:has(.form-label-text)::after{
+  content: "";
+}
+
+/* 3) Attach the asterisk to the wrapped label text instead */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question[data-required="1"] .form_label > .form-label-text::after{
+  content: " *";
+  font-weight: 600;
+}
+
+/* 4) Helper text stays on a new line and visually secondary */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form-label-help{
+  display: block;
+  font-size: var(--fs-help);
+  line-height: 1.4;
+  font-weight: var(--fw-help) !important;
+  color: rgba(0,0,0,0.72);
+  margin-top: 0.25rem;
+  margin-bottom: 0.375rem;
+  max-width: 65ch;
+}
+
+/* 5) Prevent helper text inside labels from inheriting label emphasis */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_label .form-label-help,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page label .form-label-help{
+  font-size: var(--fs-help);
+  line-height: 1.4;
+  font-weight: var(--fw-help) !important;
+}
 /* --------------------------------------------------------------------------
    B6) Choice controls (checkbox / radio)
    Consolidated to avoid conflicts.
@@ -319,21 +391,17 @@
 .jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page input[type="radio"]{
   -webkit-appearance: auto !important;
   appearance: auto !important;
-
   width: var(--choice-size) !important;
   height: var(--choice-size) !important;
-
   border: initial !important;
   border-radius: initial !important;
   background: initial !important;
   color: initial !important;
-
   position: static !important;
   top: auto !important;
-
   margin: 0 var(--choice-gap) 0 0 !important;
-  vertical-align: top;
-  transform: translateY(0.15em);
+  vertical-align: middle;
+  transform: none;
 }
 
 /* Option rows: tighten spacing without redesign */
@@ -347,6 +415,14 @@
   line-height: 1.35;
   margin: 0 !important;
   display: inline-block;
+}
+
+/* Override institutional option color inside Slate forms */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] 
+.form_page select,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] 
+.form_page select option{
+  color: var(--fc-body);
 }
 
 
@@ -369,3 +445,620 @@
   padding: 0.5rem 0.75rem;
   border-radius: 0.75rem;
 }
+
+/* --------------------------------------------------------------------------
+   B8) Slate select-based date groups (DOB, Date, Month–Day, Year–Month)
+   Matches any .form_responses that contains date-part selects: _m, _d, _y
+   Fixes:
+   - consistent grid + gaps
+   - DOB included (even if not .form_date)
+   - prevents “tiny select” issue by clearing max-width constraints
+   -------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_responses:has(select[id$="_m"]),
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_responses:has(select[id$="_d"]),
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_responses:has(select[id$="_y"]){
+  display: grid;
+  gap: var(--space-xs);
+  width: 100%;
+  max-width: 300px; /* cap on desktop */
+}
+
+/* 3-part date: Month–Day–Year */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_responses:has(select[id$="_m"]):has(select[id$="_d"]):has(select[id$="_y"]){
+  grid-template-columns: 1.5fr .75fr 1fr;
+}
+
+/* Any 2-part date group (Month–Day OR Month-Year) */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_responses:has(select[id$="_m"]):has(select[id$="_d"]):not(:has(select[id$="_y"])),
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_responses:has(select[id$="_m"]):has(select[id$="_y"]):not(:has(select[id$="_d"])) {
+  grid-template-columns: 1.5fr 1fr; /* recommended if treating them “the same” */
+}
+
+/* Force the selects to actually fill their grid tracks and ignore any global max-width */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_responses select[id$="_m"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_responses select[id$="_d"],
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_responses select[id$="_y"]{
+  width: 100% !important;
+  max-width: none !important;     /* critical: fixes “Birthdate not width wise” */
+  min-width: 0;
+  margin-left: 0 !important;      /* beats inline margin-left: 5px */
+}
+
+/* Mobile: allow the group to expand beyond 300px */
+@media (max-width: 520px){
+  .jbu-admissions-body #content form[id^="form_"][id$="_container"]
+  .form_responses:has(select[id$="_m"]),
+  .jbu-admissions-body #content form[id^="form_"][id$="_container"]
+  .form_responses:has(select[id$="_d"]),
+  .jbu-admissions-body #content form[id^="form_"][id$="_container"]
+  .form_responses:has(select[id$="_y"]){
+    max-width: 100%;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   B9) Slate “selectable” options – button-like radios/checkboxes
+   -------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_selectable .form_response input + label{
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;   /* left align */
+  text-align: left;
+
+  width: 100%;
+  min-height: 2rem;
+  padding: 0.5rem .75rem;
+
+  border-radius: 0.75rem;
+  border: 1px solid rgba(0,0,0,0.18);
+  background: rgba(0,0,0,0.03);
+
+  line-height: 1.25;
+  cursor: pointer;
+
+  color: inherit; /* ensures default text color is used */
+}
+
+/* hover */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_selectable .form_response input + label:hover{
+  background: rgba(0,0,0,0.06);
+}
+
+/* selected */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_selectable .form_response input:checked + label{
+
+  background: rgba(4,55,104,0.10);
+  border-color: rgba(4,55,104,0.45);
+
+  color: inherit !important;  /* overrides institutional "white text" rules */
+}
+
+/* keyboard accessibility */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_selectable .form_response input:focus-visible + label{
+
+  outline: 3px solid rgba(4,55,104,0.35);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   B10) Likert as selectable boxes – match .form_selectable look/feel
+   Notes:
+   - Likert radios don’t have a label sibling we can style, so we style the
+     radio itself as the “button” and mirror your selectable tokens.
+   - Scoped to all forms in default branding (#content) + Slate likert markup.
+   -------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content form .form_question.form_likert{
+  /* mirror selectable styling */
+  --likert-radius: 0.75rem;
+  --likert-border: rgba(0,0,0,0.18);
+  --likert-bg: rgba(0,0,0,0.03);
+  --likert-bg-hover: rgba(0,0,0,0.06);
+  --likert-selected-bg: rgba(4,55,104,0.10);
+  --likert-selected-border: rgba(4,55,104,0.45);
+  --likert-focus: rgba(4,55,104,0.35);
+
+  /* layout sizing */
+  --likert-min: 3.25rem;
+  --likert-h: 3rem;
+  --likert-gap: 0.5rem;
+}
+
+/* keep question label */
+.jbu-admissions-body #content form .form_question.form_likert .form_label{
+  margin: 0 0 var(--space-xxs) 0;
+}
+
+/* hide separate number row – numbers render inside each box */
+.jbu-admissions-body #content form .form_question.form_likert .form_responses_labels{
+  display: none !important;
+}
+
+/* grid layout */
+.jbu-admissions-body #content form .form_question.form_likert .form_responses{
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(var(--likert-min), 1fr)) !important;
+  gap: var(--likert-gap) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.jbu-admissions-body #content form .form_question.form_likert .form_response{
+  width: auto !important; /* defeat inline width:16% */
+  min-width: 0 !important;
+}
+
+.jbu-admissions-body #content form .form_question.form_likert .form_response > div{
+  display: block !important;
+}
+
+/* the “button” */
+.jbu-admissions-body #content form .form_question.form_likert .form_response input[type="radio"]{
+  -webkit-appearance: none !important;
+  appearance: none !important;
+
+  width: 100% !important;
+  height: var(--likert-h) !important;
+  margin: 0 !important;
+
+  border-radius: var(--likert-radius) !important;
+  border: 1px solid var(--likert-border) !important;
+  background: var(--likert-bg) !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  line-height: 1.25;
+  cursor: pointer;
+
+  color: inherit !important; /* mirror selectable’s “inherit” rule */
+}
+
+/* number inside */
+.jbu-admissions-body #content form .form_question.form_likert .form_response input[type="radio"]::before{
+  content: attr(data-label);
+  font: inherit;
+  font-weight: 600;
+  line-height: 1;
+  color: inherit;
+}
+
+/* hover (matches selectable) */
+@media (hover: hover){
+  .jbu-admissions-body #content form .form_question.form_likert
+  .form_response input[type="radio"]:hover{
+    background: var(--likert-bg-hover) !important;
+  }
+}
+
+/* selected (matches selectable) */
+.jbu-admissions-body #content form .form_question.form_likert
+.form_response input[type="radio"]:checked{
+  background: var(--likert-selected-bg) !important;
+  border-color: var(--likert-selected-border) !important;
+  box-shadow: none !important; /* kill earlier inset ring if present */
+  color: inherit !important;   /* prevents institutional “white text” rules */
+}
+
+/* keyboard accessibility (matches selectable) */
+.jbu-admissions-body #content form .form_question.form_likert
+.form_response input[type="radio"]:focus-visible{
+  outline: 3px solid var(--likert-focus) !important;
+  outline-offset: 2px !important;
+}
+
+/* mobile tap target parity */
+@media (max-width: 480px){
+  .jbu-admissions-body #content form .form_question.form_likert{
+    --likert-h: 3.25rem;
+    --likert-gap: 0.4rem;
+  }
+}
+
+/* remove Slate table-layout label column */
+@media (min-width: 481px){
+
+  .jbu-admissions-body #content form
+  .form_question.form_likert.form_layout_table .form_label{
+
+    display: block !important;
+    width: auto !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+  }
+
+}
+
+/* --------------------------------------------------------------------------
+   B11) Slate form controls – stable focus state (no layout shift)
+   - Keep border width constant (1px)
+   - Focus state changes color + adds subtle focus ring
+   - Scoped only to Slate-hosted forms
+-------------------------------------------------------------------------- */
+
+
+/* Focus state – same border width, different color + ring */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page
+input[type="text"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page
+input[type="email"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page
+input[type="number"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page
+input[type="tel"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page
+input[type="password"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page
+input[type="url"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page
+input[type="search"]:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page
+select:focus,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_page
+textarea:focus{
+
+  border: 1px solid #199ddc !important;  /* same width, new color */
+  outline: none;
+
+  /* visible focus indicator without layout shift */
+  box-shadow: 0 0 0 2px rgba(25,157,220,0.25);
+}
+
+
+/* ==========================================================================
+   B12) Slate Address Fieldset – grouping + spacing normalization
+   ========================================================================== */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.form_address fieldset{
+  position: relative;
+  border: 0;
+  margin: 0;
+  padding: 0 0 0 var(--space-s);
+  min-width: 0;
+}
+
+/* Vertical rule indicating grouped fields
+   Starts BELOW the group label */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.form_address fieldset::before{
+  content: "";
+  position: absolute;
+  left: 0;
+
+  /* begin just below the group label */
+  top: calc(1.25em + var(--space-xs));
+
+  bottom: 0;
+  width: 2px;
+  background: rgba(0,0,0,0.15);
+  border-radius: 999px;
+}
+
+/* Address group label (Street Address*)
+   Distinguish from normal field labels 
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.form_address fieldset > .form_label{
+  font-size: var(--fs-h4) !important;
+  font-weight: var(--fw-h4);
+  line-height: 1.25;
+  margin: 0 0 var(--space-xs) !important;
+}*/
+
+/* Pull the address group label back to the original alignment */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.form_address fieldset > .form_label{
+  margin-left: calc(-1 * var(--space-s)) !important;
+}
+
+
+/* Reset inherited margins on internal wrappers */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.form_address fieldset > div{
+  margin: 0 !important;
+}
+
+/* consistent spacing between rows */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.form_address fieldset > div + div{
+  margin-top: var(--space-s) !important;
+}
+
+/* Ensure internal field labels remain normal label styling */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question.form_address fieldset label.form_label{
+  font-size: var(--fs-label) !important;
+  font-weight: var(--fw-label);
+  line-height: 1.25;
+  margin: 0 0 var(--space-xxs) 0 !important;
+}
+
+
+/* ==========================================================================
+   B13) Slate form calendar (date-picker)
+   ========================================================================== */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question.form_calendar
+.ui-datepicker td{
+  padding: 0.125rem 0;
+  text-align: center;
+  vertical-align: middle;
+  height: 2.5rem;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question.form_calendar
+.ui-datepicker td a.ui-state-default,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question.form_calendar
+.ui-datepicker td a.ui-state-default.ui-state-active,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question.form_calendar
+.ui-datepicker td a.ui-state-highlight{
+  position: static !important;
+  display: block !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  line-height: 1.875rem !important;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  text-align: center !important;
+  font-weight: 400 !important;
+  text-decoration: none;
+}
+
+/* default day */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question.form_calendar
+.ui-datepicker td a.ui-state-default{
+  background: transparent;
+  color: #043768 !important;
+}
+
+/* hover */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question.form_calendar
+.ui-datepicker td a.ui-state-default:hover{
+  background: rgba(4,55,104,0.08);
+  border-color: rgba(4,55,104,0.22);
+  color: #043768 !important;
+}
+
+/* today */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question.form_calendar
+.ui-datepicker td a.ui-state-highlight{
+  background: rgba(4,55,104,0.06);
+  border-color: rgba(4,55,104,0.35);
+  color: #043768 !important;
+}
+
+/* selected */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question.form_calendar
+.ui-datepicker td a.ui-state-default.ui-state-active,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] .form_question.form_calendar
+.ui-datepicker td a.ui-state-active{
+  background: #043768 !important;
+  border-color: #043768 !important;
+  color: #fff !important;
+}
+
+/* ==========================================================================
+   Slate form calendar – refined header + weekday row
+   ========================================================================== */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-header{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  min-height: 2.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 2.5rem;
+
+  background: #f4f6f8;
+  border: 1px solid #d9e1e7;
+  border-radius: 0.375rem;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-title{
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #043768;
+  text-align: center;
+}
+
+/* weekday row */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker th{
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  padding: 0 0 0.375rem;
+}
+
+/* ==========================================================================
+   Slate form calendar – robust prev/next buttons
+   Draw chevrons on the anchor itself instead of the jQuery UI icon span
+   ========================================================================== */
+
+/* nav button shells */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-prev,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-next{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 2rem;
+  height: 2rem;
+
+  display: block;
+  border-radius: 999px;
+  background: transparent;
+  text-decoration: none;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-prev{
+  left: 0.25rem;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-next{
+  right: 0.25rem;
+}
+
+/* hover */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-prev:hover,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-next:hover{
+  background: rgba(4,55,104,0.08);
+}
+
+/* hide jQuery UI sprite span completely */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-prev .ui-icon,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-next .ui-icon{
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+}
+
+/* draw chevrons directly on anchor */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-prev::before,
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-next::before{
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 0.55rem;
+  height: 0.55rem;
+
+  border-top: 2px solid #043768;
+  border-right: 2px solid #043768;
+}
+
+/* left chevron */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-prev::before{
+  transform: translate(-35%, -50%) rotate(-135deg);
+}
+
+/* right chevron */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_question.form_calendar .ui-datepicker-next::before{
+  transform: translate(-65%, -50%) rotate(45deg);
+}
+
+/* --------------------------------------------------------------------------
+   B14) Material upload – native file input optimization
+   Keep native behavior, improve width, spacing, and button styling
+   -------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question[data-type="plugin:material"] .form_response_material_upload{
+  max-width: 36rem;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question[data-type="plugin:material"] .form_response_material_upload p{
+  margin: 0;
+}
+
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question[data-type="plugin:material"] input[type="file"]{
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-height: 2.75rem;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  color: inherit;
+  background: transparent;
+  border: 0;
+}
+
+/* Modern browsers */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question[data-type="plugin:material"] input[type="file"]::file-selector-button{
+  margin-right: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  min-height: 2.5rem;
+  border: 1px solid #707070;
+  border-radius: 4px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Hover */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question[data-type="plugin:material"] input[type="file"]:hover::file-selector-button{
+  background: rgba(0,0,0,0.04);
+}
+
+/* Focus – keep same border size pattern */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question[data-type="plugin:material"] input[type="file"]:focus-visible::file-selector-button{
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+/* Safari / older WebKit fallback */
+.jbu-admissions-body #content form[id^="form_"][id$="_container"]
+.form_page .form_question[data-type="plugin:material"] input[type="file"]::-webkit-file-upload-button{
+  margin-right: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  min-height: 2.5rem;
+  border: 1px solid #707070;
+  border-radius: 4px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
