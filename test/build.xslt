@@ -5,10 +5,7 @@
       <template path="/shared/base.xslt" xmlns="http://technolutions.com/framework" />
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" class="cr" />
-        <link href="/shared/build-fonts.css?v=20220724175415" rel="stylesheet" />
-        <link href="/shared/build-mobile-global.css" rel="stylesheet" />
-        <script src="/shared/build-mobile-global.js" />
-        <link href="/shared/build.css?v=202501" rel="stylesheet" />
+    
         <style>html &gt; body { line-height: normal; } ul.cr, li.cr { margin: 0; padding: 0; } #content { clear: both; padding: 15px; } #global { float: right; } #global ul, #global li { list-style: none; margin: 0; padding: 0; }</style>
         <link rel="preconnect" href="https://fonts.googleapis.com/" class="cr" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ProximaNova:regular|ProximaNova-Extrabld:regular,100,700|ProximaNova-Regular:regular&amp;display=swap" class="cr" />
@@ -17,53 +14,50 @@
         <link rel="stylesheet" href="https://www.jbu.edu/hs-fs/hubfs/hub_generated/template_assets/1/60920245136/1743464754725/template_jbu-global.css" />
         <link rel="stylesheet" href="https://www.jbu.edu/hs-fs/hubfs/hub_generated/template_assets/1/80490785424/1743464833842/template_jbu-main.min.css" />
         <link rel="stylesheet" href="https://www.jbu.edu/hs-fs/hubfs/hub_generated/template_assets/1/60922132555/1743464765955/template_theme-overrides.css" />
+				    <link href="/shared/build-fonts.css?v=20220724175415" rel="stylesheet" />
+        <link href="/shared/build-mobile-global.css" rel="stylesheet" />
+        <script src="/shared/build-mobile-global.js" />
+        <link href="/shared/build.css?v=202501" rel="stylesheet" />
+        <link href="/shared/build-overrides.css" rel="stylesheet" />
         <script src="https://www.jbu.edu/hs-fs/hubfs/hub_generated/template_assets/1/60921313824/1741961550041/template_jbu-global.min.js">
         </script>
         <xsl:apply-templates select="xhtml:html/xhtml:head/node()" />
       </head>
       <body>
         <div class="jbu-admissions-cont">
-          <div class="jbu-admissions-header-cont">
-            <div class="jbu-admissions-header">
-              <div class="jbu-admissions-header-items jbu-admissions-cont-width">
-                <div class="jbu-admissions-header-logo hvr-shrink">
-                  <a href="https://www.jbu.edu/">
-                    <img src="https://www.jbu.edu/hubfs/19902035/logo/logo-files/primary-horizontal/JBU_primary_hor_white.png" alt="John Brown University" width="100" height="50" />
-                  </a>
-                </div>
-                <div class="jbu-admissions-header-action-items">
-                  <div class="jbu-admissions-header-action-item">
-                    <a class="hvr-shrink" href="https://admissions.jbu.edu/portal/undergraduate-application">Apply</a>
+          <div class="jbu-admissions-header-cont theme-header-dark">
+            <header class="jbu-admissions-header" aria-label="Admissions site header">
+              <div class="jbu-admissions-header-top">
+                <div class="jbu-admissions-header-items jbu-admissions-cont-width">
+                  <div class="jbu-admissions-header-logo">
+                    <a href="https://www.jbu.edu/">
+                      <img src="https://www.jbu.edu/hubfs/logo/logo-files/primary-horizontal/JBU_primary_hor_white.png" alt="John Brown University" width="220" height="52" />
+                    </a>
                   </div>
-                  <div class="jbu-admissions-header-action-item">
-                    <a class="hvr-shrink" href="https://www.jbu.edu/visit/">Visit</a>
-                  </div>
-                  <div class="jbu-admissions-header-action-item">
-                    <a class="hvr-shrink" href="https://admissions.jbu.edu/register/request-information">Request Info</a>
+                  <div class="jbu-admissions-header-action-items">
+                    <div class="jbu-admissions-header-action-item jbu-admissions-header-action-item--cta">
+                      <a href="https://admissions.jbu.edu/portal/undergraduate-application">Apply</a>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="jbu-admissions-header-items-row2 jbu-admissions-cont-width">
-                <div class="jbu-admissions-header-action-item-row2 ">
-                  <a class="hvr-shrink" href="https://www.jbu.edu/admissions/">Admissions</a>
+              <nav class="jbu-admissions-header-nav" aria-label="Primary">
+                <div class="jbu-admissions-header-items-row2 jbu-admissions-cont-width">
+                  <div class="jbu-admissions-header-action-item-row2">
+                    <a href="https://www.jbu.edu/admissions/">Admissions</a>
+                  </div>
+                  <div class="jbu-admissions-header-action-item-row2">
+                    <a href="https://www.jbu.edu/academics/">Academics</a>
+                  </div>
+                  <div class="jbu-admissions-header-action-item-row2">
+                    <a href="https://www.jbu.edu/financial-aid/">Tuition &amp; Aid</a>
+                  </div>
+                  <div class="jbu-admissions-header-action-item-row2">
+                    <a href="https://www.jbu.edu/visit/">Visit</a>
+                  </div>
                 </div>
-                <div class="jbu-admissions-header-action-item-row2 ">
-                  <a class="hvr-shrink" href="https://www.jbu.edu/academics/">Academics</a>
-                </div>
-                <div class="jbu-admissions-header-action-item-row2 ">
-                  <a class="hvr-shrink" href="https://www.jbu.edu/financial-aid/">Cost &amp; Aid</a>
-                </div>
-                <div class="jbu-admissions-header-action-item-row2 ">
-                  <a class="hvr-shrink" href="https://www.jbu.edu/student-life/">Student Life</a>
-                </div>
-                <div class="jbu-admissions-header-action-item-row2 ">
-                  <a class="hvr-shrink" href="https://www.jbu.edu/about/">About</a>
-                </div>
-              </div>
-              <div class="jbu-admissions-header-items-image jbu-admissions-cont-width">
-                <img src=" https://www.jbu.edu/hubfs/admissions/admissions-images/jbu-admissions-image.png" alt="John Brown University" width="100" height="50" />
-              </div>
-            </div>
+              </nav>
+            </header>
           </div>
           <div class="jbu-admissions-body jbu-admissions-cont-width">
             <xsl:copy-of select="xhtml:html/xhtml:body/@*" />
