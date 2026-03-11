@@ -1,0 +1,2889 @@
+/* FILE ROLE: Active refactor toward final build.css architecture */
+
+
+
+/* ==========================================================================
+   JBU Slate branding / override file – refactor version
+
+   PURPOSE
+   This file is the active refactor version of the JBU Slate styling system.
+   It is being reorganized so JBU branding follows Slate-rendered content
+   more consistently across hosted pages, dialogs, and widgets while reducing
+   dependence on recovery overrides.
+
+   ARCHITECTURE GOALS
+   1. Brand Slate-hosted content broadly where appropriate.
+   2. Let Slate form styling travel with real Slate forms across contexts.
+   3. Keep dialog chrome styling separate from form styling.
+   4. Reduce fragile dependence on late-stage override behavior.
+   5. Centralize maintainable, reusable rules for long-term use in build.css.
+
+   TARGET SCOPES
+   - Slate form system:
+     .form_container ...
+   - Slate-hosted branded page content:
+     .jbu-admissions-body #content ...
+   - Dialog shell / modal chrome:
+     .dialog_host .dialog[role="dialog"] ...
+
+   INTENDED DIRECTION
+   - Move true form-system rules away from narrow #content-only scoping.
+   - Preserve page-level branding for non-form hosted content.
+   - Isolate modal width/height/overflow/header/action behavior to dialog rules.
+   - Reduce conflict with institutional CSS, especially broad selectors.
+   - Prepare for cleaner load order:
+     Slate -> institutional dependency/footer -> build.css -> portal CSS
+
+   NOTES
+   - Prefer Slate structural hooks for form rules:
+     .form_container, .form_page, .form_question, .form_label,
+     .form_responses, and direct form controls
+   - Avoid relying on fragile instance-specific hooks such as
+     form[data-fw-form="1"]
+   - Avoid broad generic selectors inside forms unless truly necessary
+   - Port finalized patterns back into build.css once validated
+
+   STATUS
+   Active working file for restructuring and cleanup.
+   ========================================================================== */
+
+
+
+
+/* ==========================================================================
+Slate development overrides – Default Branding + Slate Forms
+Scope model (two layers):
+A) Default branding baseline for ALL forms in default branding pages
+.jbu-admissions-body #content form ...
+- Typography tokens + base text + heading defaults + general label styling
+- Safe to apply broadly because default branding is opt-in
+B) Slate-only mechanics (only Slate-generated forms + Slate markup)
+.jbu-admissions-body #content form[id^="form_"][id$="_container"] ...
+- Restore form-builder widths
+- .form_page control sizing + spacing
+- .form_question rhythm
+- checkbox/radio normalization + selectable options
+- Keep !important ONLY where needed to beat institutional !important rules
+========================================================================== */
+/* --------------------------------------------------------------------------
+A) Default branding – baseline form system (applies to ALL forms in #content)
+-------------------------------------------------------------------------- */
+.jbu-admissions-body #content,
+.dialog_host .dialog {
+	/* ==========================================================================
+	Typography
+	========================================================================== */
+	--fs-body: 1rem;
+	/* 16px */
+	--lh-body: 1.5;
+	--fs-h1: 2.375rem;
+	/* 38px */
+	--fs-h2: 1.625rem;
+	/* 26px */
+	--fs-h3: 1.1875rem;
+	/* 19px */
+	--fs-h4: 1.0625rem;
+	/* 17px */
+	--fs-h5: 0.9375rem;
+	/* 15px */
+	--fs-label: 0.9375rem;
+	/* 15px */
+	--fs-help: 0.875rem;
+	/* 14px */
+	--fs-help-sm: 0.8125rem;
+	/* 13px */
+	--fw-body: 400;
+	--fw-h1: 700;
+	--fw-h2: 600;
+	--fw-h3: 600;
+	--fw-h4: 600;
+	--fw-h5: 600;
+	--fw-label: 600;
+	--fw-help: 400;
+	--fw-help-strong: 500;
+	/* ==========================================================================
+	Spacing + shape
+	========================================================================== */
+	--space-xxs: 0.25rem;
+	/* 4px */
+	--space-xs: 0.75rem;
+	/* 12px */
+	--space-s: 1rem;
+	/* 16px */
+	--space-m: 1.25rem;
+	/* 20px */
+	--space-l: 1.75rem;
+	/* 28px */
+	--space-xl: 2.25rem;
+	/* 36px */
+	--space-xxl: 3rem;
+	/* 48px */
+	--radius-s: 0.375rem;
+	--radius-m: 0.5rem;
+	--radius-l: 0.75rem;
+	--radius-pill: 999px;
+	/* ==========================================================================
+	Core brand + state colors
+	========================================================================== */
+	--color-brand-500: rgba(25, 157, 220, 1);
+	--color-brand-600: rgba(21, 145, 204, 1);
+	--color-brand-700: rgba(4, 55, 104, 1);
+	--color-brand-tint-08: rgba(4, 55, 104, 0.08);
+	--color-brand-tint-10: rgba(4, 55, 104, 0.10);
+	--color-brand-tint-14: rgba(4, 55, 104, 0.14);
+	--color-brand-border-22: rgba(4, 55, 104, 0.22);
+	--color-brand-border-32: rgba(4, 55, 104, 0.32);
+	--color-brand-border-35: rgba(4, 55, 104, 0.35);
+	--color-brand-border-45: rgba(4, 55, 104, 0.45);
+	--color-error-100: rgba(253, 242, 242, 1);
+	--color-error-200: rgba(239, 199, 199, 1);
+	--color-error-500: rgba(198, 40, 40, 1);
+	--color-error-600: rgba(166, 27, 27, 1);
+	--color-error-700: rgba(139, 30, 30, 1);
+	--color-error-ring: rgba(198, 40, 40, 0.25);
+	/* ==========================================================================
+	Neutral scale - based on 1F2937
+	========================================================================== */
+	--color-neutral-900: rgba(31, 41, 55, 1);
+	/* 1F2937 */
+	--color-neutral-800: rgba(53, 62, 75, 1);
+	/* 353E4B */
+	--color-neutral-700: rgba(76, 84, 95, 1);
+	/* 4C545F */
+	--color-neutral-600: rgba(98, 105, 115, 1);
+	/* 626973 */
+	--color-neutral-500: rgba(121, 127, 135, 1);
+	/* 797F87 */
+	--color-neutral-400: rgba(143, 148, 155, 1);
+	/* 8F949B */
+	--color-neutral-300: rgba(165, 169, 175, 1);
+	/* A5A9AF */
+	--color-neutral-200: rgba(188, 191, 195, 1);
+	/* BCBFC3 */
+	--color-neutral-100: rgba(210, 212, 215, 1);
+	/* D2D4D7 */
+	--color-neutral-050: rgba(233, 234, 235, 1);
+	/* E9EAEB */
+	/* ==========================================================================
+	Neutral colors + surfaces
+	========================================================================== */
+	--color-surface-default: rgba(255, 255, 255, 1);
+	--color-surface-muted: rgba(233, 234, 235, 0.55);
+	--color-surface-soft: rgba(233, 234, 235, 0.35);
+	--color-surface-subtle: rgba(31, 41, 55, 0.03);
+	--color-surface-subtle-hover: rgba(31, 41, 55, 0.06);
+	--color-surface-selected: rgba(4, 55, 104, 0.10);
+	--color-border-soft: rgba(31, 41, 55, 0.15);
+	--color-border-subtle: rgba(31, 41, 55, 0.18);
+	--color-border-strong: rgba(31, 41, 55, 0.24);
+	/* ==========================================================================
+	Semantic text
+	========================================================================== */
+	--fc-body: var(--color-neutral-900);
+	--fc-help: rgba(31, 41, 55, 0.72);
+	--fc-help-strong: rgba(31, 41, 55, 0.8);
+	--fc-muted: var(--color-neutral-600);
+	--fc-muted-strong: var(--color-neutral-700);
+	--fc-on-dark: rgba(255, 255, 255, 1);
+	--fc-link: var(--color-brand-700);
+	--fc-link-hover: var(--color-brand-700);
+	--fc-link-muted: var(--color-brand-600);
+	/* ==========================================================================
+	Semantic borders + interaction
+	========================================================================== */
+	--color-border-default: var(--color-border-subtle);
+	--color-border-muted: var(--color-border-soft);
+	--color-border-interactive: var(--color-brand-border-32);
+	--color-border-interactive-hover: var(--color-brand-border-45);
+	--focus-border-brand: var(--color-brand-500);
+	--focus-border-error: var(--color-error-500);
+	--focus-ring-brand: 0 0 0 2px rgba(25, 157, 220, 0.25);
+	--focus-ring-error: 0 0 0 2px var(--color-error-ring);
+	/* ==========================================================================
+	Elevation + motion
+	========================================================================== */
+	--shadow-xs: 0 1px 2px rgba(31, 41, 55, 0.05);
+	--shadow-s: 0 1px 3px rgba(31, 41, 55, 0.08);
+	--shadow-m: 0 4px 12px rgba(31, 41, 55, 0.12);
+	--transition-fast: 160ms ease;
+	--transition-base: 220ms ease;
+	/* ==========================================================================
+	Helpers + actions
+	========================================================================== */
+	--helper-margin-top: 0.25rem;
+	--helper-margin-bottom: 0.375rem;
+	--action-min-width: 10rem;
+	--action-min-height: 3rem;
+	/* ==========================================================================
+	Tables
+	========================================================================== */
+	--table-bg: var(--color-surface-default);
+	--table-header-bg: rgba(4, 55, 104, 0.06);
+	--table-header-text: var(--color-brand-700);
+	--table-subheader-bg: rgba(4, 55, 104, 0.04);
+	--table-border: rgba(31, 41, 55, 0.18);
+	--table-border-strong: rgba(4, 55, 104, 0.35);
+	--table-row-hover: rgba(4, 55, 104, 0.08);
+	--table-row-active: rgba(4, 55, 104, 0.10);
+	--table-text-muted: rgba(31, 41, 55, 0.85);
+	--table-cell-padding-y: 0.875rem;
+	--table-cell-padding-x: 1rem;
+	--table-header-padding-y: 0.75rem;
+	--table-radius: var(--radius-s);
+	--table-shadow: var(--shadow-xs);
+}
+/* Base text inside default branding forms */
+.jbu-admissions-body #content,
+.jbu-admissions-body #content p,
+.jbu-admissions-body #content li,
+.jbu-admissions-body #content td,
+.jbu-admissions-body #content th,
+.dialog,
+.dialog p,
+.dialog li,
+.dialog td,
+.dialog th{
+	font-size: var(--fs-body);
+	font-weight: var(--fw-body);
+	line-height: var(--lh-body);
+	color: var(--fc-body);
+}
+.jbu-admissions-body #content p{
+	margin: 0 0 0.75rem 0;
+}
+.jbu-admissions-body #content,
+.jbu-admissions-body .dialog{
+	color: var(--fc-body);
+}
+.jbu-admissions-body a, .jbu-admissions-body a:link, .jbu-admissions-body a:visited,
+.dialog a, .dialog a:link, .dialog a:visited{
+	font-size: inherit;
+	font-style: inherit;
+}
+/* Headings (native headings + generic utility headings) */
+.jbu-admissions-body #content h1,
+.jbu-admissions-body #content .h1,
+.dialog h1,
+.dialog .h1{
+	font-size: var(--fs-h1);
+	font-weight: var(--fw-h1);
+	line-height: 1.15;
+	margin: 0 0 var(--space-s) 0;
+}
+.jbu-admissions-body #content h2,
+.jbu-admissions-body #content .h2,
+.dialog h2,
+.dialog .h2{
+	font-size: var(--fs-h2);
+	font-weight: var(--fw-h2);
+	line-height: 1.2;
+	margin: var(--space-l) 0 var(--space-s) 0;
+}
+.jbu-admissions-body #content h3,
+.jbu-admissions-body #content .h3,
+.dialog h3,
+.dialog .h3{
+	font-size: var(--fs-h3);
+	font-weight: var(--fw-h3);
+	line-height: 1.25;
+	margin: var(--space-m) 0 var(--space-xxs) 0;
+}
+.jbu-admissions-body #content h4,
+.jbu-admissions-body #content .h4,
+.dialog h4,
+.dialog .h4{
+	font-size: var(--fs-h4);
+	font-weight: var(--fw-h4);
+	line-height: 1.25;
+	margin: var(--space-s) 0 var(--space-xxs) 0;
+}
+.jbu-admissions-body #content h5,
+.jbu-admissions-body #content .h5,
+.dialog h5,
+.dialog .h5{
+	font-size: var(--fs-h5);
+	font-weight: var(--fw-h5);
+	line-height: 1.25;
+	margin: var(--space-s) 0 var(--space-xxs) 0;
+}
+/* --------------------------------------------------------------------------
+A1) Action buttons – pill-style CTA system
+Applies in default branding content and supported dialog contexts
+-------------------------------------------------------------------------- */
+/* Action row spacing only */
+.jbu-admissions-body #content .action,
+.dialog_host .dialog .action{
+	margin-top: 1.5rem;
+}
+/* Button spacing without flex/gap */
+.jbu-admissions-body #content .action > button,
+.jbu-admissions-body #content .action > input[type="submit"],
+.jbu-admissions-body #content .action > input[type="button"],
+.dialog_host .dialog .action > button,
+.dialog_host .dialog .action > input[type="submit"],
+.dialog_host .dialog .action > input[type="button"]{
+	margin: 0 0.75rem 0.75rem 0 !important;
+	vertical-align: middle;
+}
+/* Base button styling */
+.jbu-admissions-body #content .action > button,
+.jbu-admissions-body #content .action > input[type="submit"],
+.jbu-admissions-body #content .action > input[type="button"],
+.dialog_host .dialog .action > button,
+.dialog_host .dialog .action > input[type="submit"],
+.dialog_host .dialog .action > input[type="button"]{
+	-webkit-appearance: none;
+	appearance: none;
+	width: auto !important;
+	max-width: 100%;
+	min-width: var(--action-min-width);
+	min-height: var(--action-min-height);
+	padding: 0.75rem 1.5rem !important;
+	border: 1px solid transparent !important;
+	border-radius: 9999px !important;
+	font-family: inherit !important;
+	font-size: 1rem !important;
+	font-weight: 600 !important;
+	line-height: 1.2 !important;
+	text-decoration: none !important;
+	text-transform: none;
+	text-align: center;
+	cursor: pointer;
+	white-space: normal;
+	transition:
+		background-color 0.2s ease,
+		border-color 0.2s ease,
+		color 0.2s ease,
+		box-shadow 0.2s ease;
+}
+/* Primary */
+.jbu-admissions-body #content .action > button.default,
+.jbu-admissions-body #content .action > input[type="submit"],
+.dialog_host .dialog .action > button.default,
+.dialog_host .dialog .action > input[type="submit"]{
+	background: var(--color-brand-500) !important;
+	border-color: var(--color-brand-500) !important;
+	color: var(--fc-on-dark) !important;
+}
+/* Primary hover */
+.jbu-admissions-body #content .action > button.default:hover,
+.jbu-admissions-body #content .action > input[type="submit"]:hover,
+.dialog_host .dialog .action > button.default:hover,
+.dialog_host .dialog .action > input[type="submit"]:hover{
+	background: var(--color-brand-600) !important;
+	border-color: var(--color-brand-600) !important;
+	color: var(--fc-on-dark) !important;
+}
+/* Secondary */
+.jbu-admissions-body #content .action > button:not(.default),
+.jbu-admissions-body #content .action > input[type="button"],
+.dialog_host .dialog .action > button:not(.default),
+.dialog_host .dialog .action > input[type="button"]{
+	background: var(--color-surface, #fff) !important;
+	border-color: var(--color-border-strong, rgba(4,55,104,0.22)) !important;
+	color: var(--color-brand-700) !important;
+}
+/* Secondary hover */
+.jbu-admissions-body #content .action > button:not(.default):hover,
+.jbu-admissions-body #content .action > input[type="button"]:hover,
+.dialog_host .dialog .action > button:not(.default):hover,
+.dialog_host .dialog .action > input[type="button"]:hover{
+	background: var(--color-brand-050, rgba(4,55,104,0.04)) !important;
+	border-color: var(--color-border-interactive, rgba(4,55,104,0.32)) !important;
+	color: var(--color-brand-700) !important;
+}
+/* Focus */
+.jbu-admissions-body #content .action > button:focus-visible,
+.jbu-admissions-body #content .action > input[type="submit"]:focus-visible,
+.jbu-admissions-body #content .action > input[type="button"]:focus-visible,
+.dialog_host .dialog .action > button:focus-visible,
+.dialog_host .dialog .action > input[type="submit"]:focus-visible,
+.dialog_host .dialog .action > input[type="button"]:focus-visible{
+	outline: 2px solid var(--color-brand-700);
+	outline-offset: 2px;
+}
+/* Disabled */
+.jbu-admissions-body #content .action > button:disabled,
+.jbu-admissions-body #content .action > input[type="submit"]:disabled,
+.jbu-admissions-body #content .action > input[type="button"]:disabled,
+.dialog_host .dialog .action > button:disabled,
+.dialog_host .dialog .action > input[type="submit"]:disabled,
+.dialog_host .dialog .action > input[type="button"]:disabled{
+	opacity: 0.55;
+	cursor: not-allowed;
+}
+/* --------------------------------------------------------------------------
+A2) Dialog styling
+-------------------------------------------------------------------------- */
+.dialog_host .dialog[role="dialog"] .content{
+  display: block !important;
+  overflow: auto !important;
+  width: 100%;
+  color: inherit;
+  opacity: 1;
+}
+
+.dialog_host .dialog[role="dialog"]{
+	width: auto !important;
+    max-width: min(42rem, calc(100vw - 2rem)) !important;
+    min-width: 0;
+    max-height: calc(100vh - 2rem) !important;
+    display: flex;
+    flex-direction: column;
+	border-radius: var(--radius-l);
+	background: var(--color-surface, #fff);
+	border: 1px solid var(--color-border-subtle, rgba(4,55,104,0.10));
+	box-shadow: 0 1rem 2rem rgba(0,0,0,0.18);
+	overflow: hidden;
+}
+
+.dialog_host .dialog[role="dialog"] form[data-fw-form="1"]{
+  width: 100% !important;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* outer wrapper Slate injects */
+.dialog_host .dialog[role="dialog"] > div{
+	padding: 0 !important;
+	width: min(32rem, calc(100vw - 2rem)) !important;
+	max-width: 100%;
+}
+/* dialog header */
+.dialog_host .dialog[role="dialog"] .header{
+	position: relative;
+	margin: 0;
+	padding: 1.25rem 4rem 1.25rem 1.5rem;
+	background: var(--color-surface-muted, #f5f7fa);
+	border-bottom: 1px solid var(--color-border-subtle, rgba(4,55,104,0.10));
+	font-family: inherit;
+	font-size: var(--fs-h3, 1.75rem);
+	font-weight: var(--fw-heading, 700);
+	line-height: 1.15;
+	color: var(--color-text-strong, #111);
+}
+/* Header as positioning context */
+.dialog_host .dialog[role="dialog"] .header{
+	position: relative;
+	display: flex;
+	align-items: center;
+	min-height: 5rem;
+	padding: 1.25rem 8.5rem 1.25rem 1.5rem;
+	/* reserve room for nav + close */
+}
+/* Navigation links block */
+.dialog_host .dialog[role="dialog"] .dialog_navigation_links{
+	position: absolute;
+	top: 50%;
+	right: 4.25rem;
+	transform: translateY(-50%);
+	display: inline-flex;
+	align-items: center;
+	gap: 0.875rem;
+	float: none !important;
+	margin: 0 !important;
+	font-weight: 500;
+	line-height: 1;
+}
+/* Reset Slate inline link spacing */
+.dialog_host .dialog[role="dialog"] .dialog_navigation_links a{
+	margin: 0 !important;
+}
+/* Nav links */
+.dialog_host .dialog[role="dialog"] .dialog_navigation_prev,
+.dialog_host .dialog[role="dialog"] .dialog_navigation_next{
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 2rem;
+	padding: 0.125rem 0.25rem;
+	border-radius: var(--radius-s, 0.375rem);
+	font-size: 0.9375rem;
+	font-weight: 600 !important;
+	line-height: 1;
+	text-decoration: none !important;
+	color: var(--color-brand-700) !important;
+	transition:
+		color 0.2s ease,
+		background-color 0.2s ease;
+}
+/* Hover/focus for active nav links */
+.dialog_host .dialog[role="dialog"] .dialog_navigation_prev[href]:not([style*="cursor: default"]):hover,
+.dialog_host .dialog[role="dialog"] .dialog_navigation_prev[href]:not([style*="cursor: default"]):focus-visible,
+.dialog_host .dialog[role="dialog"] .dialog_navigation_next:hover,
+.dialog_host .dialog[role="dialog"] .dialog_navigation_next:focus-visible{
+	background: var(--color-brand-050, rgba(4,55,104,0.04));
+	color: var(--color-brand-700) !important;
+	outline: none;
+}
+/* Disabled / inactive Prev */
+.dialog_host .dialog[role="dialog"] .dialog_navigation_prev[style*="cursor: default"]{
+	color: var(--color-text-muted, #7a7a7a) !important;
+	cursor: default !important;
+	pointer-events: none;
+}
+/* Clean close button pattern */
+.dialog_host .dialog[role="dialog"] .dialog_close{
+	position: absolute;
+	top: 50%;
+	right: 1.25rem;
+	transform: translateY(-50%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	padding: 0;
+	margin: 0;
+	background: none !important;
+	background-image: none !important;
+	border: 0;
+	border-radius: var(--radius-pill, 9999px);
+	font-size: 0 !important;
+	line-height: 0;
+	cursor: pointer;
+}
+/* Draw the X with a single background using two gradients */
+.dialog_host .dialog[role="dialog"] .dialog_close::before{
+	content: "";
+	display: block;
+	width: 0.8625rem;
+	height: 0.8625rem;
+	background:
+		linear-gradient(
+			45deg,
+			transparent calc(50% - 1px),
+			var(--color-text-strong, #111) calc(50% - 1px),
+			var(--color-text-strong, #111) calc(50% + 1px),
+			transparent calc(50% + 1px)
+		),
+		linear-gradient(
+			-45deg,
+			transparent calc(50% - 1px),
+			var(--color-text-strong, #111) calc(50% - 1px),
+			var(--color-text-strong, #111) calc(50% + 1px),
+			transparent calc(50% + 1px)
+		);
+}
+.dialog_host .dialog[role="dialog"] .dialog_close::after{
+	content: none;
+}
+.dialog_host .dialog[role="dialog"] .dialog_close:hover{
+	background: var(--color-brand-050, rgba(4,55,104,0.04)) !important;
+}
+.dialog_host .dialog[role="dialog"] .dialog_close:focus-visible{
+	outline: 2px solid var(--color-brand-700);
+	outline-offset: 2px;
+}
+/* content area */
+.dialog_host .dialog[role="dialog"] .content{
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 500px !important;
+  height: auto !important;
+  overflow: auto !important;
+  padding: 1.25rem 1.5rem 0 !important;
+}
+/* hr aligned with content width */
+.dialog_host .dialog[role="dialog"] hr,
+.dialog_host .dialog[role="dialog"] .content + hr{
+	margin: 0 1.5rem;
+	border: 0;
+	border-top: 1px solid var(--color-border-subtle, rgba(4,55,104,0.10));
+}
+/* if you want the divider before actions without adding real hr markup */
+.dialog_host .dialog[role="dialog"] .action{
+	flex: 0 0 auto;
+	margin-top: 1.25rem;
+	padding: 1.25rem 1.5rem 1.5rem;
+	border-top: 1px solid var(--color-border-subtle, rgba(4,55,104,0.10));
+}
+/* dialog tables should feel like your cleaned-up table styling */
+.dialog_host .dialog[role="dialog"] .content table{
+	width: 100%;
+	border-collapse: collapse;
+	margin: 0;
+}
+.dialog_host .dialog[role="dialog"] .content th,
+.dialog_host .dialog[role="dialog"] .content td{
+	padding: 0.625rem 0;
+	vertical-align: top;
+	text-align: left;
+	border: 0;
+	font-size: 1rem;
+	line-height: 1.45;
+}
+.dialog_host .dialog[role="dialog"] .content th{
+	width: 7rem;
+	padding-right: 1rem;
+	font-weight: 600;
+	color: var(--color-text-muted, #44546a);
+}
+.dialog_host .dialog[role="dialog"] .content td{
+	color: var(--color-text, #1f2937);
+}
+/* --------------------------------------------------------------------------
+A3) JBU message / alert system
+Modern documentation-style notice pattern
+-------------------------------------------------------------------------- */
+/* Message tokens */
+.jbu-admissions-body #content{
+	--msg-pad-y: 0.875rem;
+	--msg-pad-x: 1rem;
+	--msg-border-width: 4px;
+	--msg-margin: 0 0 1rem 0;
+	--msg-info-bg: #eef7fc;
+	--msg-info-border: #6bb6dd;
+	--msg-info-text: #0b4f6c;
+	--msg-warning-bg: #fff6db;
+	--msg-warning-border: #f2c94c;
+	--msg-warning-text: #664d03;
+	--msg-error-bg: #fdecec;
+	--msg-error-border: #e55353;
+	--msg-error-text: #842029;
+	--msg-success-bg: #edf8f2;
+	--msg-success-border: #27ae60;
+	--msg-success-text: #0f5132;
+}
+/* Base message */
+.jbu-admissions-body #content .jbu-message,
+.jbu-admissions-body #content .error,
+.jbu-admissions-body #content .success,
+.jbu-admissions-body #content .alert{
+	display: block;
+	margin: var(--msg-margin);
+	padding: var(--msg-pad-y) var(--msg-pad-x);
+	border-left: var(--msg-border-width) solid transparent;
+	border-radius: 0 var(--radius-s) var(--radius-s) 0;
+	font-size: var(--fs-label);
+	line-height: 1.45;
+}
+/* Prevent extra spacing in message content */
+.jbu-admissions-body #content .jbu-message p{
+	margin: 0 0 .5rem 0;
+}
+.jbu-admissions-body #content .jbu-message p:last-child{
+	margin-bottom: 0;
+}
+/* Links inherit message color */
+.jbu-admissions-body #content .jbu-message a,
+.jbu-admissions-body #content .jbu-message a:link,
+.jbu-admissions-body #content .jbu-message a:visited,
+.jbu-admissions-body #content .error a,
+.jbu-admissions-body #content .success a,
+.jbu-admissions-body #content .alert a{
+	color: inherit !important;
+	text-decoration: underline !important;
+	font-weight: 700;
+}
+/* Variants */
+.jbu-admissions-body #content .jbu-message--info{
+	background: var(--msg-info-bg);
+	border-left-color: var(--msg-info-border);
+	color: var(--msg-info-text);
+}
+.jbu-admissions-body #content .jbu-message--warning{
+	background: var(--msg-warning-bg);
+	border-left-color: var(--msg-warning-border);
+	color: var(--msg-warning-text);
+}
+.jbu-admissions-body #content .jbu-message--error{
+	background: var(--msg-error-bg);
+	border-left-color: var(--msg-error-border);
+	color: var(--msg-error-text);
+}
+.jbu-admissions-body #content .jbu-message--success{
+	background: var(--msg-success-bg);
+	border-left-color: var(--msg-success-border);
+	color: var(--msg-success-text);
+}
+/* Instruction / informational notes */
+.jbu-admissions-body #content .jbu-message--note{
+	border-left-width: 0;
+	border: 1px solid var(--msg-info-border);
+}
+/* Normalize Slate-generated messages */
+.jbu-admissions-body #content .alert{
+	background: var(--msg-info-bg);
+	border-left-color: var(--msg-info-border);
+	color: var(--msg-info-text);
+}
+.jbu-admissions-body #content .error{
+	background: var(--msg-error-bg);
+	border-left-color: var(--msg-error-border);
+	color: var(--msg-error-text);
+}
+.jbu-admissions-body #content .success{
+	background: var(--msg-success-bg);
+	border-left-color: var(--msg-success-border);
+	color: var(--msg-success-text);
+}
+/* --------------------------------------------------------------------------
+A4) Slate form calendar (date-picker)
+-------------------------------------------------------------------------- */
+.jbu-admissions-body #content .ui-datepicker td{
+	padding: 0.125rem 0;
+	text-align: center;
+	vertical-align: middle;
+	height: 2.5rem;
+}
+.jbu-admissions-body #content .ui-datepicker td a.ui-state-default,
+.jbu-admissions-body #content .ui-datepicker td a.ui-state-default.ui-state-active,
+.jbu-admissions-body #content .ui-datepicker td a.ui-state-highlight{
+	position: static !important;
+	display: block !important;
+	width: 2rem !important;
+	height: 2rem !important;
+	margin: 0 auto !important;
+	padding: 0 !important;
+	line-height: 1.875rem !important;
+	box-sizing: border-box;
+	border: 1px solid transparent;
+	border-radius: var(--radius-pill);
+	text-align: center !important;
+	font-weight: 400 !important;
+	text-decoration: none;
+}
+/* default day */
+.jbu-admissions-body #content .ui-datepicker td a.ui-state-default{
+	background: transparent;
+	color: var(--color-brand-700) !important;
+}
+/* hover */
+.jbu-admissions-body #content .ui-datepicker td a.ui-state-default:hover{
+	background: var(--color-brand-tint-08);
+	border-color: var(--color-brand-border-22);
+	color: var(--color-brand-700) !important;
+}
+/* today */
+.jbu-admissions-body #content .ui-datepicker td a.ui-state-highlight{
+	background: rgba(4,55,104,0.06);
+	border-color: var(--color-brand-border-35);
+	color: var(--color-brand-700) !important;
+}
+/* selected */
+.jbu-admissions-body #content .ui-datepicker td a.ui-state-default.ui-state-active,
+.jbu-admissions-body #content .ui-datepicker td a.ui-state-active{
+	background: var(--color-brand-700) !important;
+	border-color: var(--color-brand-700) !important;
+	color: var(--fc-on-dark) !important;
+}
+/* calendar header + weekday row */
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-header{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	min-height: 2.5rem;
+	margin-bottom: 0.5rem;
+	padding: 0.25rem 2.5rem;
+	background: #f4f6f8;
+	border: 1px solid #d9e1e7;
+	border-radius: var(--radius-s);
+}
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-title{
+	font-size: 0.95rem;
+	font-weight: 600;
+	line-height: 1.2;
+	color: var(--color-brand-700);
+	text-align: center;
+}
+/* weekday row */
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker th{
+	font-size: 0.7rem;
+	font-weight: 600;
+	line-height: 1.2;
+	color: #6b7280;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+	padding: 0 0 0.375rem;
+}
+/* robust prev/next buttons */
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-prev,
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-next{
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 2rem;
+	height: 2rem;
+	display: block;
+	border-radius: var(--radius-pill);
+	background: transparent;
+	text-decoration: none;
+}
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-prev{
+	left: 0.25rem;
+}
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-next{
+	right: 0.25rem;
+}
+/* hover */
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-prev:hover,
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-next:hover{
+	background: var(--color-brand-tint-08);
+}
+/* hide jQuery UI sprite span completely */
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-prev .ui-icon,
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-next .ui-icon{
+	display: none !important;
+	background: none !important;
+	background-image: none !important;
+}
+/* draw chevrons directly on anchor */
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-prev::before,
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-next::before{
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 0.55rem;
+	height: 0.55rem;
+	border-top: 2px solid var(--color-brand-700);
+	border-right: 2px solid var(--color-brand-700);
+}
+/* left chevron */
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-prev::before{
+	transform: translate(-35%, -50%) rotate(-135deg);
+}
+/* right chevron */
+.jbu-admissions-body #content 
+.form_question.form_calendar .ui-datepicker-next::before{
+	transform: translate(-65%, -50%) rotate(45deg);
+}
+/* --------------------------------------------------------------------------
+A5) Tables – modernized Slate table styling
+Scope:
+- Default branding pages inside #content
+- Applies to Slate tables without globally resetting all <table> elements
+- Preserves existing Slate/mobile mechanics unless intentionally overridden
+-------------------------------------------------------------------------- */
+/* Base table shell */
+.jbu-admissions-body #content table.table{
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	table-layout: fixed;
+	margin: var(--space-m, 1.5rem) 0;
+	background: var(--table-bg);
+	border: 1px solid var(--table-border);
+	border-radius: var(--table-radius);
+	box-shadow: var(--table-shadow);
+	overflow: hidden;
+}
+/* Reset broad external table cell padding/borders with scoped specificity */
+.jbu-admissions-body #content table.table > thead > tr > th,
+.jbu-admissions-body #content table.table > thead > tr > td,
+.jbu-admissions-body #content table.table > tbody > tr > th,
+.jbu-admissions-body #content table.table > tbody > tr > td,
+.jbu-admissions-body #content table.table > tfoot > tr > th,
+.jbu-admissions-body #content table.table > tfoot > tr > td{
+	padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
+	border: 0;
+	border-bottom: 1px solid var(--table-border);
+	background: transparent;
+	color: inherit;
+	text-align: left;
+	vertical-align: top;
+}
+/* Last row should not double up against outer border */
+.jbu-admissions-body #content table.table > tbody > tr:last-child > th,
+.jbu-admissions-body #content table.table > tbody > tr:last-child > td,
+.jbu-admissions-body #content table.table > tfoot > tr:last-child > th,
+.jbu-admissions-body #content table.table > tfoot > tr:last-child > td{
+	border-bottom: 0;
+}
+/* Main grouped header row */
+.jbu-admissions-body #content table.table > thead > tr.header > th,
+.jbu-admissions-body #content table.table > thead > tr.header > td{
+	padding: 0.875rem 1rem;
+	background-color: var(--table-header-bg);
+	border-bottom: 1px solid var(--table-border-strong);
+	color: var(--color-brand-700);
+	font-size: 0.95rem;
+	font-weight: 600 !important;
+	line-height: 1.2;
+	text-align: left;
+	vertical-align: middle;
+	background-image: none;
+}
+/* Column header row */
+.jbu-admissions-body #content table.table > thead > tr.column > th,
+.jbu-admissions-body #content table.table > thead > tr.column > td{
+	padding: var(--table-header-padding-y) var(--table-cell-padding-x);
+	background-color: var(--table-subheader-bg);
+	border-bottom: 1px solid var(--table-border);
+	color: var(--table-text-muted);
+	font-size: var(--fs-help-sm);
+	font-weight: 600 !important;
+	line-height: 1.2;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	text-align: left;
+	vertical-align: middle;
+	background-image: none;
+}
+.jbu-admissions-body #content tr.header>th,
+.jbu-admissions-body #content tr.header>td, 
+.jbu-admissions-body #content .header{
+	background-color: var(--table-header-bg);
+}
+.jbu-admissions-body #content table.table > thead > tr.column>th,
+.jbu-admissions-body #content table.table > thead > tr.column>td,
+.jbu-admissions-body #content table.table > thead > .column {
+	background-color: var(--table-subheader-bg);
+}
+/* Subtle card-like emphasis for the table title row */
+.jbu-admissions-body #content table.table > thead > tr.header > th,
+.jbu-admissions-body #content table.table > thead > tr.header > td{
+	box-shadow: inset 0 -1px 0 var(--table-border-strong);
+}
+.jbu-admissions-body #content table.table > thead > tr.header > th,
+.jbu-admissions-body #content table.table > thead > tr.header > td{
+	padding: 1rem 1.25rem;
+}
+/* Informational row under headers */
+.jbu-admissions-body #content table.table > thead > tr:not(.header):not(.column) > td,
+.jbu-admissions-body #content table.table > thead > tr:not(.header):not(.column) > th{
+	padding-top: 0.875rem;
+	padding-bottom: 0.875rem;
+	background: #fff;
+	color: var(--table-text-muted);
+	font-size: 0.9375rem;
+	line-height: 1.45;
+}
+/* Body cells */
+.jbu-admissions-body #content table.table > tbody > tr > th,
+.jbu-admissions-body #content table.table > tbody > tr > td{
+	font-size: 0.95rem;
+	line-height: 1.45;
+	vertical-align: top;
+	overflow-wrap: anywhere;
+	word-break: normal;
+}
+/* Slightly stronger first column treatment often useful in account/widget tables */
+.jbu-admissions-body #content table.table > tbody > tr > th:first-child,
+.jbu-admissions-body #content table.table > tbody > tr > td:first-child{
+	color: var(--color-brand-700);
+}
+/* Undo legacy truncation behavior from base.css for linked table content */
+.jbu-admissions-body #content table.table > tbody > tr > td > div,
+.jbu-admissions-body #content table.table > tbody > tr > th > div{
+	overflow: visible;
+	text-overflow: clip;
+	white-space: normal;
+}
+/* Link treatment inside tables */
+.jbu-admissions-body #content table.table > thead > tr.hover > td,
+.jbu-admissions-body #content table.table > tbody > tr.hover > td{
+	color: inherit !important;
+}
+
+.jbu-admissions-body #content table.table > thead > tr.hover > td a,
+.jbu-admissions-body #content table.table > tbody > tr.hover > td a{
+	color: var(--color-brand-700) !important;
+}
+
+.jbu-admissions-body #content table.table a{
+	color: var(--color-brand-700) !important;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.14em;
+}
+
+.jbu-admissions-body #content table.table > tbody > tr.hover a{
+	color: var(--color-brand-700) !important;
+}
+
+.jbu-admissions-body #content table.table a:hover{
+	color: var(--color-brand-700) !important;
+}
+
+/* Plain add-link pattern – catches Add School */
+.jbu-admissions-body #content table.table > thead > tr.row_hover > td > a,
+.jbu-admissions-body #content table.table > thead > tr.row_hover > td > a:link,
+.jbu-admissions-body #content table.table > thead > tr.row_hover > td > a:visited{
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	min-height: 2.25rem;
+	padding: 0.5rem 0.875rem;
+	border: 1px solid var(--color-brand-border-22);
+	border-radius: var(--radius-pill);
+	background: #fff;
+	color: var(--color-brand-700) !important;
+	font-size: 0.9375rem;
+	font-weight: 500;
+	line-height: 1.2;
+	text-decoration: none !important;
+}
+
+/* Original widget_add pattern – keep separate so Add Address keeps working */
+.jbu-admissions-body #content table.table tr.hover .widget_add,
+.jbu-admissions-body #content table.table tr.hover .widget_add:link,
+.jbu-admissions-body #content table.table tr.hover .widget_add:visited,
+.jbu-admissions-body #content table.table tr.row_hover .widget_add,
+.jbu-admissions-body #content table.table tr.row_hover .widget_add:link,
+.jbu-admissions-body #content table.table tr.row_hover .widget_add:visited{
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	min-height: 2.25rem;
+	padding: 0.5rem 0.875rem;
+	border: 1px solid var(--color-brand-border-22);
+	border-radius: var(--radius-pill);
+	background: #fff;
+	color: var(--color-brand-700) !important;
+	font-size: 0.9375rem;
+	font-weight: 500;
+	line-height: 1.2;
+	text-decoration: none !important;
+}
+
+/* Hover / focus – plain add-link pattern */
+.jbu-admissions-body #content table.table > thead > tr.row_hover > td > a:hover,
+.jbu-admissions-body #content table.table > thead > tr.row_hover > td > a:focus-visible{
+	background: var(--color-brand-tint-08);
+	border-color: var(--color-brand-border-35);
+	color: var(--color-brand-700) !important;
+}
+
+/* Hover / focus – original widget_add pattern */
+.jbu-admissions-body #content table.table tr.hover .widget_add:hover,
+.jbu-admissions-body #content table.table tr.hover .widget_add:focus-visible,
+.jbu-admissions-body #content table.table tr.row_hover .widget_add:hover,
+.jbu-admissions-body #content table.table tr.row_hover .widget_add:focus-visible{
+	background: var(--color-brand-tint-08);
+	border-color: var(--color-brand-border-35);
+	color: var(--color-brand-700) !important;
+}
+
+.jbu-admissions-body #content table.table > thead > tr.row_hover > td > a:focus-visible,
+.jbu-admissions-body #content table.table tr.hover .widget_add:focus-visible,
+.jbu-admissions-body #content table.table tr.row_hover .widget_add:focus-visible{
+	outline: 2px solid var(--color-focus);
+	outline-offset: 2px;
+	text-decoration: none !important;
+}
+
+.jbu-admissions-body #content table.table > thead > tr.row_hover > td > a:active,
+.jbu-admissions-body #content table.table tr.hover .widget_add:active,
+.jbu-admissions-body #content table.table tr.row_hover .widget_add:active{
+	background: var(--color-brand-100);
+	border-color: var(--color-brand-400);
+	color: var(--color-brand-700) !important;
+	text-decoration: none !important;
+}
+
+/* Row hover/select states */
+.jbu-admissions-body #content table.table > tbody > tr.row_hover:hover,
+.jbu-admissions-body #content table.table > tbody > tr:hover{
+	background: var(--table-row-hover);
+}
+
+.jbu-admissions-body #content table.table > tbody > tr.row_select,
+.jbu-admissions-body #content table.table > tbody > tr[aria-selected="true"]{
+	background: var(--table-row-active);
+}
+
+@media only screen and (max-width: 736px) {
+	.jbu-admissions-body #content table.plain > tbody > tr > th{
+		background: transparent;
+		padding: 0;
+		margin-bottom: var(--space-xxs);
+		font-size: var(--fs-label);
+		font-weight: var(--fw-label);
+		color: var(--fc-body);
+	}
+}
+
+
+/* Sortable tables -------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+Sortable table headers – single active chevron
+-------------------------------------------------------------------------- */
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_header{
+	position: relative;
+	padding-right: 2rem;
+	background-image: none !important;
+}
+/* remove any legacy sort glyphs/images Slate may add */
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_header *,
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_header a,
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_header span{
+	background-image: none !important;
+}
+/* reset pseudo-elements */
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_header::before,
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_header::after{
+	content: "";
+	position: absolute;
+	right: 0.9rem;
+	top: 50%;
+	width: 0.55rem;
+	height: 0.55rem;
+	box-sizing: border-box;
+	pointer-events: none;
+	border: 0;
+	opacity: 0;
+	margin: 0;
+}
+/* unsorted – subtle down chevron only */
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_header::after{
+	margin-top: -0.45rem;
+	border-right: 2.5px solid currentColor;
+	border-bottom: 2.5px solid currentColor;
+	transform: rotate(45deg);
+	opacity: 0.28;
+}
+/* hover */
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_header:hover{
+	background: var(--table-row-hover);
+	color: var(--table-text-muted);
+}
+/* active sort state cell */
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_asc,
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_desc{
+	color: var(--color-brand-700);
+	background: rgba(4, 55, 104, 0.06);
+}
+/* ascending – show only up chevron */
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_asc::before{
+	opacity: 1;
+	margin-top: -0.1rem;
+	border-right: 2.5px solid currentColor;
+	border-top: 2.5px solid currentColor;
+	transform: rotate(-45deg);
+}
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_asc::after{
+	opacity: 0;
+	border: 0;
+}
+/* descending – show only down chevron */
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_desc::before{
+	opacity: 0;
+	border: 0;
+}
+.jbu-admissions-body #content table.table.sortable > thead > tr.column > th.sortable_desc::after{
+	opacity: 1;
+	margin-top: -0.45rem;
+	border-right: 2.5px solid currentColor;
+	border-bottom: 2.5px solid currentColor;
+	transform: rotate(45deg);
+}
+/* nohighlight variant ---------------------------------------------------- */
+.jbu-admissions-body #content table.table.nohighlight > tbody > tr:hover,
+.jbu-admissions-body #content table.table.nohighlight > tbody > tr.row_hover:hover{
+	background: transparent;
+}
+.jbu-admissions-body #content table.table.nohighlight > tbody > tr > td,
+.jbu-admissions-body #content table.table.nohighlight > tbody > tr > th{
+	background: transparent;
+}
+.jbu-admissions-body #content table.table.nohighlight a{
+	color: inherit;
+}
+.jbu-admissions-body #content table.table.nohighlight a:hover{
+	color: var(--color-brand-700);
+}
+/* Widget-style add row --------------------------------------------------- */
+.jbu-admissions-body #content table.table .widget_add{
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	min-height: 2.25rem;
+	padding: 0.5rem 0.875rem;
+	border: 1px solid var(--color-brand-border-22);
+	border-radius: var(--radius-pill);
+	background: #fff;
+	color: var(--color-brand-700) !important;
+	font-size: 0.9375rem;
+	font-weight: 500;
+	line-height: 1.2;
+	text-decoration: none !important;
+}
+.jbu-admissions-body #content table.table .widget_add:hover,
+.jbu-admissions-body #content table.table .widget_add:focus-visible{
+	background: var(--color-brand-tint-08);
+	border-color: var(--color-brand-border-35);
+	color: var(--color-brand-700);
+}
+/* Better vertical centering for short data columns
+.jbu-admissions-body #content table.table > tbody > tr > td:is(:nth-child(3), :nth-child(4)),
+.jbu-admissions-body #content table.table > tbody > tr > th:is(:nth-child(3), :nth-child(4)){
+	vertical-align: middle;
+} */
+/* Mobile refinement ------------------------------------------------------ */
+/* Keep Slate’s block conversion, but improve spacing/labels/cards a bit. */
+@media (max-width: 736px){
+	.jbu-admissions-body #content table.table{
+		border-radius: var(--table-radius);
+		overflow: hidden;
+	}
+	.jbu-admissions-body #content table.table > tbody > tr,
+	.jbu-admissions-body #content table.table > thead > tr:not(.column){
+		margin: 0;
+		border-bottom: 1px solid var(--table-border);
+		background: #fff;
+	}
+	.jbu-admissions-body #content table.table > tbody > tr:last-child{
+		border-bottom: 0;
+	}
+	.jbu-admissions-body #content table.table td,
+	.jbu-admissions-body #content table.table th{
+		padding-top: 0.75rem;
+		padding-right: 1rem;
+		padding-bottom: 0.75rem;
+		padding-left: 8.25rem;
+		min-height: 3rem;
+		border-bottom: 1px solid rgba(217, 225, 231, 0.75);
+	}
+	.jbu-admissions-body #content table.table td:last-child,
+	.jbu-admissions-body #content table.table th:last-child{
+		border-bottom: 0;
+	}
+	.jbu-admissions-body #content table.table td::before,
+	.jbu-admissions-body #content table.table th::before{
+		left: 1rem;
+		width: 6.5rem;
+		color: var(--table-text-muted);
+		font-size: 0.75rem;
+		font-weight: 600;
+		line-height: 1.2;
+		letter-spacing: 0.02em;
+		text-transform: uppercase;
+	}
+	.jbu-admissions-body #content table.table .widget_add{
+		width: 100%;
+		justify-content: center;
+	}
+}
+/* --------------------------------------------------------------------------
+B) Form Styling
+-------------------------------------------------------------------------- */
+/* Control + choice tokens (Slate only) */
+.form_container {
+	--control-font-size: 1rem;
+	/* 16px */
+	--control-line-height: 1.25;
+	--control-pad-y: 0.5rem;
+	/* 8px */
+	--control-pad-x: 0.75rem;
+	/* 12px */
+	--control-min-height: 2.5rem;
+	/* 40px */
+	--control-textarea-min-height: 6rem;
+	--choice-size: 1rem;
+	/* 16px */
+	--choice-gap: 0.5rem;
+	/* 8px */
+	--form-max-width: 860px;
+	--date-group-max-width: 300px;
+	--upload-max-width: 36rem;
+}
+/* Form max-width */
+.jbu-admissions-body form,
+.dialog_host .dialog[role="dialog"] form  {
+	max-width: 860px;
+	margin: 0 auto;
+}
+
+/* Labels (broad baseline; keep !important on font-size to beat institutional !important sizing) */
+.form_container label,
+.form_container .form_label,
+.form_container .field_label{
+	font-size: var(--fs-label) !important;
+	font-weight: var(--fw-label);
+	line-height: 1.25;
+	margin: 0 0 var(--space-xxs) 0;
+	color: var(--fc-body);
+}
+
+/* Instruction text (form_p) should read like body text */
+.form_container .form_page .form_question.form_p > .form_label{
+  font-weight: var(--fw-body);
+}
+
+/* --------------------------------------------------------------------------
+B1) Restore Slate form-builder control widths
+Institutional CSS forces width:100% on inputs/selects/textareas; revert to auto.
+-------------------------------------------------------------------------- */
+.form_container .form_question input[type="email"],
+.form_container .form_question input[type="file"],
+.form_container .form_question input[type="number"],
+.form_container .form_question input[type="password"],
+.form_container .form_question input[type="tel"],
+.form_container .form_question input[type="text"],
+.form_container .form_question select,
+.form_container .form_question textarea{
+	width: auto;
+	max-width: 100%;
+}
+/* --------------------------------------------------------------------------
+B2) Slate heading blocks (.form_h1–.form_h5)
+Keep !important because institutional styles often use !important here.
+-------------------------------------------------------------------------- */
+.form_container .form_h1 .form_label{
+	font-size: var(--fs-h1) !important;
+	font-weight: var(--fw-h1) !important;
+	line-height: 1.15 !important;
+	margin: 0 0 var(--space-s) 0 !important;
+}
+.form_container .form_h2 .form_label{
+	font-size: var(--fs-h2) !important;
+	font-weight: var(--fw-h2) !important;
+	line-height: 1.2 !important;
+	margin: var(--space-l) 0 var(--space-s) 0 !important;
+}
+.form_container .form_h3 .form_label{
+	font-size: var(--fs-h3) !important;
+	font-weight: var(--fw-h3) !important;
+	line-height: 1.25 !important;
+	margin: var(--space-m) 0 var(--space-xxs) 0 !important;
+}
+.form_container .form_h4 .form_label{
+	font-size: var(--fs-h4) !important;
+	font-weight: var(--fw-h4) !important;
+	line-height: 1.25 !important;
+	margin: var(--space-s) 0 var(--space-xxs) 0 !important;
+}
+.form_container .form_h5 .form_label{
+	font-size: var(--fs-h5) !important;
+	font-weight: var(--fw-h5) !important;
+	line-height: 1.25 !important;
+	margin: var(--space-s) 0 var(--space-xxs) 0 !important;
+}
+/* --------------------------------------------------------------------------
+B3) Controls: sizing + margin normalization (Slate .form_page only)
+We remove control margins to prevent “double spacing”; question rhythm handles spacing.
+Keep !important on margin reset only (institutional adds margins).
+-------------------------------------------------------------------------- */
+.form_container .form_page input[type="text"],
+.form_container .form_page input[type="email"],
+.form_container .form_page input[type="tel"],
+.form_container .form_page input[type="number"],
+.form_container .form_page input[type="password"],
+.form_container .form_page input[type="search"],
+.form_container .form_page input[type="url"],
+.form_container .form_page input:not([type]),
+.form_container .form_page select,
+.form_container .form_page textarea{
+	font-size: var(--control-font-size);
+	color: var(--fc-body);
+	line-height: var(--control-line-height);
+	padding: var(--control-pad-y) var(--control-pad-x);
+	margin: 0 !important;
+}
+/* Single-line controls consistent height */
+.form_container .form_page input[type="text"],
+.form_container .form_page input[type="email"],
+.form_container .form_page input[type="tel"],
+.form_container .form_page input[type="number"],
+.form_container .form_page input[type="password"],
+.form_container .form_page input[type="search"],
+.form_container .form_page input[type="url"],
+.form_container .form_page input:not([type]),
+.form_container .form_page select{
+	min-height: var(--control-min-height);
+}
+/* Textarea: readable but not huge */
+.form_container .form_page textarea{
+	min-height: var(--control-textarea-min-height);
+	resize: vertical;
+}
+/* Select menu typography can be forced by institutional CSS; keep !important here */
+.form_container .form_page select,
+.form_container .form_page select option{
+	font-size: var(--control-font-size) !important;
+}
+/* --------------------------------------------------------------------------
+B4) Question spacing system (Slate .form_page only)
+Institutional CSS can apply: div.form_question { margin:0 !important; }
+We intentionally beat that within Slate form pages.
+-------------------------------------------------------------------------- */
+.form_container .form_page .form_responses{
+	margin-top: 0.35rem;
+	/* label → control group */
+}
+/* Primary question-to-question rhythm */
+.form_container .form_page .form_question{
+	margin: 0 0 1rem 0 !important;
+}
+/* For checkbox/radio lists: prevent extra gaps between option rows */
+.form_container .form_page .form_responses .form_response + .form_response{
+	margin-top: 0;
+}
+/* Remove baseline gap under inline controls inside form_responses */
+.form_container 
+.form_page .form_responses > textarea,
+.form_container 
+.form_page .form_responses > input,
+.form_container 
+.form_page .form_responses > select{
+	display: block;
+}
+/* B4.1) Helper text for material upload questions */
+.form_container 
+.form_page .form_question[data-type="plugin:material"] > .form_label + div{
+	font-size: var(--fs-help);
+	line-height: 1.4;
+	font-weight: var(--fw-help);
+	color: var(--fc-help);
+	margin-top: var(--helper-margin-top);
+	margin-bottom: var(--helper-margin-bottom);
+	max-width: 65ch;
+}
+/* --------------------------------------------------------------------------
+B4.2) Slate header-row questions (.form_question.form_header)
+Keep !important on margins because institutional CSS can zero margins.
+-------------------------------------------------------------------------- */
+.form_container .form_question.form_header{
+	margin-top: var(--space-xxl) !important;
+	margin-bottom: var(--space-xxs) !important;
+	padding-top: var(--space-xxs);
+	position: relative;
+}
+/* Rule above header */
+.form_container .form_question.form_header::before{
+	content: "";
+	display: block;
+	border-top: 1px solid var(--color-border-subtle);
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+/* Header label */
+.form_container .form_question.form_header > .form_label{
+	font-size: var(--fs-h3) !important;
+	font-weight: var(--fw-h3);
+	line-height: 1.25;
+	color: var(--color-brand-700);
+	margin: 0;
+}
+/* --------------------------------------------------------------------------
+B4.3) Required indicator and general helper text – reusable microcopy pattern
+Intended for HTML placed inside Slate label fields
+-------------------------------------------------------------------------- */
+/* 1) Default fallback for normal labels */
+.form_container 
+.form_page .form_question[data-required="1"] .form_label::after{
+	content: " *";
+	font-weight: 600;
+}
+/* 2) If a technical user wraps the main label text, suppress fallback */
+.form_container 
+.form_page .form_question[data-required="1"] .form_label:has(.form-label-text)::after{
+	content: "";
+}
+/* 3) Attach the asterisk to the wrapped label text instead */
+.form_container 
+.form_page .form_question[data-required="1"] .form_label > .form-label-text::after{
+	content: " *";
+	font-weight: 600;
+}
+/* 4) Helper text stays on a new line and visually secondary */
+.form_container 
+.form_page .form-label-help{
+	display: block;
+	font-size: var(--fs-help);
+	line-height: 1.4;
+	font-weight: var(--fw-help) !important;
+	color: var(--fc-help);
+	margin-top: var(--helper-margin-top);
+	margin-bottom: var(--helper-margin-bottom);
+	max-width: 65ch;
+}
+/* 5) Prevent helper text inside labels from inheriting label emphasis */
+.form_container 
+.form_page .form_label .form-label-help,
+.form_container 
+.form_page label .form-label-help{
+	font-size: var(--fs-help);
+	line-height: 1.4;
+	font-weight: var(--fw-help) !important;
+}
+
+/* 6) input border color */
+.form_container .form_responses input,
+.form_container .form_responses select,
+.form_container .form_responses textarea{
+  border-color: var(--color-neutral-400);
+}
+
+/* --------------------------------------------------------------------------
+B6) Slate table layout modernization
+Order:
+1. shared vars
+2. general label padding normalization
+3. standard table-layout field rows
+4. content/display rows
+5. date compound rows
+6. address compound row
+7. hidden row preservation
+-------------------------------------------------------------------------- */
+.form_container{
+	--table-label-col: minmax(11rem, 13rem);
+	--table-col-gap: var(--space-m);
+	--table-row-gap: var(--space-xxs);
+	--address-sub-label-col: 7rem;
+	--address-row-gap: var(--space-s);
+}
+/* --------------------------------------------------------------------------
+B6a) General label padding normalization
+Institutional CSS relies on vertical padding for many labels.
+Keep that generally, then neutralize it in table layout where needed.
+-------------------------------------------------------------------------- */
+/* Header rows keep their visual padding */
+.form_container .form_question.form_header{
+	padding-top: var(--space-xxs);
+}
+.form_container .form_question.form_header > .form_label{
+	padding: 10px 0 !important;
+}
+/* In table layout, most visible labels should not carry that general padding */
+.form_container
+.form_page .form_question.form_layout_table:not(.form_header) > .form_label,
+.form_container
+.form_page .form_question.form_layout_table:not(.form_header) > fieldset > .form_label,
+.form_container
+.form_page .form_question.form_layout_table:not(.form_header) > fieldset > div > .form_label{
+	padding: 0 !important;
+}
+/* Remove Slate's table-cell padding inside modernized table layout */
+.form_container
+.form_page .form_question.form_layout_table > .form_responses,
+.form_container
+.form_page .form_question.form_layout_table > .form_responses_labels,
+.form_container
+.form_page .form_question.form_layout_table > fieldset > .form_responses,
+.form_container
+.form_page .form_question.form_layout_table > fieldset > div > .form_responses,
+.form_container
+.form_page .form_question.form_layout_table > fieldset > .form_responses_labels{
+	padding: 0 !important;
+}
+/* --------------------------------------------------------------------------
+B6b) Standard table-layout field rows only
+Excludes content rows and compound rows.
+-------------------------------------------------------------------------- */
+.form_container
+.form_page .form_question.form_layout_table:not(.hidden):not([data-invisible="1"]):not(.form_h1):not(.form_h2):not(.form_h3):not(.form_h4):not(.form_h5):not(.form_header):not(.form_p):not(.form_birthdate):not(.form_date):not(.form_dateym):not(.form_datemd):not(.form_address):not(.form_checkbox):not(.form_radio):not(.form_selectable):not(.form_likert){
+	display: grid !important;
+	grid-template-columns: var(--table-label-col) minmax(0, 1fr);
+	column-gap: var(--table-col-gap);
+	row-gap: var(--table-row-gap);
+	align-items: start;
+}
+.form_container
+.form_page .form_question.form_layout_table:not(.hidden):not([data-invisible="1"]):not(.form_h1):not(.form_h2):not(.form_h3):not(.form_h4):not(.form_h5):not(.form_header):not(.form_p):not(.form_birthdate):not(.form_date):not(.form_dateym):not(.form_datemd):not(.form_address):not(.form_checkbox):not(.form_radio):not(.form_selectable):not(.form_likert) > .form_label{
+	grid-column: 1;
+	display: block !important;
+	width: auto !important;
+	margin: 0 !important;
+	padding: 0.2rem 0 0 0 !important;
+	align-self: start;
+}
+.form_container
+.form_page .form_question.form_layout_table:not(.hidden):not([data-invisible="1"]):not(.form_h1):not(.form_h2):not(.form_h3):not(.form_h4):not(.form_h5):not(.form_header):not(.form_p):not(.form_birthdate):not(.form_date):not(.form_dateym):not(.form_datemd):not(.form_address):not(.form_checkbox):not(.form_radio):not(.form_selectable):not(.form_likert) > .form_responses,
+.form_container
+.form_page .form_question.form_layout_table:not(.hidden):not([data-invisible="1"]):not(.form_h1):not(.form_h2):not(.form_h3):not(.form_h4):not(.form_h5):not(.form_header):not(.form_p):not(.form_birthdate):not(.form_date):not(.form_dateym):not(.form_datemd):not(.form_address):not(.form_checkbox):not(.form_radio):not(.form_selectable):not(.form_likert) > div:not(.form_label):not(.form_responses){
+	grid-column: 2;
+	min-width: 0;
+}
+/* In table layout, top edges should align cleanly */
+.form_container
+.form_page .form_question.form_layout_table > .form_responses,
+.form_container
+.form_page .form_question.form_layout_table > fieldset > .form_responses{
+	margin-top: 0 !important;
+}
+/* --------------------------------------------------------------------------
+B6c) Content/display rows – always one column
+-------------------------------------------------------------------------- */
+.form_container
+.form_page .form_question.form_layout_table.form_h1,
+.form_container
+.form_page .form_question.form_layout_table.form_h2,
+.form_container
+.form_page .form_question.form_layout_table.form_h3,
+.form_container
+.form_page .form_question.form_layout_table.form_h4,
+.form_container
+.form_page .form_question.form_layout_table.form_h5,
+.form_container
+.form_page .form_question.form_layout_table.form_header,
+.form_container
+.form_page .form_question.form_layout_table.form_p{
+	display: block !important;
+	width: 100% !important;
+	margin: 0 0 1rem 0 !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_h1 > .form_label,
+.form_container
+.form_page .form_question.form_layout_table.form_h2 > .form_label,
+.form_container
+.form_page .form_question.form_layout_table.form_h3 > .form_label,
+.form_container
+.form_page .form_question.form_layout_table.form_h4 > .form_label,
+.form_container
+.form_page .form_question.form_layout_table.form_h5 > .form_label,
+.form_container
+.form_page .form_question.form_layout_table.form_header > .form_label,
+.form_container
+.form_page .form_question.form_layout_table.form_p > .form_label{
+	display: block !important;
+	width: 100% !important;
+	margin: 0 !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_p > .form_label{
+	max-width: 42rem;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_h1 > .form_label,
+.form_container
+.form_page .form_question.form_layout_table.form_h2 > .form_label,
+.form_container
+.form_page .form_question.form_layout_table.form_header > .form_label{
+	max-width: none;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_p > .form_label p{
+	margin: 0 0 var(--space-xs);
+}
+.form_container
+.form_page .form_question.form_layout_table.form_p > .form_label p:last-child{
+	margin-bottom: 0;
+}
+/* Keep compound choice question labels aligned with the standard table label rail */
+.form_container
+.form_page .form_question.form_layout_table.form_checkbox > fieldset,
+.form_container
+.form_page .form_question.form_layout_table.form_radio > fieldset,
+.form_container
+.form_page .form_question.form_layout_table.form_selectable > fieldset{
+	display: grid !important;
+	grid-template-columns: var(--table-label-col) minmax(0, 1fr);
+	column-gap: var(--table-col-gap);
+	row-gap: var(--table-row-gap);
+	align-items: start;
+	padding: 0 !important;
+	margin: 0 !important;
+	border: 0;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_checkbox > fieldset > .form_label,
+.form_container
+.form_page .form_question.form_layout_table.form_radio > fieldset > .form_label,
+.form_container
+.form_page .form_question.form_layout_table.form_selectable > fieldset > .form_label{
+	grid-column: 1;
+	width: auto !important;
+	margin: 0 !important;
+	padding: 0.2rem 0 0 0 !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_checkbox > fieldset > .form_responses,
+.form_container
+.form_page .form_question.form_layout_table.form_radio > fieldset > .form_responses,
+.form_container
+.form_page .form_question.form_layout_table.form_selectable > fieldset > .form_responses{
+	grid-column: 2;
+	margin-top: 0 !important;
+	padding: 0 !important;
+}
+/* --------------------------------------------------------------------------
+B6d) Date compound rows
+Outer structure = label rail + response rail
+Inner structure = date-part grid
+-------------------------------------------------------------------------- */
+.form_container
+.form_page .form_question.form_layout_table.form_birthdate,
+.form_container
+.form_page .form_question.form_layout_table.form_date,
+.form_container
+.form_page .form_question.form_layout_table.form_dateym,
+.form_container
+.form_page .form_question.form_layout_table.form_datemd{
+	display: block !important;
+	width: 100% !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_birthdate > fieldset,
+.form_container
+.form_page .form_question.form_layout_table.form_date > fieldset,
+.form_container
+.form_page .form_question.form_layout_table.form_dateym > fieldset,
+.form_container
+.form_page .form_question.form_layout_table.form_datemd > fieldset{
+	display: grid !important;
+	grid-template-columns: var(--table-label-col) minmax(0, 1fr);
+	column-gap: var(--table-col-gap);
+	row-gap: var(--table-row-gap);
+	align-items: start;
+	border: 0;
+	padding: 0 !important;
+	margin: 0 !important;
+	min-width: 0;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_birthdate > fieldset > legend,
+.form_container
+.form_page .form_question.form_layout_table.form_date > fieldset > legend,
+.form_container
+.form_page .form_question.form_layout_table.form_dateym > fieldset > legend,
+.form_container
+.form_page .form_question.form_layout_table.form_datemd > fieldset > legend{
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_birthdate > fieldset > .form_label,
+.form_container
+.form_page .form_question.form_layout_table.form_date > fieldset > .form_label,
+.form_container
+.form_page .form_question.form_layout_table.form_dateym > fieldset > .form_label,
+.form_container
+.form_page .form_question.form_layout_table.form_datemd > fieldset > .form_label{
+	grid-column: 1;
+	display: block !important;
+	width: auto !important;
+	min-width: 0 !important;
+	margin: 0.2rem 0 0 0;
+	;
+	align-self: start;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_birthdate > fieldset > .form_responses,
+.form_container
+.form_page .form_question.form_layout_table.form_date > fieldset > .form_responses,
+.form_container
+.form_page .form_question.form_layout_table.form_dateym > fieldset > .form_responses,
+.form_container
+.form_page .form_question.form_layout_table.form_datemd > fieldset > .form_responses{
+	grid-column: 2;
+	display: grid !important;
+	gap: var(--space-xs);
+	width: 100%;
+	min-width: 0;
+	max-width: 24rem;
+	margin-top: 0 !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_birthdate > fieldset > .form_responses,
+.form_container
+.form_page .form_question.form_layout_table.form_date > fieldset > .form_responses{
+	grid-template-columns: 1.5fr .75fr 1fr;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_dateym > fieldset > .form_responses,
+.form_container
+.form_page .form_question.form_layout_table.form_datemd > fieldset > .form_responses{
+	grid-template-columns: 1.5fr 1fr;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_birthdate select,
+.form_container
+.form_page .form_question.form_layout_table.form_date select,
+.form_container
+.form_page .form_question.form_layout_table.form_dateym select,
+.form_container
+.form_page .form_question.form_layout_table.form_datemd select{
+	width: 100% !important;
+	max-width: none !important;
+	min-width: 0;
+	margin-left: 0 !important;
+}
+/* --------------------------------------------------------------------------
+B6e) Address compound row
+Outer label sits above the grouped address rows.
+Inner rows use sublabel + control only.
+-------------------------------------------------------------------------- */
+.form_container
+.form_page .form_question.form_layout_table.form_address{
+	display: block !important;
+	width: 100% !important;
+}
+.form_container .form_page .form_question.form_address fieldset{
+	padding: 0 !important;
+	margin: 0 !important;
+	border: 0;
+	min-width: 0;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_address > fieldset{
+	display: block !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_address > fieldset > legend{
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_address > fieldset > .form_label{
+	display: block !important;
+	width: 100% !important;
+	margin: 0 0 var(--space-s) 0 !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_address > fieldset > div:not(.form_label):not(.form_responses){
+	display: grid !important;
+	grid-template-columns: var(--address-sub-label-col) minmax(0, 1fr);
+	column-gap: var(--space-m);
+	row-gap: 0;
+	align-items: start;
+	margin: 0 0 var(--address-row-gap) var(--address-row-gap) !important;
+	min-width: 0;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_address > fieldset > div > .form_label{
+	display: block !important;
+	width: auto !important;
+	min-width: 0 !important;
+	margin: 0 !important;
+	padding: 0.2rem 0 0 0 !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_address > fieldset > div > .form_responses{
+	display: block !important;
+	min-width: 0;
+	margin-top: 0 !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_address select,
+.form_container
+.form_page .form_question.form_layout_table.form_address textarea,
+.form_container
+.form_page .form_question.form_layout_table.form_address input[type="text"]{
+	width: 100%;
+	max-width: 100%;
+	margin: 0 !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_address textarea{
+	max-width: 48rem;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_address input[id$="_city"]{
+	max-width: 20rem;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_address select[id$="_region"]{
+	max-width: 14rem;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_address input[id$="_postal"]{
+	max-width: 9rem;
+}
+/* --------------------------------------------------------------------------
+B6f) Hidden row preservation – keep last
+-------------------------------------------------------------------------- */
+.form_container
+.form_page .form_question.hidden,
+.form_container
+.form_page .form_question.form_layout_table.hidden,
+.form_container
+.form_page .form_question[data-invisible="1"],
+.form_container
+.form_page .form_question.form_layout_table[data-invisible="1"]{
+	display: none !important;
+}
+/* --------------------------------------------------------------------------
+Responsive collapse
+-------------------------------------------------------------------------- */
+@media (max-width: 760px){
+	.form_container
+	.form_page .form_question.form_layout_table.form_birthdate > fieldset,
+	.form_container
+	.form_page .form_question.form_layout_table.form_date > fieldset,
+	.form_container
+	.form_page .form_question.form_layout_table.form_dateym > fieldset,
+	.form_container
+	.form_page .form_question.form_layout_table.form_datemd > fieldset{
+		display: block !important;
+	}
+	.form_container
+	.form_page .form_question.form_layout_table.form_birthdate > fieldset > .form_label,
+	.form_container
+	.form_page .form_question.form_layout_table.form_date > fieldset > .form_label,
+	.form_container
+	.form_page .form_question.form_layout_table.form_dateym > fieldset > .form_label,
+	.form_container
+	.form_page .form_question.form_layout_table.form_datemd > fieldset > .form_label{
+		margin-bottom: var(--space-s) !important;
+	}
+	.form_container
+	.form_page .form_question.form_layout_table.form_birthdate > fieldset > .form_responses,
+	.form_container
+	.form_page .form_question.form_layout_table.form_date > fieldset > .form_responses,
+	.form_container
+	.form_page .form_question.form_layout_table.form_dateym > fieldset > .form_responses,
+	.form_container
+	.form_page .form_question.form_layout_table.form_datemd > fieldset > .form_responses{
+		max-width: 100%;
+	}
+}
+@media (max-width: 520px){
+	.form_container
+	.form_page .form_question.form_layout_table.form_birthdate > fieldset > .form_responses,
+	.form_container
+	.form_page .form_question.form_layout_table.form_date > fieldset > .form_responses,
+	.form_container
+	.form_page .form_question.form_layout_table.form_dateym > fieldset > .form_responses,
+	.form_container
+	.form_page .form_question.form_layout_table.form_datemd > fieldset > .form_responses{
+		grid-template-columns: 1fr;
+	}
+	.form_container
+	.form_page .form_question.form_layout_table.form_address > fieldset > div:not(.form_label):not(.form_responses){
+		display: block !important;
+	}
+	.form_container
+	.form_page .form_question.form_layout_table.form_address > fieldset > div > .form_label{
+		margin-bottom: var(--space-xxs) !important;
+		padding-top: 0 !important;
+	}
+}
+/* --------------------------------------------------------------------------
+B7) Slate select-based date groups (scoped to actual date question types)
+Modernizes date-part selects without overriding the outer table layout.
+-------------------------------------------------------------------------- */
+/* Shared date-group container behavior */
+.form_container
+.form_page .form_question.form_birthdate .form_responses,
+.form_container
+.form_page .form_question.form_date .form_responses,
+.form_container
+.form_page .form_question.form_dateym .form_responses,
+.form_container
+.form_page .form_question.form_datemd .form_responses{
+	display: grid;
+	gap: var(--space-xs);
+	width: 100%;
+	min-width: 0;
+	max-width: var(--date-group-max-width);
+}
+/* 3-part date: Month–Day–Year */
+.form_container
+.form_page .form_question.form_birthdate .form_responses,
+.form_container
+.form_page .form_question.form_date .form_responses{
+	grid-template-columns: 1.5fr .75fr 1fr;
+}
+/* 2-part date groups */
+.form_container
+.form_page .form_question.form_dateym .form_responses{
+	grid-template-columns: 1.5fr 1fr;
+}
+.form_container
+.form_page .form_question.form_datemd .form_responses{
+	grid-template-columns: 1.5fr 1fr;
+}
+/* Make selects fill their tracks and neutralize Slate inline spacing */
+.form_container
+.form_page .form_question.form_birthdate .form_responses select,
+.form_container
+.form_page .form_question.form_date .form_responses select,
+.form_container
+.form_page .form_question.form_dateym .form_responses select,
+.form_container
+.form_page .form_question.form_datemd .form_responses select{
+	width: 100% !important;
+	max-width: none !important;
+	min-width: 0;
+	margin-left: 0 !important;
+}
+/* Table-layout date groups can breathe a little more */
+.form_container
+.form_page .form_question.form_layout_table.form_birthdate .form_responses,
+.form_container
+.form_page .form_question.form_layout_table.form_date .form_responses,
+.form_container
+.form_page .form_question.form_layout_table.form_dateym .form_responses,
+.form_container
+.form_page .form_question.form_layout_table.form_datemd .form_responses{
+	max-width: 24rem;
+}
+/* Responsive: collapse table layout earlier */
+@media (max-width: 760px){
+	.form_container
+	.form_page .form_question.form_layout_table:not(.form_h1):not(.form_h2):not(.form_h3):not(.form_h4):not(.form_h5):not(.form_header):not(.form_p){
+		display: block;
+	}
+	.form_container
+	.form_page .form_question.form_layout_table.form_birthdate > fieldset,
+	.form_container
+	.form_page .form_question.form_layout_table.form_date > fieldset,
+	.form_container
+	.form_page .form_question.form_layout_table.form_dateym > fieldset,
+	.form_container
+	.form_page .form_question.form_layout_table.form_datemd > fieldset,
+	.form_container
+	.form_page .form_question.form_layout_table.form_checkbox > fieldset,
+	.form_container
+	.form_page .form_question.form_layout_table.form_radio > fieldset,
+	.form_container
+	.form_page .form_question.form_layout_table.form_selectable > fieldset,
+	.form_container
+	.form_page .form_question.form_layout_table.form_likert > fieldset,
+	.form_container
+	.form_page .form_question.form_layout_table.form_address > fieldset{
+		display: block;
+	}
+	.form_container
+	.form_page .form_question.form_birthdate .form_responses,
+	.form_container
+	.form_page .form_question.form_date .form_responses,
+	.form_container
+	.form_page .form_question.form_dateym .form_responses,
+	.form_container
+	.form_page .form_question.form_datemd .form_responses{
+		max-width: 100%;
+	}
+}
+@media (max-width: 520px){
+	.form_container
+	.form_page .form_question.form_birthdate .form_responses,
+	.form_container
+	.form_page .form_question.form_date .form_responses{
+		grid-template-columns: 1fr;
+	}
+	.form_container
+	.form_page .form_question.form_dateym .form_responses,
+	.form_container
+	.form_page .form_question.form_datemd .form_responses{
+		grid-template-columns: 1fr;
+	}
+}
+.form_container
+.form_page .form_question.hidden,
+.form_container
+.form_page .form_question[data-invisible="1"]{
+	display: none !important;
+}
+.form_container .form_page .form_question.form_address fieldset{
+	padding: 0 !important;
+}
+.form_container .form_page .form_question.form_address fieldset > .form_label{
+	margin-left: 0 !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_address > fieldset > div:not(.form_label):not(.form_responses){
+	grid-template-columns: 7rem minmax(0, 1fr) !important;
+}
+.form_container .form_page .form_question.form_layout_table.form_birthdate:not(.hidden),
+.form_container .form_page .form_question.form_layout_table.form_date:not(.hidden),
+.form_container .form_page .form_question.form_layout_table.form_dateym:not(.hidden),
+.form_container .form_page .form_question.form_layout_table.form_datemd:not(.hidden){
+    display: block !important;
+    width: 100% !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_birthdate > fieldset,
+.form_container
+.form_page .form_question.form_layout_table.form_date > fieldset,
+.form_container
+.form_page .form_question.form_layout_table.form_dateym > fieldset,
+.form_container
+.form_page .form_question.form_layout_table.form_datemd > fieldset{
+	display: grid !important;
+	grid-template-columns: var(--table-label-col) minmax(0, 1fr);
+	column-gap: var(--table-col-gap);
+	row-gap: var(--table-row-gap);
+	padding: 0 !important;
+	margin: 0 !important;
+	border: 0;
+}
+/* --------------------------------------------------------------------------
+B8) Choice controls (checkbox / radio)
+- Restore native appearance (institutional custom controls in TEST)
+- Normalize size + alignment
+- Make choice labels read like body text
+-------------------------------------------------------------------------- */
+/* Inputs: restore native + consistent dimensions */
+.form_container .form_page input[type="checkbox"],
+.form_container .form_page input[type="radio"]{
+	-webkit-appearance: auto !important;
+	appearance: auto !important;
+	width: var(--choice-size) !important;
+	height: var(--choice-size) !important;
+	border: initial !important;
+	border-radius: initial !important;
+	background: initial !important;
+	color: initial !important;
+	position: static !important;
+	top: auto !important;
+	margin: 0 var(--choice-gap) 0 0 !important;
+	vertical-align: middle;
+	transform: none;
+}
+/* Option rows: tighten spacing without redesign */
+.form_container .form_page .form_responses .form_response{
+	padding: 0;
+}
+/* Choice labels only: override institutional label-weight specifically for choice rows */
+.form_container .form_page .form_responses .form_response > label{
+	font-weight: var(--fw-body) !important;
+	line-height: 1.35;
+	margin: 0 !important;
+	display: inline-block;
+}
+/* Override institutional option color inside Slate forms */
+.form_container .form_page select,
+.form_container .form_page select option{
+	color: var(--fc-body);
+}
+/* --------------------------------------------------------------------------
+B9) Slate “selectable” options – button-like radios/checkboxes
+Light touch: reduce heaviness/density without changing the concept.
+-------------------------------------------------------------------------- */
+.form_container .form_page .form_selectable .form_response{
+	padding: 0.25rem 0;
+}
+.form_container 
+.form_page .form_selectable .form_response input + label{
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	text-align: left;
+	width: 100%;
+	height: auto !important;
+	min-height: 2.25rem;
+	padding: 0.5rem 0.75rem;
+	border-radius: var(--radius-l);
+	border: 1px solid var(--color-border-subtle);
+	background: var(--color-surface-subtle);
+	font-weight: 500;
+	line-height: 1.2;
+	color: inherit;
+	cursor: pointer;
+}
+/* hover */
+.form_container 
+.form_page .form_selectable .form_response input + label:hover{
+	background: var(--color-surface-subtle-hover);
+}
+/* selected */
+.form_container 
+.form_page .form_selectable .form_response input:checked + label{
+	background: var(--color-brand-tint-10);
+	border-color: var(--color-brand-border-45);
+	color: inherit !important;
+}
+/* keyboard accessibility */
+.form_container 
+.form_page .form_selectable .form_response input:focus-visible + label{
+	outline: 3px solid var(--color-brand-border-35);
+	outline-offset: 2px;
+}
+/* --------------------------------------------------------------------------
+B10) Likert as selectable boxes – match .form_selectable look/feel
+Notes:
+- Likert radios don’t have a label sibling we can style, so we style the
+radio itself as the “button” and mirror your selectable tokens.
+- Scoped to all forms in default branding (#content) + Slate likert markup.
+-------------------------------------------------------------------------- */
+.form_container .form_question.form_likert{
+	--likert-radius: var(--radius-l);
+	--likert-border: var(--color-border-subtle);
+	--likert-bg: var(--color-surface-subtle);
+	--likert-bg-hover: var(--color-surface-subtle-hover);
+	--likert-selected-bg: var(--color-brand-tint-10);
+	--likert-selected-border: var(--color-brand-border-45);
+	--likert-focus: var(--color-brand-border-35);
+	--likert-min: 3.25rem;
+	--likert-h: 3rem;
+	--likert-gap: 0.5rem;
+}
+/* keep question label */
+.form_container .form_question.form_likert .form_label{
+	margin: 0 0 var(--space-xxs) 0;
+}
+/* hide separate number row – numbers render inside each box */
+.form_container .form_question.form_likert .form_responses_labels{
+	display: none !important;
+}
+/* grid layout */
+.form_container .form_question.form_likert .form_responses{
+	display: grid !important;
+	grid-template-columns: repeat(auto-fit, minmax(var(--likert-min), 1fr)) !important;
+	gap: var(--likert-gap) !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+.form_container .form_question.form_likert .form_response{
+	width: auto !important;
+	min-width: 0 !important;
+}
+.form_container .form_question.form_likert .form_response > div{
+	display: block !important;
+}
+/* the “button” */
+.form_container .form_question.form_likert .form_response input[type="radio"]{
+	-webkit-appearance: none !important;
+	appearance: none !important;
+	width: 100% !important;
+	height: var(--likert-h) !important;
+	margin: 0 !important;
+	border-radius: var(--likert-radius) !important;
+	border: 1px solid var(--likert-border) !important;
+	background: var(--likert-bg) !important;
+	display: grid !important;
+	place-items: center !important;
+	line-height: 1.25;
+	cursor: pointer;
+	color: inherit !important;
+}
+/* number inside */
+.form_container .form_question.form_likert .form_response input[type="radio"]::before{
+	content: attr(data-label);
+	font: inherit;
+	font-weight: 600;
+	line-height: 1;
+	color: inherit;
+}
+/* hover (matches selectable) */
+@media (hover: hover){
+	.form_container .form_question.form_likert
+	.form_response input[type="radio"]:hover{
+		background: var(--likert-bg-hover) !important;
+	}
+}
+/* selected (matches selectable) */
+.form_container .form_question.form_likert
+.form_response input[type="radio"]:checked{
+	background: var(--likert-selected-bg) !important;
+	border-color: var(--likert-selected-border) !important;
+	box-shadow: none !important;
+	color: inherit !important;
+}
+/* keyboard accessibility (matches selectable) */
+.form_container .form_question.form_likert
+.form_response input[type="radio"]:focus-visible{
+	outline: 3px solid var(--likert-focus) !important;
+	outline-offset: 2px !important;
+}
+/* mobile tap target parity */
+@media (max-width: 480px){
+	.form_container .form_question.form_likert{
+		--likert-h: 3.25rem;
+		--likert-gap: 0.4rem;
+	}
+}
+/* remove Slate table-layout label column */
+@media (min-width: 481px){
+	.form_container
+	.form_question.form_likert.form_layout_table .form_label{
+		display: block !important;
+		width: auto !important;
+		padding: 0 !important;
+		box-sizing: border-box;
+	}
+}
+/* --------------------------------------------------------------------------
+B11) Slate form controls – stable focus state (no layout shift)
+- Keep border width constant (1px)
+- Focus state changes color + adds subtle focus ring
+- Scoped only to Slate-hosted forms
+-------------------------------------------------------------------------- */
+.form_container .form_page
+input[type="text"]:focus,
+.form_container .form_page
+input[type="email"]:focus,
+.form_container .form_page
+input[type="number"]:focus,
+.form_container .form_page
+input[type="tel"]:focus,
+.form_container .form_page
+input[type="password"]:focus,
+.form_container .form_page
+input[type="url"]:focus,
+.form_container .form_page
+input[type="search"]:focus,
+.form_container .form_page
+select:focus,
+.form_container .form_page
+textarea:focus{
+	border: 1px solid var(--color-brand-500) !important;
+	outline: none;
+	box-shadow: var(--focus-ring-brand);
+}
+/* --------------------------------------------------------------------------
+B12) Slate Address Fieldset – grouping + spacing normalization
+-------------------------------------------------------------------------- */
+.form_container 
+.form_page .form_question.form_address fieldset{
+	position: relative;
+	border: 0;
+	margin: 0;
+	padding: 0 0 0 var(--space-s);
+	min-width: 0;
+}
+/* Vertical rule indicating grouped fields. Starts below the group label. */
+.form_container 
+.form_page .form_question.form_address fieldset::before{
+	content: "";
+	position: absolute;
+	left: 0;
+	top: calc(1.25em + var(--space-xs));
+	bottom: 0;
+	width: 2px;
+	background: var(--color-border-soft);
+	border-radius: var(--radius-pill);
+}
+/* Pull the address group label back to the original alignment
+.form_container 
+.form_page .form_question.form_address fieldset > .form_label{
+margin-left: calc(-1 * var(--space-s)) !important;
+} */
+/* Reset inherited margins on internal wrappers */
+.form_container 
+.form_page .form_question.form_address fieldset > div{
+	margin: 0 !important;
+}
+/* Consistent spacing between rows */
+.form_container 
+.form_page .form_question.form_address fieldset > div + div{
+	margin: var(--address-row-gap) 0 0 var(--address-row-gap) !important;
+}
+/* Ensure internal field labels remain normal label styling */
+.form_container 
+.form_page .form_question.form_address fieldset label.form_label{
+	font-size: var(--fs-label) !important;
+	font-weight: var(--fw-label);
+	line-height: 1.25;
+	margin: 0 0 var(--space-xxs) 0 !important;
+}
+/* --------------------------------------------------------------------------
+B13) Material upload – native file input optimization
+Keep native behavior, improve width, spacing, and button styling
+-------------------------------------------------------------------------- */
+.form_container 
+.form_page .form_question[data-type="plugin:material"] .form_response_material_upload{
+	max-width: var(--upload-max-width);
+}
+.form_container 
+.form_page .form_question[data-type="plugin:material"] .form_response_material_upload p{
+	margin: 0;
+}
+.form_container 
+.form_page .form_question[data-type="plugin:material"] input[type="file"]{
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	min-height: 2.75rem;
+	padding: 0;
+	margin: 0;
+	font-size: var(--fs-label);
+	line-height: 1.35;
+	color: inherit;
+	background: transparent;
+	border: 0;
+}
+/* Modern browsers */
+.form_container 
+.form_page .form_question[data-type="plugin:material"] input[type="file"]::file-selector-button{
+	margin-right: 0.75rem;
+	padding: 0.625rem 0.875rem;
+	min-height: 2.5rem;
+	border: 1px solid #707070;
+	border-radius: 4px;
+	background: #fff;
+	color: inherit;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+/* Hover */
+.form_container 
+.form_page .form_question[data-type="plugin:material"] input[type="file"]:hover::file-selector-button{
+	background: rgba(0,0,0,0.04);
+}
+/* Focus – keep same border size pattern */
+.form_container 
+.form_page .form_question[data-type="plugin:material"] input[type="file"]:focus-visible::file-selector-button{
+	outline: 2px solid #000;
+	outline-offset: 2px;
+}
+/* Safari / older WebKit fallback */
+.form_container 
+.form_page .form_question[data-type="plugin:material"] input[type="file"]::-webkit-file-upload-button{
+	margin-right: 0.75rem;
+	padding: 0.625rem 0.875rem;
+	min-height: 2.5rem;
+	border: 1px solid #707070;
+	border-radius: 4px;
+	background: #fff;
+	color: inherit;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+/* --------------------------------------------------------------------------
+B14) Form action buttons – pill-style CTA system
+-------------------------------------------------------------------------- */
+/* Kill any older full-width submit rule */
+.form_container .action button.form_button_submit{
+	width: auto !important;
+}
+/* Primary – Continue / Submit */
+.form_container .action button.default:not(.form_action_back),
+.form_container .action button.form_button_submit,
+.form_container .action input[type="submit"]{
+	background: var(--color-brand-500) !important;
+	border-color: var(--color-brand-500) !important;
+	color: var(--fc-on-dark) !important;
+}
+.form_container .action button.default:not(.form_action_back):hover,
+.form_container .action button.form_button_submit:hover,
+.form_container .action input[type="submit"]:hover{
+	background: var(--color-brand-600) !important;
+	border-color: var(--color-brand-600) !important;
+	color: var(--fc-on-dark) !important;
+}
+/* Secondary – Back */
+.form_container .action button.form_action_back,
+.form_container .action button.form_action_back.default{
+	background: var(--color-brand-tint-08) !important;
+	border-color: var(--color-brand-700) !important;
+	color: var(--color-brand-700) !important;
+}
+.form_container .action button.form_action_back:hover,
+.form_container .action button.form_action_back.default:hover{
+	background: var(--color-brand-tint-14) !important;
+	border-color: var(--color-brand-700) !important;
+	color: var(--color-brand-700) !important;
+}
+/* Tertiary – Save For Later */
+.form_container .action button.form_button_save{
+	background: #ffffff !important;
+	border-color: var(--color-brand-border-22) !important;
+	color: var(--color-brand-700) !important;
+}
+.form_container .action button.form_button_save:hover{
+	background: rgba(4,55,104,0.04) !important;
+	border-color: var(--color-brand-border-32) !important;
+	color: var(--color-brand-700) !important;
+}
+/* Focus */
+.form_container .action button:focus-visible,
+.form_container .action input[type="submit"]:focus-visible,
+.form_container .action input[type="button"]:focus-visible{
+	outline: 2px solid var(--color-brand-700);
+	outline-offset: 2px;
+}
+/* Disabled */
+.form_container .action button:disabled,
+.form_container .action input[type="submit"]:disabled,
+.form_container .action input[type="button"]:disabled{
+	opacity: 0.55;
+	cursor: not-allowed;
+}
+/* Mobile */
+@media (max-width: 640px){
+	.form_container .action > button,
+	.form_container .action > input[type="submit"],
+	.form_container .action > input[type="button"]{
+		display: block;
+		width: 100% !important;
+		min-width: 0;
+		margin-right: 0 !important;
+	}
+}
+
+/* --------------------------------------------------------------------------
+   B14A) Slate replicate blocks
+   Distinct from .form_question.form_header and aligned with table/calendar UI
+   -------------------------------------------------------------------------- */
+
+.form_container table[id^="replicate_table_"]{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Make each replicate group behave like a full-width card so margin works */
+.form_container table[id^="replicate_table_"] tbody.replicate_destination{
+  display: block;
+  width: 100%;
+}
+
+.form_container table[id^="replicate_table_"] tbody.replicate_destination + tbody.replicate_destination{
+  margin-top: 1rem;
+}
+
+.form_container table[id^="replicate_table_"] tbody.replicate_destination > tr{
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Neutralize generic column-row paint so it does not fight rounded header corners */
+.form_container table[id^="replicate_table_"] tr.column{
+  background: transparent !important;
+}
+
+/* Header cell layout */
+.form_container table[id^="replicate_table_"] tr.column{
+  background: transparent !important;
+}
+
+.form_container table[id^="replicate_table_"] tr.column > th{
+  position: relative;
+  padding: 0.625rem 4.5rem 0.625rem 0.875rem !important;
+  background: #f4f6f8 !important;
+  border: 1px solid rgba(31,41,55,0.18);
+  border-bottom: none;
+  border-radius: 0.375rem 0.375rem 0 0;
+  color: #043768;
+  font-weight: var(--fw-h4) !important;
+  line-height: 1.25;
+  text-align: left;
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+
+/* Number badge */
+.form_container table[id^="replicate_table_"] .replicate_number{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 0.375rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: rgba(4,55,104,0.08);
+  color: #043768;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* Delete action in header */
+.form_container table[id^="replicate_table_"] .replicate_delete{
+  position: absolute;
+  top: 50%;
+  right: 0.875rem;
+  transform: translateY(-50%);
+  float: none !important;
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: var(--fw-h4) !important;
+  color: rgba(4,55,104,0.85);
+  line-height: 1;
+  text-decoration: none;
+  z-index: 2;
+}
+
+.form_container table[id^="replicate_table_"] .replicate_delete:hover,
+.form_container table[id^="replicate_table_"] .replicate_delete:focus-visible{
+  color: #043768;
+  text-decoration: underline;
+}
+
+/* Replicate card body */
+.form_container table[id^="replicate_table_"] tbody.replicate_destination > tr:nth-child(2) > td{
+  padding: 0.875rem !important;
+  border: 1px solid rgba(31,41,55,0.18);
+  border-top: none;
+  border-radius: 0 0 0.375rem 0.375rem;
+  background: #fff;
+}
+
+.form_container
+table[id^="replicate_table_"] tbody.replicate_insert_container td{
+  padding-top: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+B15) Slate account banner
+-------------------------------------------------------------------------- */
+.form_container #form_response_banner{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: .75rem 1rem !important;
+	margin-bottom: 1.25rem !important;
+	background: var(--color-brand-700) !important;
+	color: var(--fc-on-dark) !important;
+	border-radius: var(--radius-s);
+	font-size: var(--fs-h5);
+	line-height: 1.4;
+}
+.form_container #form_response_banner a{
+	color: var(--fc-on-dark) !important;
+	text-decoration: underline !important;
+	float: none !important;
+}
+.form_container #form_response_banner a:hover{
+	text-decoration: none !important;
+}
+/* --------------------------------------------------------------------------
+B16) Required field states + validation helpers
+-------------------------------------------------------------------------- */
+.form_container 
+.form_page .form_question.required{
+	background: var(--color-error-100);
+	padding: 0.75rem 0.875rem;
+	border: 1px solid var(--color-error-200);
+	border-radius: var(--radius-m);
+}
+.form_container 
+.form_page .form_question.required > .form_label .form-label-text{
+	color: var(--color-error-700);
+}
+.form_container 
+.form_page .form_question.required input[type="text"],
+.form_container 
+.form_page .form_question.required input[type="email"],
+.form_container 
+.form_page .form_question.required input[type="tel"],
+.form_container 
+.form_page .form_question.required input[type="number"],
+.form_container 
+.form_page .form_question.required input[type="password"],
+.form_container 
+.form_page .form_question.required input[type="search"],
+.form_container 
+.form_page .form_question.required input[type="url"],
+.form_container 
+.form_page .form_question.required input:not([type]),
+.form_container 
+.form_page .form_question.required select,
+.form_container 
+.form_page .form_question.required textarea{
+	border-color: var(--color-error-500) !important;
+}
+/* Error fields – red focus state */
+.form_container 
+.form_page .form_question.required input[type="text"]:focus,
+.form_container 
+.form_page .form_question.required input[type="email"]:focus,
+.form_container 
+.form_page .form_question.required input[type="number"]:focus,
+.form_container 
+.form_page .form_question.required input[type="tel"]:focus,
+.form_container 
+.form_page .form_question.required input[type="password"]:focus,
+.form_container 
+.form_page .form_question.required input[type="url"]:focus,
+.form_container 
+.form_page .form_question.required input[type="search"]:focus,
+.form_container 
+.form_page .form_question.required select:focus,
+.form_container 
+.form_page .form_question.required textarea:focus{
+	border: 1px solid var(--color-error-500) !important;
+	outline: none;
+	box-shadow: 0 0 0 2px var(--color-error-ring);
+}
+/* Field-level validation errors (Slate validate_error class) */
+.form_container 
+.form_page input.validate_error,
+.form_container 
+.form_page select.validate_error,
+.form_container 
+.form_page textarea.validate_error{
+	border-color: var(--color-error-500) !important;
+}
+/* Focus state for invalid fields */
+.form_container 
+.form_page input.validate_error:focus,
+.form_container 
+.form_page select.validate_error:focus,
+.form_container 
+.form_page textarea.validate_error:focus{
+	border-color: var(--color-error-600) !important;
+	box-shadow: 0 0 0 2px var(--color-error-ring);
+}
+/* Field helper text (character counters + validation helpers) */
+.form_container 
+.form_page [id$="_maxlength"],
+.form_container 
+.form_page [id$="_minlength_characters"]{
+	display: block;
+	margin-top: var(--helper-margin-top);
+	font-size: var(--fs-help-sm) !important;
+	line-height: 1.35;
+	color: var(--fc-muted) !important;
+}
+/* Remaining characters – neutral helper */
+.form_container 
+.form_page [id$="_maxlength"]{
+	color: var(--fc-help-strong) !important;
+}
+/* Minimum requirement warning */
+.form_container 
+.form_page [id$="_minlength_characters"]{
+	color: var(--color-error-500) !important;
+	font-weight: var(--fw-help-strong);
+}
+/* --------------------------------------------------------------------------
+C) Application Styling
+-------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+Portal/application step navigation
+Desktop = polished sidebar step nav
+Mobile = styled Slate-generated select
+-------------------------------------------------------------------------- */
+/*.jbu-admissions-body #content #main{
+	width: auto;
+}*/
+
+.jbu-admissions-body #content #side{
+	float: left;
+	width: 16rem;
+	min-height: 6.25rem;
+	padding: 0 1.5rem 0 0;
+	margin: 0;
+}
+.jbu-admissions-body #content #side > #menu{
+	width: 100%;
+}
+/* Desktop list reset */
+.jbu-admissions-body #content #side #menu > ul{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-left: 1px solid rgba(4,55,104,0.16);
+}
+/* Prevent inherited generic li styles from interfering */
+.jbu-admissions-body #content #side #menu > ul > li{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 1rem;
+	line-height: 1.35;
+}
+/* Step links */
+.jbu-admissions-body #content #side #menu > ul > li > a{
+	display: block;
+	position: relative;
+	width: 100%;
+	margin: 0;
+	padding: 0.75rem 1rem 0.75rem 1.125rem;
+	font-family: inherit;
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.35;
+	color: #199ddc !important;
+	text-decoration: none !important;
+	background: transparent;
+	border-radius: 0 0.75rem 0.75rem 0;
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease,
+		box-shadow 0.2s ease;
+}
+/* subtle divider rhythm */
+.jbu-admissions-body #content #side #menu > ul > li + li > a{
+	margin-top: 0.25rem;
+}
+/* Hover */
+.jbu-admissions-body #content #side #menu > ul > li > a:hover{
+	background: rgba(25,157,220,0.08);
+	color: #0f6f9d !important;
+}
+/* Focus */
+.jbu-admissions-body #content #side #menu > ul > li > a:focus-visible{
+	outline: 2px solid #043768;
+	outline-offset: 2px;
+}
+/* Current step */
+.jbu-admissions-body #content #side #menu > ul > li > a.selected,
+.jbu-admissions-body #content #side #menu > ul > li > a[aria-current="page"]{
+	color: #043768 !important;
+	background: rgba(25,157,220,0.14);
+	box-shadow: inset 0 0 0 1px rgba(25,157,220,0.22);
+}
+/* Current step accent bar */
+.jbu-admissions-body #content #side #menu > ul > li > a.selected::before,
+.jbu-admissions-body #content #side #menu > ul > li > a[aria-current="page"]::before{
+	content: "";
+	position: absolute;
+	top: 0.375rem;
+	bottom: 0.375rem;
+	left: -1px;
+	width: 4px;
+	border-radius: 999px;
+	background: #199ddc;
+}
+/* Mobile select */
+.jbu-admissions-body #content #side #menu > select{
+	display: none;
+	width: 100% !important;
+	max-width: 100%;
+	min-height: 2.875rem;
+	padding: 0.625rem 2.75rem 0.625rem 0.875rem;
+	margin: 0;
+	font-family: inherit;
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.25;
+	color: #043768;
+	background: #fff;
+	border: 1px solid rgba(4,55,104,0.28);
+	border-radius: 0.75rem;
+	appearance: auto;
+}
+.jbu-admissions-body #content #side #menu > select:focus{
+	border-color: #199ddc;
+	outline: none;
+	box-shadow: 0 0 0 2px rgba(25,157,220,0.2);
+}
+.jbu-admissions-body #content #side #menu > select option{
+	color: #000;
+	font-size: 1rem;
+}
+/* Mobile behavior */
+@media only screen and (max-width: 736px){
+	.jbu-admissions-body #content #side{
+		float: none;
+		width: 100% !important;
+		min-height: 0 !important;
+		padding-right: 0;
+		margin: 0 0 1rem 0;
+	}
+	.jbu-admissions-body #content #side > #menu{
+		width: 100% !important;
+	}
+	.jbu-admissions-body #content #side #menu > ul{
+		display: none !important;
+	}
+	.jbu-admissions-body #content #side #menu > select{
+		display: block;
+	}
+}
