@@ -69,7 +69,8 @@ B) Slate-only mechanics (only Slate-generated forms + Slate markup)
 A) Default branding – baseline form system (applies to ALL forms in #content)
 -------------------------------------------------------------------------- */
 .jbu-admissions-body #content,
-.dialog_host .dialog {
+.dialog_host .dialog[role="dialog"],
+.form_container {
 	/* ==========================================================================
 	Typography
 	========================================================================== */
@@ -235,16 +236,16 @@ A) Default branding – baseline form system (applies to ALL forms in #content)
 	--table-shadow: var(--shadow-xs);
 }
 /* Base text inside default branding forms */
-.jbu-admissions-body #content,
-.jbu-admissions-body #content p,
-.jbu-admissions-body #content li,
-.jbu-admissions-body #content td,
-.jbu-admissions-body #content th,
-.dialog,
-.dialog p,
-.dialog li,
-.dialog td,
-.dialog th{
+.jbu-admissions-body,
+.jbu-admissions-body p,
+.jbu-admissions-body li,
+.jbu-admissions-body td,
+.jbu-admissions-body th,
+.dialog_host .dialog[role="dialog"],
+.dialog_host .dialog[role="dialog"] p,
+.dialog_host .dialog[role="dialog"] li,
+.dialog_host .dialog[role="dialog"] td,
+.dialog_host .dialog[role="dialog"] th{
 	font-size: var(--fs-body);
 	font-weight: var(--fw-body);
 	line-height: var(--lh-body);
@@ -254,19 +255,19 @@ A) Default branding – baseline form system (applies to ALL forms in #content)
 	margin: 0 0 0.75rem 0;
 }
 .jbu-admissions-body #content,
-.jbu-admissions-body .dialog{
+.jbu-admissions-body .dialog_host .dialog[role="dialog"]{
 	color: var(--fc-body);
 }
 .jbu-admissions-body a, .jbu-admissions-body a:link, .jbu-admissions-body a:visited,
-.dialog a, .dialog a:link, .dialog a:visited{
+.dialog_host .dialog[role="dialog"] a, .dialog_host .dialog[role="dialog"] a:link, .dialog_host .dialog[role="dialog"] a:visited{
 	font-size: inherit;
 	font-style: inherit;
 }
 /* Headings (native headings + generic utility headings) */
 .jbu-admissions-body #content h1,
 .jbu-admissions-body #content .h1,
-.dialog h1,
-.dialog .h1{
+.dialog_host .dialog[role="dialog"] h1,
+.dialog_host .dialog[role="dialog"] .h1{
 	font-size: var(--fs-h1);
 	font-weight: var(--fw-h1);
 	line-height: 1.15;
@@ -274,8 +275,8 @@ A) Default branding – baseline form system (applies to ALL forms in #content)
 }
 .jbu-admissions-body #content h2,
 .jbu-admissions-body #content .h2,
-.dialog h2,
-.dialog .h2{
+.dialog_host .dialog[role="dialog"] h2,
+.dialog_host .dialog[role="dialog"] .h2{
 	font-size: var(--fs-h2);
 	font-weight: var(--fw-h2);
 	line-height: 1.2;
@@ -283,8 +284,8 @@ A) Default branding – baseline form system (applies to ALL forms in #content)
 }
 .jbu-admissions-body #content h3,
 .jbu-admissions-body #content .h3,
-.dialog h3,
-.dialog .h3{
+.dialog_host .dialog[role="dialog"] h3,
+.dialog_host .dialog[role="dialog"] .h3{
 	font-size: var(--fs-h3);
 	font-weight: var(--fw-h3);
 	line-height: 1.25;
@@ -292,8 +293,8 @@ A) Default branding – baseline form system (applies to ALL forms in #content)
 }
 .jbu-admissions-body #content h4,
 .jbu-admissions-body #content .h4,
-.dialog h4,
-.dialog .h4{
+.dialog_host .dialog[role="dialog"] h4,
+.dialog_host .dialog[role="dialog"] .h4{
 	font-size: var(--fs-h4);
 	font-weight: var(--fw-h4);
 	line-height: 1.25;
@@ -301,8 +302,8 @@ A) Default branding – baseline form system (applies to ALL forms in #content)
 }
 .jbu-admissions-body #content h5,
 .jbu-admissions-body #content .h5,
-.dialog h5,
-.dialog .h5{
+.dialog_host .dialog[role="dialog"] h5,
+.dialog_host .dialog[role="dialog"] .h5{
 	font-size: var(--fs-h5);
 	font-weight: var(--fw-h5);
 	line-height: 1.25;
@@ -314,12 +315,17 @@ Applies in default branding content and supported dialog contexts
 -------------------------------------------------------------------------- */
 
 /* Button spacing without flex/gap */
+/* Risky: keep the hosted-content selectors for non-Slate pages, but add the
+   real Slate form hook so form actions no longer depend on #content scope. */
 .jbu-admissions-body #content .action > button,
 .jbu-admissions-body #content .action > input[type="submit"],
 .jbu-admissions-body #content .action > input[type="button"],
-.dialog_host .dialog .action > button,
-.dialog_host .dialog .action > input[type="submit"],
-.dialog_host .dialog .action > input[type="button"]{
+.form_container .action > button,
+.form_container .action > input[type="submit"],
+.form_container .action > input[type="button"],
+.dialog_host .dialog[role="dialog"] .action > button,
+.dialog_host .dialog[role="dialog"] .action > input[type="submit"],
+.dialog_host .dialog[role="dialog"] .action > input[type="button"]{
 	margin: 0 0.75rem 0.75rem 0 !important;
 	vertical-align: middle;
 }
@@ -327,9 +333,12 @@ Applies in default branding content and supported dialog contexts
 .jbu-admissions-body #content .action > button,
 .jbu-admissions-body #content .action > input[type="submit"],
 .jbu-admissions-body #content .action > input[type="button"],
-.dialog_host .dialog .action > button,
-.dialog_host .dialog .action > input[type="submit"],
-.dialog_host .dialog .action > input[type="button"]{
+.form_container .action > button,
+.form_container .action > input[type="submit"],
+.form_container .action > input[type="button"],
+.dialog_host .dialog[role="dialog"] .action > button,
+.dialog_host .dialog[role="dialog"] .action > input[type="submit"],
+.dialog_host .dialog[role="dialog"] .action > input[type="button"]{
 	-webkit-appearance: none;
 	appearance: none;
 	width: auto !important;
@@ -356,9 +365,12 @@ Applies in default branding content and supported dialog contexts
 }
 /* Primary */
 .jbu-admissions-body #content .action > button.default,
+button.default,
 .jbu-admissions-body #content .action > input[type="submit"],
-.dialog_host .dialog .action > button.default,
-.dialog_host .dialog .action > input[type="submit"]{
+.form_container .action > button.default,
+.form_container .action > input[type="submit"],
+.dialog_host .dialog[role="dialog"] .action > button.default,
+.dialog_host .dialog[role="dialog"] .action > input[type="submit"]{
 	background: var(--color-brand-500) !important;
 	border-color: var(--color-brand-500) !important;
 	color: var(--fc-on-dark) !important;
@@ -366,8 +378,10 @@ Applies in default branding content and supported dialog contexts
 /* Primary hover */
 .jbu-admissions-body #content .action > button.default:hover,
 .jbu-admissions-body #content .action > input[type="submit"]:hover,
-.dialog_host .dialog .action > button.default:hover,
-.dialog_host .dialog .action > input[type="submit"]:hover{
+.form_container .action > button.default:hover,
+.form_container .action > input[type="submit"]:hover,
+.dialog_host .dialog[role="dialog"] .action > button.default:hover,
+.dialog_host .dialog[role="dialog"] .action > input[type="submit"]:hover{
 	background: var(--color-brand-600) !important;
 	border-color: var(--color-brand-600) !important;
 	color: var(--fc-on-dark) !important;
@@ -375,8 +389,10 @@ Applies in default branding content and supported dialog contexts
 /* Secondary */
 .jbu-admissions-body #content .action > button:not(.default),
 .jbu-admissions-body #content .action > input[type="button"],
-.dialog_host .dialog .action > button:not(.default),
-.dialog_host .dialog .action > input[type="button"]{
+.form_container .action > button:not(.default),
+.form_container .action > input[type="button"],
+.dialog_host .dialog[role="dialog"] .action > button:not(.default),
+.dialog_host .dialog[role="dialog"] .action > input[type="button"]{
 	background: var(--color-surface, #fff) !important;
 	border-color: var(--color-border-strong, rgba(4,55,104,0.22)) !important;
 	color: var(--color-brand-700) !important;
@@ -384,8 +400,10 @@ Applies in default branding content and supported dialog contexts
 /* Secondary hover */
 .jbu-admissions-body #content .action > button:not(.default):hover,
 .jbu-admissions-body #content .action > input[type="button"]:hover,
-.dialog_host .dialog .action > button:not(.default):hover,
-.dialog_host .dialog .action > input[type="button"]:hover{
+.form_container .action > button:not(.default):hover,
+.form_container .action > input[type="button"]:hover,
+.dialog_host .dialog[role="dialog"] .action > button:not(.default):hover,
+.dialog_host .dialog[role="dialog"] .action > input[type="button"]:hover{
 	background: var(--color-brand-050, rgba(4,55,104,0.04)) !important;
 	border-color: var(--color-border-interactive, rgba(4,55,104,0.32)) !important;
 	color: var(--color-brand-700) !important;
@@ -394,9 +412,12 @@ Applies in default branding content and supported dialog contexts
 .jbu-admissions-body #content .action > button:focus-visible,
 .jbu-admissions-body #content .action > input[type="submit"]:focus-visible,
 .jbu-admissions-body #content .action > input[type="button"]:focus-visible,
-.dialog_host .dialog .action > button:focus-visible,
-.dialog_host .dialog .action > input[type="submit"]:focus-visible,
-.dialog_host .dialog .action > input[type="button"]:focus-visible{
+.form_container .action > button:focus-visible,
+.form_container .action > input[type="submit"]:focus-visible,
+.form_container .action > input[type="button"]:focus-visible,
+.dialog_host .dialog[role="dialog"] .action > button:focus-visible,
+.dialog_host .dialog[role="dialog"] .action > input[type="submit"]:focus-visible,
+.dialog_host .dialog[role="dialog"] .action > input[type="button"]:focus-visible{
 	outline: 2px solid var(--color-brand-700);
 	outline-offset: 2px;
 }
@@ -404,9 +425,12 @@ Applies in default branding content and supported dialog contexts
 .jbu-admissions-body #content .action > button:disabled,
 .jbu-admissions-body #content .action > input[type="submit"]:disabled,
 .jbu-admissions-body #content .action > input[type="button"]:disabled,
-.dialog_host .dialog .action > button:disabled,
-.dialog_host .dialog .action > input[type="submit"]:disabled,
-.dialog_host .dialog .action > input[type="button"]:disabled{
+.form_container .action > button:disabled,
+.form_container .action > input[type="submit"]:disabled,
+.form_container .action > input[type="button"]:disabled,
+.dialog_host .dialog[role="dialog"] .action > button:disabled,
+.dialog_host .dialog[role="dialog"] .action > input[type="submit"]:disabled,
+.dialog_host .dialog[role="dialog"] .action > input[type="button"]:disabled{
 	opacity: 0.55;
 	cursor: not-allowed;
 }
@@ -426,6 +450,7 @@ A2) Dialog styling
     max-width: min(42rem, calc(100vw - 2rem)) !important;
     min-width: 0;
     max-height: calc(100vh - 2rem) !important;
+	min-height: 3rem;
     display: flex;
     flex-direction: column;
 	border-radius: var(--radius-l);
@@ -442,7 +467,6 @@ A2) Dialog styling
 
 /* outer wrapper Slate injects */
 .dialog_host .dialog[role="dialog"] > div{
-	padding: 0 !important;
 	width: min(32rem, calc(100vw - 2rem)) !important;
 	max-width: 100%;
 }
@@ -578,7 +602,7 @@ A2) Dialog styling
   min-height: 0;
   max-height: 500px !important;
   overflow: auto !important;
-  padding: 1.25rem 1.5rem 0 !important;
+  padding: 1.25rem 1.5rem !important;
 }
 /* hr aligned with content width */
 .dialog_host .dialog[role="dialog"] hr,
@@ -731,7 +755,9 @@ Direction:
 /* --------------------------------------------------------------------------
 A4.1) Shared cell sizing + base day box
 -------------------------------------------------------------------------- */
-.jbu-admissions-body #content .ui-datepicker td,
+/* Risky: Slate calendars now hang off .form_container while portal calendars
+   stay under hosted-page content so both systems keep their existing paint. */
+.form_container .ui-datepicker td,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td{
 	padding: 0.125rem 0;
 	text-align: center;
@@ -739,10 +765,10 @@ A4.1) Shared cell sizing + base day box
 	height: 2.5rem;
 }
 
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-default,
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-default.ui-state-active,
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-highlight,
-.jbu-admissions-body #content .ui-datepicker td span.ui-state-default,
+.form_container .ui-datepicker td a.ui-state-default,
+.form_container .ui-datepicker td a.ui-state-default.ui-state-active,
+.form_container .ui-datepicker td a.ui-state-highlight,
+.form_container .ui-datepicker td span.ui-state-default,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td a.ui-state-default,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td a.ui-state-default.ui-state-active,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td a.ui-state-highlight,
@@ -759,10 +785,10 @@ A4.1) Shared cell sizing + base day box
 }
 
 /* Slate form calendar - preserve existing pill treatment */
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-default,
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-default.ui-state-active,
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-highlight,
-.jbu-admissions-body #content .ui-datepicker td span.ui-state-default{
+.form_container .ui-datepicker td a.ui-state-default,
+.form_container .ui-datepicker td a.ui-state-default.ui-state-active,
+.form_container .ui-datepicker td a.ui-state-highlight,
+.form_container .ui-datepicker td span.ui-state-default{
 	width: 2rem !important;
 	height: 2rem !important;
 	margin: 0 auto !important;
@@ -798,10 +824,10 @@ Regular Slate picker uses rounded block style, not circles
 -------------------------------------------------------------------------- */
 
 /* base Slate day block */
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-default,
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-default.ui-state-active,
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-highlight,
-.jbu-admissions-body #content .ui-datepicker td span.ui-state-default{
+.form_container .ui-datepicker td a.ui-state-default,
+.form_container .ui-datepicker td a.ui-state-default.ui-state-active,
+.form_container .ui-datepicker td a.ui-state-highlight,
+.form_container .ui-datepicker td span.ui-state-default{
 	width: calc(100% - 0.4rem) !important;
 	height: 2.25rem !important;
 	margin: 0 0.2rem !important;
@@ -812,7 +838,7 @@ Regular Slate picker uses rounded block style, not circles
 }
 
 /* default day */
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-default{
+.form_container .ui-datepicker td a.ui-state-default{
 	background: transparent !important;
 	color: var(--color-brand-700) !important;
 	font-weight: 600 !important;
@@ -822,23 +848,23 @@ Regular Slate picker uses rounded block style, not circles
 }
 
 /* hover */
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-default:hover{
+.form_container .ui-datepicker td a.ui-state-default:hover{
 	background: var(--color-brand-tint-08) !important;
 	color: var(--color-brand-700) !important;
 }
 
 /* today but not selected */
-.jbu-admissions-body #content .ui-datepicker td.ui-datepicker-today:not(.ui-datepicker-current-day) a.ui-state-default,
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-highlight{
+.form_container .ui-datepicker td.ui-datepicker-today:not(.ui-datepicker-current-day) a.ui-state-default,
+.form_container .ui-datepicker td a.ui-state-highlight{
 	background: rgba(4,55,104,0.06) !important;
 	color: var(--color-brand-700) !important;
 	box-shadow: inset 0 0 0 1px var(--color-brand-border-35);
 }
 
 /* selected - dark blue */
-.jbu-admissions-body #content .ui-datepicker td.ui-datepicker-current-day a.ui-state-default,
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-default.ui-state-active,
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-active{
+.form_container .ui-datepicker td.ui-datepicker-current-day a.ui-state-default,
+.form_container .ui-datepicker td a.ui-state-default.ui-state-active,
+.form_container .ui-datepicker td a.ui-state-active{
 	background: var(--color-brand-700) !important;
 	color: var(--fc-on-dark) !important;
 	font-weight: 600 !important;
@@ -846,9 +872,9 @@ Regular Slate picker uses rounded block style, not circles
 }
 
 /* selected hover stays selected */
-.jbu-admissions-body #content .ui-datepicker td.ui-datepicker-current-day a.ui-state-default:hover,
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-default.ui-state-active:hover,
-.jbu-admissions-body #content .ui-datepicker td a.ui-state-active:hover{
+.form_container .ui-datepicker td.ui-datepicker-current-day a.ui-state-default:hover,
+.form_container .ui-datepicker td a.ui-state-default.ui-state-active:hover,
+.form_container .ui-datepicker td a.ui-state-active:hover{
 	background: var(--color-brand-700) !important;
 	color: var(--fc-on-dark) !important;
 }
@@ -1059,7 +1085,7 @@ No font-weight changes, no sizing changes, no jitter
 /* --------------------------------------------------------------------------
 A4.2) Shared header + weekday row
 -------------------------------------------------------------------------- */
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-header,
+.form_container .form_question.form_calendar .ui-datepicker-header,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-header{
 	display: flex;
 	align-items: center;
@@ -1073,7 +1099,7 @@ A4.2) Shared header + weekday row
 	border-radius: var(--radius-s);
 }
 
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-title,
+.form_container .form_question.form_calendar .ui-datepicker-title,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-title{
 	font-size: 0.95rem;
 	font-weight: 600;
@@ -1082,7 +1108,7 @@ A4.2) Shared header + weekday row
 	text-align: center;
 }
 
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker th,
+.form_container .form_question.form_calendar .ui-datepicker th,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker th{
 	font-size: 0.8rem;
 	font-weight: 600;
@@ -1096,8 +1122,8 @@ A4.2) Shared header + weekday row
 /* --------------------------------------------------------------------------
 A4.3) Shared prev / next controls
 -------------------------------------------------------------------------- */
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-prev,
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-next,
+.form_container .form_question.form_calendar .ui-datepicker-prev,
+.form_container .form_question.form_calendar .ui-datepicker-next,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-prev,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-next{
 	position: absolute;
@@ -1111,25 +1137,25 @@ A4.3) Shared prev / next controls
 	text-decoration: none;
 }
 
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-prev,
+.form_container .form_question.form_calendar .ui-datepicker-prev,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-prev{
 	left: 0.25rem;
 }
 
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-next,
+.form_container .form_question.form_calendar .ui-datepicker-next,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-next{
 	right: 0.25rem;
 }
 
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-prev:hover,
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-next:hover,
+.form_container .form_question.form_calendar .ui-datepicker-prev:hover,
+.form_container .form_question.form_calendar .ui-datepicker-next:hover,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-prev:hover,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-next:hover{
 	background: var(--color-brand-tint-08);
 }
 
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-prev .ui-icon,
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-next .ui-icon,
+.form_container .form_question.form_calendar .ui-datepicker-prev .ui-icon,
+.form_container .form_question.form_calendar .ui-datepicker-next .ui-icon,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-prev .ui-icon,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-next .ui-icon{
 	display: none !important;
@@ -1137,8 +1163,8 @@ A4.3) Shared prev / next controls
 	background-image: none !important;
 }
 
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-prev::before,
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-next::before,
+.form_container .form_question.form_calendar .ui-datepicker-prev::before,
+.form_container .form_question.form_calendar .ui-datepicker-next::before,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-prev::before,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-next::before{
 	content: "";
@@ -1151,12 +1177,12 @@ A4.3) Shared prev / next controls
 	border-right: 2px solid var(--color-brand-700);
 }
 
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-prev::before,
+.form_container .form_question.form_calendar .ui-datepicker-prev::before,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-prev::before{
 	transform: translate(-35%, -50%) rotate(-135deg);
 }
 
-.jbu-admissions-body #content .form_question.form_calendar .ui-datepicker-next::before,
+.form_container .form_question.form_calendar .ui-datepicker-next::before,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker .ui-datepicker-next::before{
 	transform: translate(-65%, -50%) rotate(45deg);
 }
@@ -1203,7 +1229,7 @@ Scope:
 -------------------------------------------------------------------------- */
 /* Neutralize broad institutional table paint inside Slate-owned content */
 .jbu-admissions-body #content table,
-.dialog_host .dialog table,
+.dialog_host .dialog[role="dialog"] table,
 .form_container table{
   background-color: transparent;
 }
@@ -1348,7 +1374,7 @@ Scope:
 	color: var(--color-brand-700) !important;
 }
 
-/* Plain add-link pattern – catches Add School */
+/* Plain add-link pattern */
 .jbu-admissions-body #content table.table > thead > tr.row_hover > td > a,
 .jbu-admissions-body #content table.table > thead > tr.row_hover > td > a:link,
 .jbu-admissions-body #content table.table > thead > tr.row_hover > td > a:visited{
@@ -1668,6 +1694,7 @@ Institutional CSS forces width:100% on inputs/selects/textareas; revert to auto.
 	width: auto;
 	max-width: 100%;
 }
+
 /* --------------------------------------------------------------------------
 B2) Slate heading blocks (.form_h1–.form_h5)
 Keep !important because institutional styles often use !important here.
@@ -2648,6 +2675,20 @@ radio itself as the “button” and mirror your selectable tokens.
 		box-sizing: border-box;
 	}
 }
+
+@media only screen and (max-width: 736px) {
+	.form_container .form_question.form_layout_table.form_likert fieldset .form_responses{
+		display: grid !important;
+		grid-template-columns: repeat(auto-fit, minmax(var(--likert-min), 1fr)) !important;
+		gap: var(--likert-gap) !important;
+	}
+}
+@media (min-width: 481px) {
+div.form_container div.form_question[data-type="likert"]>fieldset>.form_label {
+	margin-bottom: var(--space-xxs) !important;
+}
+}
+
 /* --------------------------------------------------------------------------
 B11) Slate form controls – stable focus state (no layout shift)
 - Keep border width constant (1px)
@@ -3001,6 +3042,7 @@ B14) Form action buttons – pill-style CTA system
 
 .form_container table[id^="replicate_table_"] tbody.replicate_insert_container td{
   padding: var(--space-s) 0 0 0 !important;
+  margin: 0 !important;
 }
 
 /* Integrated add link */
@@ -3169,6 +3211,85 @@ B16) Required field states + validation helpers
 	color: var(--color-error-500) !important;
 	font-weight: var(--fw-help-strong);
 }
+
+/* --------------------------------------------------------------------------
+   B17) Universal mobile form stacking
+   Real Slate forms should stack label + control on small screens
+   -------------------------------------------------------------------------- */
+
+@media only screen and (max-width: 736px){
+
+  .form_container .form_question.form_layout_table{
+    display: block !important;
+    clear: both;
+  }
+
+  .form_container .form_page .form_question.form_layout_table:not(.hidden):not([data-invisible="1"]):not(.form_h1):not(.form_h2):not(.form_h3):not(.form_h4):not(.form_h5):not(.form_header):not(.form_p):not(.form_birthdate):not(.form_date):not(.form_dateym):not(.form_datemd):not(.form_address):not(.form_checkbox):not(.form_radio):not(.form_selectable):not(.form_likert) {
+    display: block !important;
+    clear: both;
+  }
+
+  .form_container .form_page .form_question.form_layout_table.form_birthdate > fieldset, .form_container .form_page .form_question.form_layout_table.form_date > fieldset, .form_container .form_page .form_question.form_layout_table.form_dateym > fieldset, .form_container .form_page .form_question.form_layout_table.form_datemd > fieldset {
+	  display: block !important;
+    clear: both;
+  }
+
+  .form_container .form_question.form_layout_table .form_label,
+  .form_container .form_question.form_layout_table .form_responses{
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    float: none !important;
+  }
+
+  .form_container .form_question.form_layout_table .form_label{
+    margin: 0 0 var(--space-xxs) 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    vertical-align: top !important;
+  }
+
+  .form_container .form_question.form_layout_table .form_responses{
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .form_container .form_question.form_layout_table fieldset{
+    display: block;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .form_container .form_question.form_layout_table fieldset .form_label,
+  .form_container .form_question.form_layout_table fieldset .form_responses{
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .form_container .form_question.form_layout_table select,
+  .form_container .form_question.form_layout_table input[type="text"],
+  .form_container .form_question.form_layout_table input[type="email"],
+  .form_container .form_question.form_layout_table input[type="tel"],
+  .form_container .form_question.form_layout_table input[type="number"],
+  .form_container .form_question.form_layout_table input[type="search"],
+  .form_container .form_question.form_layout_table input[type="url"],
+  .form_container .form_question.form_layout_table input[type="password"],
+  .form_container .form_question.form_layout_table textarea{
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* stack grouped selects like month/year */
+  .form_container .form_question.form_layout_table select + select{
+    margin-top: var(--space-xs);
+    margin-left: 0 !important;
+  }
+
+}
+
 /* --------------------------------------------------------------------------
 C) Application Styling
 -------------------------------------------------------------------------- */
@@ -3344,4 +3465,902 @@ Mobile = styled Slate-generated select
   .jbu-admissions-body #content #side #menu > ul > li + li > a{
     margin-top: var(--space-xxs);
   }
+}
+
+/* --------------------------------------------------------------------------
+   Experiment promotions
+   Moved from _experiments.css after validation
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+B17) Signature field
+Treat as interactive control (like textarea / selectable surface)
+-------------------------------------------------------------------------- */
+
+.form_container .form_signature_editable{
+  display: block;
+  width: 100%;
+  max-width: 36rem;
+  min-height: 6rem;
+  
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-s);
+  background: var(--color-surface-subtle);
+
+  cursor: pointer;
+
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+/* Instruction text (empty state) */
+.form_container .form_signature_editable .form_signature_instructions{
+  font-size: var(--fs-h3);
+  color: var(--fc-muted);
+  line-height: 1.4;
+}
+
+/* When signature exists */
+.form_container .form_signature_editable .form_signature{
+  min-height: 1.75rem;
+}
+
+/* Hover state */
+.form_container .form_signature_editable:hover{
+  background: var(--color-surface-subtle-hover);
+  border-color: var(--color-border-interactive);
+}
+
+/* Focus (keyboard accessibility) */
+.form_container .form_signature_editable:focus-visible{
+  outline: none;
+  border-color: var(--color-brand-500);
+  box-shadow: var(--focus-ring-brand);
+}
+
+/* Signed state – stronger surface */
+.form_container .form_signature_editable:has(.form_signature img),
+.form_container .form_signature_editable:has(.form_signature canvas){
+  background: var(--color-surface-default);
+  border-color: var(--color-border-strong);
+}
+
+
+.form_container .form_signature_details {
+	color: var(--fc-muted)
+}
+
+.form_signature_preview > div {
+	border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-s);
+}
+
+.form_signature_preview>div.selected {
+	border-color: var(--color-brand-border-45) !important;
+	background: var(--color-brand-tint-10) !important;
+}
+
+
+
+/* --------------------------------------------------------------------------
+   Mobilified add-item tables
+   Improve action treatment on mobile
+   -------------------------------------------------------------------------- */
+
+@media only screen and (max-width: 736px){
+
+  .form_container .table.table_mobilified thead tr.row_hover td[colspan]{
+    padding: var(--space-s) !important;
+    text-align: center !important;
+  }
+
+  .form_container .table.table_mobilified thead tr.row_hover td[colspan] > a{
+    display: block;
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.75rem 1rem;
+
+    background: var(--color-brand-700);
+    color: var(--fc-inverse, #fff);
+    border: 1px solid var(--color-brand-700);
+    border-radius: var(--radius-pill);
+
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .form_container .table.table_mobilified thead tr.row_hover td[colspan] > a:hover,
+  .form_container .table.table_mobilified thead tr.row_hover td[colspan] > a:focus{
+    background: var(--color-surface-default);
+    color: var(--color-brand-700);
+    border-color: var(--color-brand-700);
+    text-decoration: none;
+  }
+  .form_container .table_mobilified thead tr.row_hover td{
+    padding: var(--space-s);
+    text-align: center;
+    border-bottom: 1px solid var(--color-border-subtle);
+    background: var(--color-surface-default);
+  }
+
+  .form_container .table_mobilified thead tr.row_hover td > a{
+    display: block;
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.75rem 1rem;
+
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+
+    background: var(--color-surface-default);
+    color: var(--color-brand-700);
+    text-decoration: none;
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .form_container .table_mobilified thead tr.row_hover td > a:hover,
+  .form_container .table_mobilified thead tr.row_hover td > a:focus{
+    background: var(--color-surface-subtle);
+    text-decoration: none;
+  }
+
+  /* give each record a little more breathing room */
+  .form_container .table_mobilified tbody tr.row_hover td{
+    padding-top: var(--space-m);
+    padding-bottom: var(--space-m);
+  }
+
+  /* make long names wrap cleanly */
+  .form_container .table_mobilified tbody tr.row_hover td > a{
+    display: inline-block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   List styling reset
+   Restores list indentation after institutional ul/ol reset
+   -------------------------------------------------------------------------- */
+
+
+.jbu-admissions-body #content ul,
+.jbu-admissions-body #content ol {
+	margin-left: 1.75rem;
+	padding-left: 0;
+	list-style-position: outside;
+}
+
+
+
+.jbu-admissions-body #content li {
+	margin-top: 0.25rem;
+	padding-left: 0;
+	padding-inline-start: 0.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   MOBILE DIALOG FIX – restore modal behavior
+   Dialog shell should remain fixed, not flow content
+   -------------------------------------------------------------------------- */
+
+@media only screen and (max-width: 736px){
+
+  .dialog_host{
+    position: fixed !important;
+    inset: 0 !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    z-index: 5000;
+  }
+
+  .dialog_host .dialog[role="dialog"]{
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    margin: 0;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* target actual form wrapper, not all direct divs */
+  .dialog_host .dialog[role="dialog"] > form{
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .dialog_host .dialog[role="dialog"] .content{
+    flex: 1 1 auto;
+    height: auto !important;
+    max-height: none !important;
+    overflow: auto !important;
+  }
+
+  /* action bar sticks to bottom */
+  .dialog_host .dialog[role="dialog"] .action{
+    position: sticky;
+    bottom: 0;
+    background: var(--color-surface-default);
+    border-top: 1px solid var(--color-border-subtle);
+    padding: var(--space-s);
+  }
+
+  .dialog_host .dialog[role="dialog"] .action button{
+    width: 100% !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   DIALOG HEADER – branded modal header
+   -------------------------------------------------------------------------- */
+
+.dialog_host .dialog[role="dialog"] .header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: var(--space-s) var(--space-m);
+  background: var(--color-brand-700);
+  color: var(--fc-inverse);
+
+  font-size: var(--fs-h4);
+  font-weight: 600;
+
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+/* --------------------------------------------------------------------------
+   CLOSE BUTTON – align with dark header
+   -------------------------------------------------------------------------- */
+
+
+
+.dialog_host .dialog[role="dialog"] .dialog_close::before {
+  background:
+    linear-gradient(
+      45deg,
+      transparent calc(50% - 1px),
+      var(--fc-inverse, #fff) calc(50% - 1px),
+      var(--fc-inverse, #fff) calc(50% + 1px),
+      transparent calc(50% + 1px)
+    ),
+    linear-gradient(
+      -45deg,
+      transparent calc(50% - 1px),
+      var(--fc-inverse, #fff) calc(50% - 1px),
+      var(--fc-inverse, #fff) calc(50% + 1px),
+      transparent calc(50% + 1px)
+    );
+}
+
+/* --------------------------------------------------------------------------
+   Session-expired dialog
+   Lightweight modal variant for simple message + single CTA
+   Uses existing dialog tokens and button language
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 480px){
+  .dialog_host #sessionExtendDialog > .content{
+    padding: var(--space-l) var(--space-m) !important;
+  }
+
+  .dialog_host #sessionExtendDialog button.default,
+  .dialog_host #sessionExtendDialog input[type="submit"],
+  .dialog_host #sessionExtendDialog input[type="button"]{
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Hosted-page content experiments
+   Promoted from _experiments.css
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   Payment Page
+   Real Slate forms should stack label + control on small screens
+   -------------------------------------------------------------------------- */
+#card-location {
+	background-color: inherit;
+    border: none;
+    padding: 0;
+    max-width: 100%;
+    border-radius: none;
+}
+
+/* --------------------------------------------------------------------------
+   Payment form – payment summary tables
+   Scoped only to #payment_form
+   -------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content #payment_form table.plain{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  margin-bottom: 0 !important; /* beats generic table margin */
+}
+
+/* intentional spacing between the two stacked summary tables */
+.jbu-admissions-body #content #payment_form table.plain + table.plain{
+  margin-top: var(--space-s);
+}
+
+/* header row */
+.jbu-admissions-body #content #payment_form table.plain tr.header > th{
+  padding: var(--table-header-padding-y) var(--table-cell-padding-x);
+  background: var(--table-header-bg);
+  border: 1px solid var(--table-border-strong);
+  border-radius: var(--table-radius);
+  color: var(--color-brand-700);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-h4);
+  line-height: 1.25;
+  text-align: left;
+}
+
+/* body rows */
+.jbu-admissions-body #content #payment_form table.plain tr:not(.header) > th,
+.jbu-admissions-body #content #payment_form table.plain tr:not(.header) > td{
+  padding: 0.25rem 0;
+  border: 0;
+  vertical-align: top;
+  text-align: left;
+}
+
+/* space below header */
+.jbu-admissions-body #content #payment_form table.plain tr.header + tr > th,
+.jbu-admissions-body #content #payment_form table.plain tr.header + tr > td{
+  padding-top: var(--space-m);
+}
+
+/* label column */
+.jbu-admissions-body #content #payment_form table.plain tr:not(.header) > th{
+  width: 11rem;
+  padding-right: var(--space-m);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-label);
+  line-height: 1.3;
+}
+
+/* value column */
+.jbu-admissions-body #content #payment_form table.plain tr:not(.header) > td{
+  font-size: var(--fs-body);
+  font-weight: var(--fw-body);
+  line-height: 1.4;
+  color: var(--fc-body);
+}
+
+/* amount due row only */
+.jbu-admissions-body #content #payment_form table.plain:last-of-type tr:last-child > th,
+.jbu-admissions-body #content #payment_form table.plain:last-of-type tr:last-child > td{
+  padding-top: var(--space-xs);
+  font-size: var(--fs-h3);
+  line-height: 1.25;
+}
+
+.jbu-admissions-body #content #payment_form table.plain:last-of-type tr:last-child > th{
+  font-weight: var(--fw-h3);
+  color: var(--fc-body);
+}
+
+.jbu-admissions-body #content #payment_form table.plain:last-of-type tr:last-child > td{
+  font-weight: var(--fw-body);
+  color: var(--fc-body);
+}
+
+/* --------------------------------------------------------------------------
+   RSVP details card
+   Hosted-content component styled to match JBU default-branding patterns
+   -------------------------------------------------------------------------- */
+
+
+.jbu-admissions-body #content .rsvp_details {
+	width: 100%;
+	max-width: 34rem;
+	margin: var(--space-l) var(--space-l) var(--space-l) 0;
+	padding: var(--space-m);
+	background: var(--color-surface-muted);
+	border: 1px solid var(--color-border-soft);
+	border-radius: var(--radius-l);
+	box-shadow: var(--shadow-m);
+}
+
+
+/* kill generic plain-table behavior */
+
+.jbu-admissions-body #content .rsvp_details table.plain {
+	display: block !important;
+	width: 100%;
+	margin: 0;
+	background: transparent;
+	border-collapse: collapse;
+}
+
+
+
+.jbu-admissions-body #content .rsvp_details table.plain tbody {
+	display: block;
+}
+
+
+
+.jbu-admissions-body #content .rsvp_details table.plain tr {
+	display: grid;
+	grid-template-columns: 11rem minmax(0, 1fr);
+	column-gap: var(--space-m);
+	align-items: start;
+}
+
+
+
+.jbu-admissions-body #content .rsvp_details table.plain tr + tr {
+	margin-top: var(--space-xs);
+}
+
+
+
+.jbu-admissions-body #content .rsvp_details table.plain th,
+.jbu-admissions-body #content .rsvp_details table.plain td {
+	display: block;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	text-align: left;
+}
+
+
+/* label */
+
+.jbu-admissions-body #content .rsvp_details table.plain th {
+	padding-top: 0.125rem;
+	font-size: var(--fs-label) !important;
+	font-weight: var(--fw-label);
+	line-height: 1.25;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--fc-help);
+}
+
+
+/* value */
+
+.jbu-admissions-body #content .rsvp_details table.plain td {
+	min-width: 0;
+	font-size: var(--fs-body);
+	font-weight: var(--fw-body);
+	line-height: var(--lh-body);
+	color: var(--fc-body);
+}
+
+
+/* secondary "not this person?" row */
+
+.jbu-admissions-body #content .rsvp_details table.plain tr:last-child {
+	display: block;
+}
+
+
+
+.jbu-admissions-body #content .rsvp_details table.plain tr:last-child td {
+	padding-top: var(--space-xxs);
+	font-size: var(--fs-help);
+	line-height: 1.4;
+	color: var(--fc-help);
+}
+
+
+/* link should read as secondary utility, not primary CTA */
+
+.jbu-admissions-body #content .rsvp_details table.plain tr:last-child a {
+	color: var(--fc-help) !important;
+	font-weight: 600;
+	text-decoration: underline;
+}
+
+
+
+.jbu-admissions-body #content .rsvp_details table.plain tr:last-child a:hover {
+	color: var(--fc-body) !important;
+	text-decoration: none;
+}
+
+
+/* actions */
+
+.jbu-admissions-body #content .rsvp_details .action-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0;
+	margin-top: var(--space-l) !important;
+	padding-top: var(--space-m);
+	border-top: 1px solid var(--color-border-soft);
+}
+
+
+/* use same pill language as main form buttons */
+
+.jbu-admissions-body #content .rsvp_details .action-links > button {
+	-webkit-appearance: none;
+	appearance: none;
+	width: auto !important;
+	max-width: 100%;
+	min-width: 12rem;
+	min-height: 3rem;
+	margin: 0 0.75rem 0.75rem 0 !important;
+	padding: 0.75rem 1.5rem !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--radius-pill) !important;
+	font-family: inherit !important;
+	font-size: 1rem !important;
+	font-weight: 600 !important;
+	line-height: 1.2 !important;
+	text-align: center;
+	text-decoration: none !important;
+	cursor: pointer;
+	transition:
+		background-color var(--transition-base),
+		border-color var(--transition-base),
+		color var(--transition-base),
+		box-shadow var(--transition-base);
+}
+
+
+/* primary */
+
+.jbu-admissions-body #content .rsvp_details .action-links > button.default {
+	background: var(--color-brand-500) !important;
+	border-color: var(--color-brand-500) !important;
+	color: var(--fc-on-dark) !important;
+}
+
+
+
+.jbu-admissions-body #content .rsvp_details .action-links > button.default:hover {
+	background: var(--color-brand-600) !important;
+	border-color: var(--color-brand-600) !important;
+	color: var(--fc-on-dark) !important;
+}
+
+
+/* secondary */
+
+.jbu-admissions-body #content .rsvp_details .action-links > button:not(.default) {
+	background: var(--color-surface-default) !important;
+	border-color: var(--color-border-interactive) !important;
+	color: var(--color-brand-700) !important;
+}
+
+
+
+.jbu-admissions-body #content .rsvp_details .action-links > button:not(.default):hover {
+	background: var(--color-brand-tint-08) !important;
+	border-color: var(--color-border-interactive-hover) !important;
+	color: var(--color-brand-700) !important;
+}
+
+
+
+.jbu-admissions-body #content .rsvp_details .action-links > button:focus-visible {
+	outline: 2px solid var(--color-brand-700);
+	outline-offset: 2px;
+}
+
+
+
+@media (max-width: 640px) {
+	.jbu-admissions-body #content .rsvp_details {
+		margin-bottom: var(--space-m);
+		padding: var(--space-s);
+	}
+
+	.jbu-admissions-body #content .rsvp_details table.plain tr {
+		grid-template-columns: 1fr;
+		row-gap: 0.25rem;
+	}
+
+	.jbu-admissions-body #content .rsvp_details table.plain th {
+		padding-top: 0;
+	}
+
+	.jbu-admissions-body #content .rsvp_details .action-links {
+		display: block;
+	}
+
+	.jbu-admissions-body #content .rsvp_details .action-links > button {
+		display: block;
+		width: 100% !important;
+		min-width: 0;
+		margin-right: 0 !important;
+	}
+}
+
+/* --------------------------------------------------------------------------
+   Event details
+   Date, timezone, map, and location block cleanup
+   -------------------------------------------------------------------------- */
+
+
+.jbu-admissions-body #content p.register-date-time,
+.jbu-admissions-body #content p.register-date-time-timezone {
+	margin: 0;
+}
+
+
+
+.jbu-admissions-body #content p > span[style*="font-size: 0.9em"] {
+	color: var(--fc-muted) !important;
+}
+
+
+
+.jbu-admissions-body #content #register_location {
+	margin: 0 0 1.75rem;
+	max-width: 24rem;
+	line-height: 1.45;
+}
+
+
+
+.jbu-admissions-body #content p + #register_location {
+	margin-top: -0.125rem;
+}
+
+
+
+.jbu-admissions-body #content #register_map {
+	width: 18.75rem !important;
+	max-width: 100% !important;
+	margin: 0 0 1.25rem 2rem !important;
+}
+
+
+
+.jbu-admissions-body #content #register_map #map {
+	width: 18.75rem !important;
+	height: 14rem !important;
+	margin-bottom: 0.625rem !important;
+	border: 1px solid var(--color-neutral-200) !important;
+	border-radius: var(--radius-s);
+	overflow: hidden;
+}
+
+
+
+.jbu-admissions-body #content #register_map > div:last-child {
+	font-size: 0.95rem;
+	text-align: center;
+}
+
+
+
+@media only screen and (max-width: 768px) {
+	.jbu-admissions-body #content #register_map {
+		float: none !important;
+		width: 100% !important;
+		max-width: 100% !important;
+		margin: 1rem 0 !important;
+	}
+
+	.jbu-admissions-body #content #register_map #map {
+		width: 100% !important;
+		height: 11.5rem !important;
+		max-height: none !important;
+		margin-bottom: 0.75rem !important;
+		background-position: center center;
+		border-color: var(--color-neutral-200) !important;
+	}
+
+	.jbu-admissions-body #content #register_map > div:last-child {
+		text-align: left !important;
+	}
+
+	.jbu-admissions-body #content #register_location {
+		margin-top: 0.75rem;
+		line-height: 1.5;
+	}
+}
+
+
+
+@media only screen and (max-width: 786px) {
+	.jbu-admissions-body #content p.register-date-time {
+		margin-bottom: 0.25rem;
+	}
+
+	.jbu-admissions-body #content .register-timezone {
+		display: block;
+		margin: 0.25rem 0 0 0 !important;
+		font-size: var(--fs-help);
+		color: var(--fc-muted);
+	}
+}
+
+/* --------------------------------------------------------------------------
+   Unsubscribe page
+   Hosted page form – styled to align with default-branding form patterns
+   Not a true Slate .form_container form, so scope to hosted content only
+   -------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content form[action*="go?r=optout"]{
+	max-width: 60rem;
+	margin: var(--space-l) 0 0 0;
+	padding: var(--space-l);
+	background: var(--color-surface-default);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-l);
+	box-shadow: var(--shadow-s);
+}
+
+/* tighten headline spacing on this page */
+.jbu-admissions-body #content h1{
+	margin-bottom: var(--space-m);
+}
+
+/* section prompts */
+.jbu-admissions-body #content form[action*="go?r=optout"] > p{
+	margin: 0 0 var(--space-xs) 0;
+	font-size: var(--fs-body);
+	font-weight: var(--fw-body);
+	line-height: var(--lh-body);
+	color: var(--fc-body);
+}
+
+/* email and checkbox groups currently live in blockquote – restyle as panels */
+.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote{
+	margin: 0 0 var(--space-l) 0;
+	padding: var(--space-s) var(--space-m);
+	border-left: 3px solid var(--color-brand-500);
+	background: var(--color-surface-soft);
+	border-radius: 0 var(--radius-s) var(--radius-s) 0;
+}
+
+/* email value */
+.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:first-of-type{
+	font-size: var(--fs-body);
+	font-weight: var(--fw-h4);
+	line-height: var(--lh-body);
+	color: var(--fc-body);
+}
+
+/* checkbox option stack */
+.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:last-of-type{
+	margin: 0 0 var(--space-l) 0;
+	padding: var(--space-s) var(--space-m) var(--space-xxs) var(--space-m);
+	border-left: 3px solid var(--color-brand-500);
+	background: var(--color-surface-soft);
+	border-radius: 0 var(--radius-s) var(--radius-s) 0;
+}
+
+.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:last-of-type br{
+	display: none;
+}
+
+.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:last-of-type input[type="checkbox"]{
+	-webkit-appearance: none;
+	appearance: none;
+	display: inline-block;
+	vertical-align: top;
+	box-sizing: border-box;
+	width: 1rem !important;
+	height: 1rem !important;
+	margin: 0.1rem 0.75rem 0 0;
+	padding: 0;
+	border: 1px solid var(--color-border-strong);
+	border-radius: 0.25rem;
+	background-color: var(--color-surface-default);
+	background-image: none;
+	box-shadow: none;
+	position: relative;
+	cursor: pointer;
+	flex: 0 0 auto;
+}
+
+.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:last-of-type input[type="checkbox"]:checked{
+	background-color: var(--color-brand-500);
+	border-color: var(--color-brand-500);
+}
+
+.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:last-of-type input[type="checkbox"]:checked::after{
+	content: "";
+	position: absolute;
+	left: 0.38rem;
+	top: 0.14rem;
+	width: 0.28rem;
+	height: 0.56rem;
+	border: solid #fff;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+}
+
+.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:last-of-type input[type="checkbox"]:focus-visible{
+	outline: 2px solid var(--color-brand-700);
+	outline-offset: 2px;
+}
+
+.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:last-of-type input[type="checkbox"] + label{
+	display: inline-block;
+	width: calc(100% - 2.25rem);
+	vertical-align: top;
+	margin: 0 0 var(--space-m) 0;
+	font-size: var(--fs-body);
+	font-weight: var(--fw-body);
+	line-height: var(--lh-body);
+	color: var(--fc-body);
+	cursor: pointer;
+}
+
+/* undo legacy <br><br> spacing once grid gap is active */
+.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:last-of-type br{
+	display: none;
+}
+
+/* each checkbox + label pair */
+.jbu-admissions-body #content form[action*="go?r=optout"] input[type="checkbox"]:checked{
+	background: var(--color-brand-500);
+	border-color: var(--color-brand-500);
+}
+
+.jbu-admissions-body #content form[action*="go?r=optout"] input[type="checkbox"]:checked::after{
+	content: "";
+	position: absolute;
+	left: 0.3rem;
+    top: 0.11rem;
+	width: 0.28rem;
+	height: 0.55rem;
+	border: solid #fff;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+}
+
+.jbu-admissions-body #content form[action*="go?r=optout"] input[type="checkbox"]:focus-visible{
+	outline: 2px solid var(--color-brand-700);
+	outline-offset: 2px;
+}
+
+.jbu-admissions-body #content form[action*="go?r=optout"] label{
+	display: inline;
+	font-size: var(--fs-body);
+	font-weight: var(--fw-body);
+	line-height: var(--lh-body);
+	color: var(--fc-body);
+	cursor: pointer;
+}
+
+/* action row */
+.jbu-admissions-body #content form[action*="go?r=optout"] .action{
+	margin-top: var(--space-l);
+	padding-top: var(--space-s);
+	border-top: 1px solid var(--color-border-muted);
+}
+
+/* make lone save button feel intentional, not oversized */
+.jbu-admissions-body #content form[action*="go?r=optout"] .action > button.default{
+	min-width: 9rem;
+}
+
+/* mobile */
+@media (max-width: 640px){
+	.jbu-admissions-body #content form[action*="go?r=optout"]{
+		padding: var(--space-m);
+	}
+
+	.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote{
+		padding: var(--space-s);
+	}
 }
