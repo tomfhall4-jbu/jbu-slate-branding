@@ -1527,6 +1527,29 @@ Scope:
 	text-decoration: none !important;
 }
 
+/* Widget-style add row --------------------------------------------------- */
+.jbu-admissions-body #content table.table .widget_add{
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	min-height: 2.25rem;
+	padding: 0.5rem 0.875rem;
+	border: 1px solid var(--color-brand-border-22);
+	border-radius: var(--radius-pill);
+	background: var(--color-surface-default);
+	color: var(--color-brand-700) !important;
+	font-size: 0.9375rem;
+	font-weight: 500;
+	line-height: 1.2;
+	text-decoration: none !important;
+}
+.jbu-admissions-body #content table.table .widget_add:hover,
+.jbu-admissions-body #content table.table .widget_add:focus-visible{
+	background: var(--color-brand-tint-08);
+	border-color: var(--color-brand-border-35);
+	color: var(--color-brand-700);
+}
+
 /* Original widget_add pattern – keep separate so Add Address keeps working */
 .jbu-admissions-body #content table.table tr.hover .widget_add,
 .jbu-admissions-body #content table.table tr.hover .widget_add:link,
@@ -1695,28 +1718,6 @@ Sortable table headers – single active chevron
 .jbu-admissions-body #content table.table.nohighlight a:hover{
 	color: var(--color-brand-700);
 }
-/* Widget-style add row --------------------------------------------------- */
-.jbu-admissions-body #content table.table .widget_add{
-	display: inline-flex;
-	align-items: center;
-	gap: 0.375rem;
-	min-height: 2.25rem;
-	padding: 0.5rem 0.875rem;
-	border: 1px solid var(--color-brand-border-22);
-	border-radius: var(--radius-pill);
-	background: var(--color-surface-default);
-	color: var(--color-brand-700) !important;
-	font-size: 0.9375rem;
-	font-weight: 500;
-	line-height: 1.2;
-	text-decoration: none !important;
-}
-.jbu-admissions-body #content table.table .widget_add:hover,
-.jbu-admissions-body #content table.table .widget_add:focus-visible{
-	background: var(--color-brand-tint-08);
-	border-color: var(--color-brand-border-35);
-	color: var(--color-brand-700);
-}
 /* Better vertical centering for short data columns
 .jbu-admissions-body #content table.table > tbody > tr > td:is(:nth-child(3), :nth-child(4)),
 .jbu-admissions-body #content table.table > tbody > tr > th:is(:nth-child(3), :nth-child(4)){
@@ -1863,30 +1864,6 @@ Keep !important because institutional styles often use !important here.
 	font-weight: var(--fw-h5) !important;
 	line-height: 1.25 !important;
 	margin: var(--space-s) 0 var(--space-xxs) 0 !important;
-}
-
-/* --------------------------------------------------------------------------
-B2.5) Slate account banner (only appears on forms but is outside .form-container)
--------------------------------------------------------------------------- */
-.jbu-admissions-body #form_response_banner{
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: .75rem 1rem !important;
-	margin-bottom: 1.25rem !important;
-	background: var(--color-brand-700) !important;
-	color: var(--fc-on-dark) !important;
-	border-radius: var(--radius-s);
-	font-size: var(--fs-h5);
-	line-height: 1.4;
-}
-.jbu-admissions-body #form_response_banner a{
-	color: var(--fc-on-dark) !important;
-	text-decoration: underline !important;
-	float: none !important;
-}
-.jbu-admissions-body #form_response_banner a:hover{
-	text-decoration: none !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -2046,6 +2023,285 @@ Intended for HTML placed inside Slate label fields
 .form_container .form_responses select,
 .form_container .form_responses textarea{
   border-color: var(--color-neutral-400);
+}
+
+/* --------------------------------------------------------------------------
+B10) Slate form controls – stable focus state (no layout shift)
+- Keep border width constant (1px)
+- Focus state changes color + adds subtle focus ring
+- Scoped only to Slate-hosted forms
+-------------------------------------------------------------------------- */
+.form_container .form_page
+input[type="text"]:focus,
+.form_container .form_page
+input[type="email"]:focus,
+.form_container .form_page
+input[type="number"]:focus,
+.form_container .form_page
+input[type="tel"]:focus,
+.form_container .form_page
+input[type="password"]:focus,
+.form_container .form_page
+input[type="url"]:focus,
+.form_container .form_page
+input[type="search"]:focus,
+.form_container .form_page
+select:focus,
+.form_container .form_page
+textarea:focus{
+	border: 1px solid var(--color-brand-500) !important;
+	outline: none;
+	box-shadow: var(--focus-ring-brand);
+}
+
+/* --------------------------------------------------------------------------
+B11) Material upload – native file input optimization
+Keep native behavior, improve width, spacing, and button styling
+-------------------------------------------------------------------------- */
+.form_container 
+.form_page .form_question[data-type="plugin:material"] .form_response_material_upload{
+	max-width: var(--upload-max-width);
+}
+.form_container 
+.form_page .form_question[data-type="plugin:material"] .form_response_material_upload p{
+	margin: 0;
+}
+.form_container 
+.form_page .form_question[data-type="plugin:material"] input[type="file"]{
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	min-height: 2.75rem;
+	padding: 0;
+	margin: 0;
+	font-size: var(--fs-label);
+	line-height: 1.35;
+	color: inherit;
+	background: transparent;
+	border: 0;
+}
+/* Modern browsers */
+.form_container 
+.form_page .form_question[data-type="plugin:material"] input[type="file"]::file-selector-button{
+	margin-right: 0.75rem;
+	padding: 0.625rem 0.875rem;
+	min-height: 2.5rem;
+	border: 1px solid #707070;
+	border-radius: var(--radius-xs);
+	background: var(--color-surface-default);
+	color: inherit;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+/* Hover */
+.form_container 
+.form_page .form_question[data-type="plugin:material"] input[type="file"]:hover::file-selector-button{
+	background: rgba(0,0,0,0.04);
+}
+/* Focus – keep same border size pattern */
+.form_container 
+.form_page .form_question[data-type="plugin:material"] input[type="file"]:focus-visible::file-selector-button{
+	outline: 2px solid #000;
+	outline-offset: 2px;
+}
+/* Keep focus visible on the host control when button-subpart focus styling is inconsistent. */
+.form_container
+.form_page .form_question[data-type="plugin:material"] input[type="file"]:focus-visible{
+	outline: 2px solid var(--color-brand-700);
+	outline-offset: 2px;
+}
+/* Safari / older WebKit fallback */
+.form_container 
+.form_page .form_question[data-type="plugin:material"] input[type="file"]::-webkit-file-upload-button{
+	margin-right: 0.75rem;
+	padding: 0.625rem 0.875rem;
+	min-height: 2.5rem;
+	border: 1px solid #707070;
+	border-radius: var(--radius-xs);
+	background: var(--color-surface-default);
+	color: inherit;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+B11.5) Signature field
+Form-system control with matching signature-dialog editor follow-up
+-------------------------------------------------------------------------- */
+
+.form_container .form_signature_editable{
+  display: block;
+  width: 100%;
+  max-width: 36rem;
+  min-height: 6rem;
+  
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-s);
+  background: var(--color-surface-subtle);
+
+  cursor: pointer;
+
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+/* Instruction text (empty state) */
+.form_container .form_signature_editable .form_signature_instructions{
+  font-size: var(--fs-h3);
+  color: var(--fc-muted);
+  line-height: 1.4;
+}
+
+/* When signature exists */
+.form_container .form_signature_editable .form_signature{
+  min-height: 1.75rem;
+}
+
+/* Hover state */
+.form_container .form_signature_editable:hover{
+  background: var(--color-surface-subtle-hover);
+  border-color: var(--color-border-interactive);
+}
+
+/* Focus (keyboard accessibility) */
+.form_container .form_signature_editable:focus-visible{
+  outline: none;
+  border-color: var(--color-brand-500);
+  box-shadow: var(--focus-ring-brand);
+}
+
+/* Signed state – stronger surface */
+.form_container .form_signature_editable:has(.form_signature img),
+.form_container .form_signature_editable:has(.form_signature canvas){
+  background: var(--color-surface-default);
+  border-color: var(--color-border-strong);
+}
+
+.form_container .form_signature_details {
+	color: var(--fc-muted)
+}
+
+.form_signature_preview > div {
+	border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-s);
+}
+
+.form_signature_preview>div.selected {
+	border-color: var(--color-brand-border-45) !important;
+	background: var(--color-brand-tint-10) !important;
+}
+
+/* Signature editor fields should follow Slate stable-focus behavior */
+.dialog_host .dialog[role="dialog"] form[id^="form_signature"] input[type="text"]:focus,
+.dialog_host .dialog[role="dialog"] form[id^="form_signature"] input[type="text"]:focus-visible{
+	border: 1px solid var(--color-brand-500) !important;
+	outline: none;
+	box-shadow: var(--focus-ring-brand);
+}
+
+/* --------------------------------------------------------------------------
+B13) Required field states + validation helpers
+-------------------------------------------------------------------------- */
+.form_container 
+.form_page .form_question.required{
+	background: var(--color-error-100);
+	padding: 0.75rem 0.875rem;
+	border: 1px solid var(--color-error-200);
+	border-radius: var(--radius-m);
+}
+.form_container 
+.form_page .form_question.required > .form_label .form-label-text{
+	color: var(--color-error-700);
+}
+.form_container 
+.form_page .form_question.required input[type="text"],
+.form_container 
+.form_page .form_question.required input[type="email"],
+.form_container 
+.form_page .form_question.required input[type="tel"],
+.form_container 
+.form_page .form_question.required input[type="number"],
+.form_container 
+.form_page .form_question.required input[type="password"],
+.form_container 
+.form_page .form_question.required input[type="search"],
+.form_container 
+.form_page .form_question.required input[type="url"],
+.form_container 
+.form_page .form_question.required input:not([type]),
+.form_container 
+.form_page .form_question.required select,
+.form_container 
+.form_page .form_question.required textarea{
+	border-color: var(--color-error-500) !important;
+}
+/* Error fields – red focus state */
+.form_container 
+.form_page .form_question.required input[type="text"]:focus,
+.form_container 
+.form_page .form_question.required input[type="email"]:focus,
+.form_container 
+.form_page .form_question.required input[type="number"]:focus,
+.form_container 
+.form_page .form_question.required input[type="tel"]:focus,
+.form_container 
+.form_page .form_question.required input[type="password"]:focus,
+.form_container 
+.form_page .form_question.required input[type="url"]:focus,
+.form_container 
+.form_page .form_question.required input[type="search"]:focus,
+.form_container 
+.form_page .form_question.required select:focus,
+.form_container 
+.form_page .form_question.required textarea:focus{
+	border: 1px solid var(--color-error-500) !important;
+	outline: none;
+	box-shadow: 0 0 0 2px var(--color-error-ring);
+}
+/* Field-level validation errors (Slate validate_error class) */
+.form_container 
+.form_page input.validate_error,
+.form_container 
+.form_page select.validate_error,
+.form_container 
+.form_page textarea.validate_error{
+	border-color: var(--color-error-500) !important;
+}
+/* Focus state for invalid fields */
+.form_container 
+.form_page input.validate_error:focus,
+.form_container 
+.form_page select.validate_error:focus,
+.form_container 
+.form_page textarea.validate_error:focus{
+	border-color: var(--color-error-600) !important;
+	box-shadow: 0 0 0 2px var(--color-error-ring);
+}
+/* Field helper text (character counters + validation helpers) */
+.form_container 
+.form_page [id$="_maxlength"],
+.form_container 
+.form_page [id$="_minlength_characters"]{
+	display: block;
+	margin-top: var(--helper-margin-top);
+	font-size: var(--fs-help-sm) !important;
+	line-height: 1.35;
+	color: var(--fc-muted) !important;
+}
+/* Remaining characters – neutral helper */
+.form_container 
+.form_page [id$="_maxlength"]{
+	color: var(--fc-help-strong) !important;
+}
+/* Minimum requirement warning */
+.form_container 
+.form_page [id$="_minlength_characters"]{
+	color: var(--color-error-500) !important;
+	font-weight: var(--fw-help-strong);
 }
 
 /* --------------------------------------------------------------------------
@@ -2871,184 +3127,6 @@ radio itself as the “button” and mirror your selectable tokens.
 }
 
 /* --------------------------------------------------------------------------
-B10) Slate form controls – stable focus state (no layout shift)
-- Keep border width constant (1px)
-- Focus state changes color + adds subtle focus ring
-- Scoped only to Slate-hosted forms
--------------------------------------------------------------------------- */
-.form_container .form_page
-input[type="text"]:focus,
-.form_container .form_page
-input[type="email"]:focus,
-.form_container .form_page
-input[type="number"]:focus,
-.form_container .form_page
-input[type="tel"]:focus,
-.form_container .form_page
-input[type="password"]:focus,
-.form_container .form_page
-input[type="url"]:focus,
-.form_container .form_page
-input[type="search"]:focus,
-.form_container .form_page
-select:focus,
-.form_container .form_page
-textarea:focus{
-	border: 1px solid var(--color-brand-500) !important;
-	outline: none;
-	box-shadow: var(--focus-ring-brand);
-}
-
-/* --------------------------------------------------------------------------
-B11) Material upload – native file input optimization
-Keep native behavior, improve width, spacing, and button styling
--------------------------------------------------------------------------- */
-.form_container 
-.form_page .form_question[data-type="plugin:material"] .form_response_material_upload{
-	max-width: var(--upload-max-width);
-}
-.form_container 
-.form_page .form_question[data-type="plugin:material"] .form_response_material_upload p{
-	margin: 0;
-}
-.form_container 
-.form_page .form_question[data-type="plugin:material"] input[type="file"]{
-	display: block;
-	width: 100%;
-	max-width: 100%;
-	min-height: 2.75rem;
-	padding: 0;
-	margin: 0;
-	font-size: var(--fs-label);
-	line-height: 1.35;
-	color: inherit;
-	background: transparent;
-	border: 0;
-}
-/* Modern browsers */
-.form_container 
-.form_page .form_question[data-type="plugin:material"] input[type="file"]::file-selector-button{
-	margin-right: 0.75rem;
-	padding: 0.625rem 0.875rem;
-	min-height: 2.5rem;
-	border: 1px solid #707070;
-	border-radius: var(--radius-xs);
-	background: var(--color-surface-default);
-	color: inherit;
-	font: inherit;
-	font-weight: 600;
-	cursor: pointer;
-}
-/* Hover */
-.form_container 
-.form_page .form_question[data-type="plugin:material"] input[type="file"]:hover::file-selector-button{
-	background: rgba(0,0,0,0.04);
-}
-/* Focus – keep same border size pattern */
-.form_container 
-.form_page .form_question[data-type="plugin:material"] input[type="file"]:focus-visible::file-selector-button{
-	outline: 2px solid #000;
-	outline-offset: 2px;
-}
-/* Keep focus visible on the host control when button-subpart focus styling is inconsistent. */
-.form_container
-.form_page .form_question[data-type="plugin:material"] input[type="file"]:focus-visible{
-	outline: 2px solid var(--color-brand-700);
-	outline-offset: 2px;
-}
-/* Safari / older WebKit fallback */
-.form_container 
-.form_page .form_question[data-type="plugin:material"] input[type="file"]::-webkit-file-upload-button{
-	margin-right: 0.75rem;
-	padding: 0.625rem 0.875rem;
-	min-height: 2.5rem;
-	border: 1px solid #707070;
-	border-radius: var(--radius-xs);
-	background: var(--color-surface-default);
-	color: inherit;
-	font: inherit;
-	font-weight: 600;
-	cursor: pointer;
-}
-
-/* --------------------------------------------------------------------------
-B11.5) Signature field
-Form-system control with matching signature-dialog editor follow-up
--------------------------------------------------------------------------- */
-
-.form_container .form_signature_editable{
-  display: block;
-  width: 100%;
-  max-width: 36rem;
-  min-height: 6rem;
-  
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-s);
-  background: var(--color-surface-subtle);
-
-  cursor: pointer;
-
-  transition:
-    border-color var(--transition-fast),
-    background-color var(--transition-fast),
-    box-shadow var(--transition-fast);
-}
-
-/* Instruction text (empty state) */
-.form_container .form_signature_editable .form_signature_instructions{
-  font-size: var(--fs-h3);
-  color: var(--fc-muted);
-  line-height: 1.4;
-}
-
-/* When signature exists */
-.form_container .form_signature_editable .form_signature{
-  min-height: 1.75rem;
-}
-
-/* Hover state */
-.form_container .form_signature_editable:hover{
-  background: var(--color-surface-subtle-hover);
-  border-color: var(--color-border-interactive);
-}
-
-/* Focus (keyboard accessibility) */
-.form_container .form_signature_editable:focus-visible{
-  outline: none;
-  border-color: var(--color-brand-500);
-  box-shadow: var(--focus-ring-brand);
-}
-
-/* Signed state – stronger surface */
-.form_container .form_signature_editable:has(.form_signature img),
-.form_container .form_signature_editable:has(.form_signature canvas){
-  background: var(--color-surface-default);
-  border-color: var(--color-border-strong);
-}
-
-.form_container .form_signature_details {
-	color: var(--fc-muted)
-}
-
-.form_signature_preview > div {
-	border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-s);
-}
-
-.form_signature_preview>div.selected {
-	border-color: var(--color-brand-border-45) !important;
-	background: var(--color-brand-tint-10) !important;
-}
-
-/* Signature editor fields should follow Slate stable-focus behavior */
-.dialog_host .dialog[role="dialog"] form[id^="form_signature"] input[type="text"]:focus,
-.dialog_host .dialog[role="dialog"] form[id^="form_signature"] input[type="text"]:focus-visible{
-	border: 1px solid var(--color-brand-500) !important;
-	outline: none;
-	box-shadow: var(--focus-ring-brand);
-}
-
-/* --------------------------------------------------------------------------
 B12) Form action buttons – pill-style CTA system
 -------------------------------------------------------------------------- */
 /* Kill any older full-width submit rule */
@@ -3386,107 +3464,6 @@ B12) Form action buttons – pill-style CTA system
 }
 
 /* --------------------------------------------------------------------------
-B13) Required field states + validation helpers
--------------------------------------------------------------------------- */
-.form_container 
-.form_page .form_question.required{
-	background: var(--color-error-100);
-	padding: 0.75rem 0.875rem;
-	border: 1px solid var(--color-error-200);
-	border-radius: var(--radius-m);
-}
-.form_container 
-.form_page .form_question.required > .form_label .form-label-text{
-	color: var(--color-error-700);
-}
-.form_container 
-.form_page .form_question.required input[type="text"],
-.form_container 
-.form_page .form_question.required input[type="email"],
-.form_container 
-.form_page .form_question.required input[type="tel"],
-.form_container 
-.form_page .form_question.required input[type="number"],
-.form_container 
-.form_page .form_question.required input[type="password"],
-.form_container 
-.form_page .form_question.required input[type="search"],
-.form_container 
-.form_page .form_question.required input[type="url"],
-.form_container 
-.form_page .form_question.required input:not([type]),
-.form_container 
-.form_page .form_question.required select,
-.form_container 
-.form_page .form_question.required textarea{
-	border-color: var(--color-error-500) !important;
-}
-/* Error fields – red focus state */
-.form_container 
-.form_page .form_question.required input[type="text"]:focus,
-.form_container 
-.form_page .form_question.required input[type="email"]:focus,
-.form_container 
-.form_page .form_question.required input[type="number"]:focus,
-.form_container 
-.form_page .form_question.required input[type="tel"]:focus,
-.form_container 
-.form_page .form_question.required input[type="password"]:focus,
-.form_container 
-.form_page .form_question.required input[type="url"]:focus,
-.form_container 
-.form_page .form_question.required input[type="search"]:focus,
-.form_container 
-.form_page .form_question.required select:focus,
-.form_container 
-.form_page .form_question.required textarea:focus{
-	border: 1px solid var(--color-error-500) !important;
-	outline: none;
-	box-shadow: 0 0 0 2px var(--color-error-ring);
-}
-/* Field-level validation errors (Slate validate_error class) */
-.form_container 
-.form_page input.validate_error,
-.form_container 
-.form_page select.validate_error,
-.form_container 
-.form_page textarea.validate_error{
-	border-color: var(--color-error-500) !important;
-}
-/* Focus state for invalid fields */
-.form_container 
-.form_page input.validate_error:focus,
-.form_container 
-.form_page select.validate_error:focus,
-.form_container 
-.form_page textarea.validate_error:focus{
-	border-color: var(--color-error-600) !important;
-	box-shadow: 0 0 0 2px var(--color-error-ring);
-}
-/* Field helper text (character counters + validation helpers) */
-.form_container 
-.form_page [id$="_maxlength"],
-.form_container 
-.form_page [id$="_minlength_characters"]{
-	display: block;
-	margin-top: var(--helper-margin-top);
-	font-size: var(--fs-help-sm) !important;
-	line-height: 1.35;
-	color: var(--fc-muted) !important;
-}
-/* Remaining characters – neutral helper */
-.form_container 
-.form_page [id$="_maxlength"]{
-	color: var(--fc-help-strong) !important;
-}
-/* Minimum requirement warning */
-.form_container 
-.form_page [id$="_minlength_characters"]{
-	color: var(--color-error-500) !important;
-	font-weight: var(--fw-help-strong);
-}
-
-/* --------------------------------------------------------------------------
    B14) Universal mobile form stacking
    Form-system mobile fallback for table-layout questions
    -------------------------------------------------------------------------- */
@@ -3572,6 +3549,135 @@ application patterns rather than reusable cross-layer foundations.
 /* --------------------------------------------------------------------------
 C) Application/page-specific hosted components
 -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+Standalone hosted page/form-adjacent components
+- isolated blocks without responsive companions
+- grouped here for lower-risk maintenance
+-------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+Slate account banner (only appears on forms but is outside .form-container)
+-------------------------------------------------------------------------- */
+.jbu-admissions-body #form_response_banner{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: .75rem 1rem !important;
+	margin-bottom: 1.25rem !important;
+	background: var(--color-brand-700) !important;
+	color: var(--fc-on-dark) !important;
+	border-radius: var(--radius-s);
+	font-size: var(--fs-h5);
+	line-height: 1.4;
+}
+.jbu-admissions-body #form_response_banner a{
+	color: var(--fc-on-dark) !important;
+	text-decoration: underline !important;
+	float: none !important;
+}
+.jbu-admissions-body #form_response_banner a:hover{
+	text-decoration: none !important;
+}
+
+/* Legacy application signature fields should follow Slate stable-focus behavior */
+form[action="certify"] input[type="text"]:focus,
+form[action="certify"] input[type="text"]:focus-visible{
+	border: 1px solid var(--color-brand-500) !important;
+	outline: none;
+	box-shadow: var(--focus-ring-brand);
+}
+
+/* --------------------------------------------------------------------------
+   Payment page hosted component shell
+   Local cleanup for the payment page container only
+   -------------------------------------------------------------------------- */
+.jbu-admissions-body #content #card-location {
+	background-color: inherit;
+    border: none;
+    padding: 0;
+    max-width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Payment form – payment summary tables
+   Scoped only to #payment_form
+   -------------------------------------------------------------------------- */
+
+.jbu-admissions-body #content #payment_form table.plain{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  margin-bottom: 0 !important; /* beats generic table margin */
+}
+
+/* intentional spacing between the two stacked summary tables */
+.jbu-admissions-body #content #payment_form table.plain + table.plain{
+  margin-top: var(--space-s);
+}
+
+/* header row */
+.jbu-admissions-body #content #payment_form table.plain tr.header > th{
+  padding: var(--table-header-padding-y) var(--table-cell-padding-x);
+  background: var(--table-header-bg);
+  border: 1px solid var(--table-border-strong);
+  border-radius: var(--table-radius);
+  color: var(--color-brand-700);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-h4);
+  line-height: 1.25;
+  text-align: left;
+}
+
+/* body rows */
+.jbu-admissions-body #content #payment_form table.plain tr:not(.header) > th,
+.jbu-admissions-body #content #payment_form table.plain tr:not(.header) > td{
+  padding: 0.25rem 0;
+  border: 0;
+  vertical-align: top;
+  text-align: left;
+}
+
+/* space below header */
+.jbu-admissions-body #content #payment_form table.plain tr.header + tr > th,
+.jbu-admissions-body #content #payment_form table.plain tr.header + tr > td{
+  padding-top: var(--space-m);
+}
+
+/* label column */
+.jbu-admissions-body #content #payment_form table.plain tr:not(.header) > th{
+  width: 11rem;
+  padding-right: var(--space-m);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-label);
+  line-height: 1.3;
+}
+
+/* value column */
+.jbu-admissions-body #content #payment_form table.plain tr:not(.header) > td{
+  font-size: var(--fs-body);
+  font-weight: var(--fw-body);
+  line-height: 1.4;
+  color: var(--fc-body);
+}
+
+/* amount due row only */
+.jbu-admissions-body #content #payment_form table.plain:last-of-type tr:last-child > th,
+.jbu-admissions-body #content #payment_form table.plain:last-of-type tr:last-child > td{
+  padding-top: var(--space-xs);
+  font-size: var(--fs-h3);
+  line-height: 1.25;
+}
+
+.jbu-admissions-body #content #payment_form table.plain:last-of-type tr:last-child > th{
+  font-weight: var(--fw-h3);
+  color: var(--fc-body);
+}
+
+.jbu-admissions-body #content #payment_form table.plain:last-of-type tr:last-child > td{
+  font-weight: var(--fw-body);
+  color: var(--fc-body);
+}
+
 /* --------------------------------------------------------------------------
 Portal/application step navigation
 Canonical hosted application navigation:
@@ -3747,112 +3853,10 @@ Canonical hosted application navigation:
   }
 }
 
-/* Legacy application signature fields should follow Slate stable-focus behavior */
-form[action="certify"] input[type="text"]:focus,
-form[action="certify"] input[type="text"]:focus-visible{
-	border: 1px solid var(--color-brand-500) !important;
-	outline: none;
-	box-shadow: var(--focus-ring-brand);
-}
-
-
-/* --------------------------------------------------------------------------
-   Payment page hosted component shell
-   Local cleanup for the payment page container only
-   -------------------------------------------------------------------------- */
-.jbu-admissions-body #content #card-location {
-	background-color: inherit;
-    border: none;
-    padding: 0;
-    max-width: 100%;
-}
-
-/* --------------------------------------------------------------------------
-   Payment form – payment summary tables
-   Scoped only to #payment_form
-   -------------------------------------------------------------------------- */
-
-.jbu-admissions-body #content #payment_form table.plain{
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin: 0;
-  margin-bottom: 0 !important; /* beats generic table margin */
-}
-
-/* intentional spacing between the two stacked summary tables */
-.jbu-admissions-body #content #payment_form table.plain + table.plain{
-  margin-top: var(--space-s);
-}
-
-/* header row */
-.jbu-admissions-body #content #payment_form table.plain tr.header > th{
-  padding: var(--table-header-padding-y) var(--table-cell-padding-x);
-  background: var(--table-header-bg);
-  border: 1px solid var(--table-border-strong);
-  border-radius: var(--table-radius);
-  color: var(--color-brand-700);
-  font-size: var(--fs-h4);
-  font-weight: var(--fw-h4);
-  line-height: 1.25;
-  text-align: left;
-}
-
-/* body rows */
-.jbu-admissions-body #content #payment_form table.plain tr:not(.header) > th,
-.jbu-admissions-body #content #payment_form table.plain tr:not(.header) > td{
-  padding: 0.25rem 0;
-  border: 0;
-  vertical-align: top;
-  text-align: left;
-}
-
-/* space below header */
-.jbu-admissions-body #content #payment_form table.plain tr.header + tr > th,
-.jbu-admissions-body #content #payment_form table.plain tr.header + tr > td{
-  padding-top: var(--space-m);
-}
-
-/* label column */
-.jbu-admissions-body #content #payment_form table.plain tr:not(.header) > th{
-  width: 11rem;
-  padding-right: var(--space-m);
-  font-size: var(--fs-label);
-  font-weight: var(--fw-label);
-  line-height: 1.3;
-}
-
-/* value column */
-.jbu-admissions-body #content #payment_form table.plain tr:not(.header) > td{
-  font-size: var(--fs-body);
-  font-weight: var(--fw-body);
-  line-height: 1.4;
-  color: var(--fc-body);
-}
-
-/* amount due row only */
-.jbu-admissions-body #content #payment_form table.plain:last-of-type tr:last-child > th,
-.jbu-admissions-body #content #payment_form table.plain:last-of-type tr:last-child > td{
-  padding-top: var(--space-xs);
-  font-size: var(--fs-h3);
-  line-height: 1.25;
-}
-
-.jbu-admissions-body #content #payment_form table.plain:last-of-type tr:last-child > th{
-  font-weight: var(--fw-h3);
-  color: var(--fc-body);
-}
-
-.jbu-admissions-body #content #payment_form table.plain:last-of-type tr:last-child > td{
-  font-weight: var(--fw-body);
-  color: var(--fc-body);
-}
-
 /* --------------------------------------------------------------------------
    RSVP details card
    Hosted-content component aligned to shared branding patterns
    -------------------------------------------------------------------------- */
-
 
 .jbu-admissions-body #content .rsvp_details {
 	width: 100%;
@@ -3865,9 +3869,7 @@ form[action="certify"] input[type="text"]:focus-visible{
 	box-shadow: var(--shadow-m);
 }
 
-
 /* kill generic plain-table behavior */
-
 .jbu-admissions-body #content .rsvp_details table.plain {
 	display: block !important;
 	width: 100%;
@@ -3876,13 +3878,9 @@ form[action="certify"] input[type="text"]:focus-visible{
 	border-collapse: collapse;
 }
 
-
-
 .jbu-admissions-body #content .rsvp_details table.plain tbody {
 	display: block;
 }
-
-
 
 .jbu-admissions-body #content .rsvp_details table.plain tr {
 	display: grid;
@@ -3891,13 +3889,9 @@ form[action="certify"] input[type="text"]:focus-visible{
 	align-items: start;
 }
 
-
-
 .jbu-admissions-body #content .rsvp_details table.plain tr + tr {
 	margin-top: var(--space-xs);
 }
-
-
 
 .jbu-admissions-body #content .rsvp_details table.plain th,
 .jbu-admissions-body #content .rsvp_details table.plain td {
@@ -3908,9 +3902,7 @@ form[action="certify"] input[type="text"]:focus-visible{
 	text-align: left;
 }
 
-
 /* label */
-
 .jbu-admissions-body #content .rsvp_details table.plain th {
 	padding-top: 0.125rem;
 	font-size: var(--fs-label) !important;
@@ -3921,9 +3913,7 @@ form[action="certify"] input[type="text"]:focus-visible{
 	color: var(--fc-help);
 }
 
-
 /* value */
-
 .jbu-admissions-body #content .rsvp_details table.plain td {
 	min-width: 0;
 	font-size: var(--fs-body);
@@ -3932,14 +3922,10 @@ form[action="certify"] input[type="text"]:focus-visible{
 	color: var(--fc-body);
 }
 
-
 /* secondary "not this person?" row */
-
 .jbu-admissions-body #content .rsvp_details table.plain tr:last-child {
 	display: block;
 }
-
-
 
 .jbu-admissions-body #content .rsvp_details table.plain tr:last-child td {
 	padding-top: var(--space-xxs);
@@ -3948,25 +3934,19 @@ form[action="certify"] input[type="text"]:focus-visible{
 	color: var(--fc-help);
 }
 
-
 /* link should read as secondary utility, not primary CTA */
-
 .jbu-admissions-body #content .rsvp_details table.plain tr:last-child a {
 	color: var(--fc-help) !important;
 	font-weight: 600;
 	text-decoration: underline;
 }
 
-
-
 .jbu-admissions-body #content .rsvp_details table.plain tr:last-child a:hover {
 	color: var(--fc-body) !important;
 	text-decoration: none;
 }
 
-
 /* actions */
-
 .jbu-admissions-body #content .rsvp_details .action-links {
 	display: flex;
 	flex-wrap: wrap;
@@ -3976,9 +3956,7 @@ form[action="certify"] input[type="text"]:focus-visible{
 	border-top: 1px solid var(--color-border-soft);
 }
 
-
 /* use same pill language as main form buttons */
-
 .jbu-admissions-body #content .rsvp_details .action-links > button {
 	-webkit-appearance: none;
 	appearance: none;
@@ -4004,16 +3982,12 @@ form[action="certify"] input[type="text"]:focus-visible{
 		box-shadow var(--transition-base);
 }
 
-
 /* primary */
-
 .jbu-admissions-body #content .rsvp_details .action-links > button.default {
 	background: var(--color-brand-500) !important;
 	border-color: var(--color-brand-500) !important;
 	color: var(--fc-on-dark) !important;
 }
-
-
 
 .jbu-admissions-body #content .rsvp_details .action-links > button.default:hover {
 	background: var(--color-brand-600) !important;
@@ -4021,16 +3995,12 @@ form[action="certify"] input[type="text"]:focus-visible{
 	color: var(--fc-on-dark) !important;
 }
 
-
 /* secondary */
-
 .jbu-admissions-body #content .rsvp_details .action-links > button:not(.default) {
 	background: var(--color-surface-default) !important;
 	border-color: var(--color-border-interactive) !important;
 	color: var(--color-brand-700) !important;
 }
-
-
 
 .jbu-admissions-body #content .rsvp_details .action-links > button:not(.default):hover {
 	background: var(--color-brand-tint-08) !important;
@@ -4038,14 +4008,10 @@ form[action="certify"] input[type="text"]:focus-visible{
 	color: var(--color-brand-700) !important;
 }
 
-
-
 .jbu-admissions-body #content .rsvp_details .action-links > button:focus-visible {
 	outline: 2px solid var(--color-brand-700);
 	outline-offset: 2px;
 }
-
-
 
 @media (max-width: 640px) {
 	.jbu-admissions-body #content .rsvp_details {
@@ -4079,12 +4045,10 @@ form[action="certify"] input[type="text"]:focus-visible{
    Canonical hosted-content component for date, timezone, map, and location
    -------------------------------------------------------------------------- */
 
-
 .jbu-admissions-body #content p.register-date-time,
 .jbu-admissions-body #content p.register-date-time-timezone {
 	margin: 0;
 }
-
 
 /* 
   Slate does not provide a hook for the Timezone element. 
@@ -4095,29 +4059,21 @@ form[action="certify"] input[type="text"]:focus-visible{
 	color: var(--fc-muted) !important;
 }
 
-
-
 .jbu-admissions-body #content #register_location {
 	margin: 0 0 1.75rem;
 	max-width: 24rem;
 	line-height: 1.45;
 }
 
-
-
 .jbu-admissions-body #content p + #register_location {
 	margin-top: -0.125rem;
 }
-
-
 
 .jbu-admissions-body #content #register_map {
 	width: 18.75rem !important;
 	max-width: 100% !important;
 	margin: 0 0 1.25rem 2rem !important;
 }
-
-
 
 .jbu-admissions-body #content #register_map #map {
 	width: 18.75rem !important;
@@ -4128,14 +4084,10 @@ form[action="certify"] input[type="text"]:focus-visible{
 	overflow: hidden;
 }
 
-
-
 .jbu-admissions-body #content #register_map > div:last-child {
 	font-size: 0.95rem;
 	text-align: center;
 }
-
-
 
 @media only screen and (max-width: 768px) {
 	.jbu-admissions-body #content #register_map {
@@ -4163,8 +4115,6 @@ form[action="certify"] input[type="text"]:focus-visible{
 		line-height: 1.5;
 	}
 }
-
-
 
 @media only screen and (max-width: 786px) {
 	.jbu-admissions-body #content p.register-date-time {
