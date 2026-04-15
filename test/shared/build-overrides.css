@@ -1,72 +1,75 @@
-/* FILE ROLE: Active refactor toward final build.css architecture */
+/* FILE ROLE: Test-environment override layer for shared primitives, layer-specific rules, and promoted hosted components */
 
 
 
 /* ==========================================================================
-   JBU Slate branding / override file – refactor version
+   JBU Slate branding / override file – test-environment working sheet
 
    PURPOSE
-   This file is the active refactor version of the JBU Slate styling system.
-   It is being reorganized so JBU branding follows Slate-rendered content
-   more consistently across hosted pages, dialogs, and widgets while reducing
-   dependence on recovery overrides.
+   This file is the active `test/` override sheet for the Slate redesign.
+   It carries shared primitives, layer-specific overrides, and promoted
+   hosted-page components while production remains separate.
 
-   ARCHITECTURE GOALS
-   1. Brand Slate-hosted content broadly where appropriate.
-   2. Let Slate form styling travel with real Slate forms across contexts.
-   3. Keep dialog chrome styling separate from form styling.
-   4. Reduce fragile dependence on late-stage override behavior.
-   5. Centralize maintainable, reusable rules for long-term use in build.css.
+   ARCHITECTURAL LAYERS
+   - Shared primitives / cross-layer foundations
+   - Dialog chrome
+   - Hosted page content
+   - Slate form system
+   - Application/page-specific hosted components
 
-   TARGET SCOPES
+   PRIMARY ROOTS
+   - Shared primitives may intentionally span:
+     .jbu-admissions-body #content
+     .dialog_host .dialog[role="dialog"]
+     .form_container
+   - Dialog chrome:
+     .dialog_host .dialog[role="dialog"] ...
+   - Hosted page content:
+     .jbu-admissions-body #content ...
    - Slate form system:
      .form_container ...
-   - Slate-hosted branded page content:
-     .jbu-admissions-body #content ...
-   - Dialog shell / modal chrome:
-     .dialog_host .dialog[role="dialog"] ...
 
-   INTENDED DIRECTION
-   - Move true form-system rules away from narrow #content-only scoping.
-   - Preserve page-level branding for non-form hosted content.
-   - Isolate modal width/height/overflow/header/action behavior to dialog rules.
-   - Reduce conflict with institutional CSS, especially broad selectors.
-   - Prepare for cleaner load order:
-     Slate -> institutional dependency/footer -> build.css -> portal CSS
-
-   NOTES
+   MAINTAINER NOTES
    - Prefer Slate structural hooks for form rules:
      .form_container, .form_page, .form_question, .form_label,
      .form_responses, and direct form controls
+   - Keep dialog chrome separate from form styling
    - Avoid relying on fragile instance-specific hooks such as
      form[data-fw-form="1"]
    - Avoid broad generic selectors inside forms unless truly necessary
-   - Port finalized patterns back into build.css once validated
+   - Port stable patterns into build.css once validated
 
    STATUS
-   Active working file for restructuring and cleanup.
+   Active test stylesheet; comments below reflect the current layer split.
    ========================================================================== */
 
 
 
 
 /* ==========================================================================
-Slate development overrides – Default Branding + Slate Forms
-Scope model (two layers):
-A) Default branding baseline for ALL forms in default branding pages
-.jbu-admissions-body #content form ...
-- Typography tokens + base text + heading defaults + general label styling
-- Safe to apply broadly because default branding is opt-in
-B) Slate-only mechanics (only Slate-generated forms + Slate markup)
-.jbu-admissions-body #content form[id^="form_"][id$="_container"] ...
-- Restore form-builder widths
-- .form_page control sizing + spacing
-- .form_question rhythm
-- checkbox/radio normalization + selectable options
-- Keep !important ONLY where needed to beat institutional !important rules
+Architecture map for this file
+
+A) Shared primitives / cross-layer foundations
+- Intentional shared tokens, typography, spacing, and action primitives
+- Mixed-scope sections here are deliberate and should read as reusable
+  foundations, not accidental leakage between layers
+
+A2) Dialog chrome
+- .dialog_host .dialog[role="dialog"] ...
+
+A3-A5) Hosted-content layer and hosted/shared widgets
+- .jbu-admissions-body #content ...
+
+B) Form-system layer
+- .form_container ...
+
+C) C) Application and page-specific hosted components
+- Canonical hosted components and page-specific exceptions
 ========================================================================== */
 /* --------------------------------------------------------------------------
-A) Default branding – baseline form system (applies to ALL forms in #content)
+A) Shared primitives / cross-layer foundations
+Intentional shared tokens and baseline primitives across hosted content,
+dialog chrome, and the Slate form system.
 -------------------------------------------------------------------------- */
 .jbu-admissions-body #content,
 .dialog_host .dialog[role="dialog"],
@@ -234,6 +237,8 @@ A) Default branding – baseline form system (applies to ALL forms in #content)
 	--table-header-padding-y: 0.75rem;
 	--table-radius: var(--radius-s);
 	--table-shadow: var(--shadow-xs);
+	--calendar-surface-header: #f4f6f8;
+	--calendar-border: #d9e1e7;
 }
 /* Base text inside default branding forms */
 .jbu-admissions-body,
@@ -254,8 +259,7 @@ A) Default branding – baseline form system (applies to ALL forms in #content)
 .jbu-admissions-body #content p{
 	margin: 0 0 0.75rem 0;
 }
-.jbu-admissions-body #content,
-.jbu-admissions-body .dialog_host .dialog[role="dialog"]{
+.jbu-admissions-body #content{
 	color: var(--fc-body);
 }
 .jbu-admissions-body a, .jbu-admissions-body a:link, .jbu-admissions-body a:visited,
@@ -309,14 +313,52 @@ A) Default branding – baseline form system (applies to ALL forms in #content)
 	line-height: 1.25;
 	margin: var(--space-s) 0 var(--space-xxs) 0;
 }
+
 /* --------------------------------------------------------------------------
-A1) Action buttons – pill-style CTA system
-Applies in default branding content and supported dialog contexts
+   List styling reset
+   Restores list indentation after institutional ul/ol reset
+   -------------------------------------------------------------------------- */
+
+
+.jbu-admissions-body #content ul,
+.jbu-admissions-body #content ol {
+	margin-left: 1.75rem;
+	padding-left: 0;
+	list-style-position: outside;
+}
+
+
+
+.jbu-admissions-body #content li {
+	margin-top: 0.25rem;
+	padding-left: 0;
+	padding-inline-start: 0.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   Reduce default padding on #content to save horizonal space on mobile
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 736px){
+  .jbu-admissions-body #content{
+    padding-left: 0.5rem;   /* 8px */
+    padding-right: 0.5rem;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+A1) Shared action primitives – pill-style CTA system
+Intentional shared primitive across hosted content, dialog chrome,
+and the Slate form-system action footer
+
+Dialog strategy:
+- Prefer the structural .action footer hook
+- Add a narrow fallback for true primary CTAs rendered directly in dialog content
+- Avoid broad .dialog ... button selectors that would catch unrelated content buttons
 -------------------------------------------------------------------------- */
 
 /* Button spacing without flex/gap */
-/* Risky: keep the hosted-content selectors for non-Slate pages, but add the
-   real Slate form hook so form actions no longer depend on #content scope. */
 .jbu-admissions-body #content .action > button,
 .jbu-admissions-body #content .action > input[type="submit"],
 .jbu-admissions-body #content .action > input[type="button"],
@@ -325,10 +367,12 @@ Applies in default branding content and supported dialog contexts
 .form_container .action > input[type="button"],
 .dialog_host .dialog[role="dialog"] .action > button,
 .dialog_host .dialog[role="dialog"] .action > input[type="submit"],
-.dialog_host .dialog[role="dialog"] .action > input[type="button"]{
+.dialog_host .dialog[role="dialog"] .action > input[type="button"],
+.dialog_host .dialog[role="dialog"] .content > div > button.default{
 	margin: 0 0.75rem 0.75rem 0 !important;
 	vertical-align: middle;
 }
+
 /* Base button styling */
 .jbu-admissions-body #content .action > button,
 .jbu-admissions-body #content .action > input[type="submit"],
@@ -338,7 +382,8 @@ Applies in default branding content and supported dialog contexts
 .form_container .action > input[type="button"],
 .dialog_host .dialog[role="dialog"] .action > button,
 .dialog_host .dialog[role="dialog"] .action > input[type="submit"],
-.dialog_host .dialog[role="dialog"] .action > input[type="button"]{
+.dialog_host .dialog[role="dialog"] .action > input[type="button"],
+.dialog_host .dialog[role="dialog"] .content > div > button.default{
 	-webkit-appearance: none;
 	appearance: none;
 	width: auto !important;
@@ -347,7 +392,7 @@ Applies in default branding content and supported dialog contexts
 	min-height: var(--action-min-height);
 	padding: 0.75rem 1.5rem !important;
 	border: 1px solid transparent !important;
-	border-radius: 9999px !important;
+	border-radius: var(--radius-pill) !important;
 	font-family: inherit !important;
 	font-size: 1rem !important;
 	font-weight: 600 !important;
@@ -358,34 +403,38 @@ Applies in default branding content and supported dialog contexts
 	cursor: pointer;
 	white-space: normal;
 	transition:
-		background-color 0.2s ease,
-		border-color 0.2s ease,
-		color 0.2s ease,
-		box-shadow 0.2s ease;
+		background-color var(--transition-fast),
+		border-color var(--transition-fast),
+		color var(--transition-fast),
+		box-shadow var(--transition-fast);
 }
+
 /* Primary */
-.jbu-admissions-body #content .action > button.default,
-button.default,
+.jbu-admissions-body #content button.default,
 .jbu-admissions-body #content .action > input[type="submit"],
 .form_container .action > button.default,
 .form_container .action > input[type="submit"],
 .dialog_host .dialog[role="dialog"] .action > button.default,
-.dialog_host .dialog[role="dialog"] .action > input[type="submit"]{
+.dialog_host .dialog[role="dialog"] .action > input[type="submit"],
+.dialog_host .dialog[role="dialog"] .content > div > button.default{
 	background: var(--color-brand-500) !important;
 	border-color: var(--color-brand-500) !important;
 	color: var(--fc-on-dark) !important;
 }
+
 /* Primary hover */
 .jbu-admissions-body #content .action > button.default:hover,
 .jbu-admissions-body #content .action > input[type="submit"]:hover,
 .form_container .action > button.default:hover,
 .form_container .action > input[type="submit"]:hover,
 .dialog_host .dialog[role="dialog"] .action > button.default:hover,
-.dialog_host .dialog[role="dialog"] .action > input[type="submit"]:hover{
+.dialog_host .dialog[role="dialog"] .action > input[type="submit"]:hover,
+.dialog_host .dialog[role="dialog"] .content > div > button.default:hover{
 	background: var(--color-brand-600) !important;
 	border-color: var(--color-brand-600) !important;
 	color: var(--fc-on-dark) !important;
 }
+
 /* Secondary */
 .jbu-admissions-body #content .action > button:not(.default),
 .jbu-admissions-body #content .action > input[type="button"],
@@ -393,10 +442,11 @@ button.default,
 .form_container .action > input[type="button"],
 .dialog_host .dialog[role="dialog"] .action > button:not(.default),
 .dialog_host .dialog[role="dialog"] .action > input[type="button"]{
-	background: var(--color-surface, #fff) !important;
-	border-color: var(--color-border-strong, rgba(4,55,104,0.22)) !important;
+	background: var(--color-surface-default) !important;
+	border-color: var(--color-border-strong) !important;
 	color: var(--color-brand-700) !important;
 }
+
 /* Secondary hover */
 .jbu-admissions-body #content .action > button:not(.default):hover,
 .jbu-admissions-body #content .action > input[type="button"]:hover,
@@ -404,10 +454,11 @@ button.default,
 .form_container .action > input[type="button"]:hover,
 .dialog_host .dialog[role="dialog"] .action > button:not(.default):hover,
 .dialog_host .dialog[role="dialog"] .action > input[type="button"]:hover{
-	background: var(--color-brand-050, rgba(4,55,104,0.04)) !important;
-	border-color: var(--color-border-interactive, rgba(4,55,104,0.32)) !important;
+	background: var(--color-brand-tint-08) !important;
+	border-color: var(--color-border-interactive) !important;
 	color: var(--color-brand-700) !important;
 }
+
 /* Focus */
 .jbu-admissions-body #content .action > button:focus-visible,
 .jbu-admissions-body #content .action > input[type="submit"]:focus-visible,
@@ -417,10 +468,12 @@ button.default,
 .form_container .action > input[type="button"]:focus-visible,
 .dialog_host .dialog[role="dialog"] .action > button:focus-visible,
 .dialog_host .dialog[role="dialog"] .action > input[type="submit"]:focus-visible,
-.dialog_host .dialog[role="dialog"] .action > input[type="button"]:focus-visible{
+.dialog_host .dialog[role="dialog"] .action > input[type="button"]:focus-visible,
+.dialog_host .dialog[role="dialog"] .content > div > button.default:focus-visible{
 	outline: 2px solid var(--color-brand-700);
 	outline-offset: 2px;
 }
+
 /* Disabled */
 .jbu-admissions-body #content .action > button:disabled,
 .jbu-admissions-body #content .action > input[type="submit"]:disabled,
@@ -430,37 +483,37 @@ button.default,
 .form_container .action > input[type="button"]:disabled,
 .dialog_host .dialog[role="dialog"] .action > button:disabled,
 .dialog_host .dialog[role="dialog"] .action > input[type="submit"]:disabled,
-.dialog_host .dialog[role="dialog"] .action > input[type="button"]:disabled{
+.dialog_host .dialog[role="dialog"] .action > input[type="button"]:disabled,
+.dialog_host .dialog[role="dialog"] .content > div > button.default:disabled{
 	opacity: 0.55;
 	cursor: not-allowed;
 }
 /* --------------------------------------------------------------------------
-A2) Dialog styling
+Transition: shared primitives -> dialog layer
+Rules below are true dialog chrome and should stay rooted in
+.dialog_host .dialog[role="dialog"].
 -------------------------------------------------------------------------- */
-.dialog_host .dialog[role="dialog"] .content{
-  display: block !important;
-  overflow: auto !important;
-  width: 100%;
-  color: inherit;
-  opacity: 1;
-}
-
+/* --------------------------------------------------------------------------
+A2) Dialog chrome
+-------------------------------------------------------------------------- */
 .dialog_host .dialog[role="dialog"]{
 	width: auto !important;
-    max-width: min(42rem, calc(100vw - 2rem)) !important;
+	    max-width: min(42rem, calc(100vw - 2rem)) !important;
     min-width: 0;
+    /* Fallback order keeps dialog sizing stable when browsers differ on dynamic viewport units. */
     max-height: calc(100vh - 2rem) !important;
+    max-height: calc(100dvh - 2rem) !important;
 	min-height: 3rem;
     display: flex;
     flex-direction: column;
 	border-radius: var(--radius-l);
-	background: var(--color-surface, #fff);
-	border: 1px solid var(--color-border-subtle, rgba(4,55,104,0.10));
+	background: var(--color-surface-default);
+	border: 1px solid var(--color-border-subtle);
 	box-shadow: 0 1rem 2rem rgba(0,0,0,0.18);
 	overflow: hidden;
 }
 
-.dialog_host .dialog[role="dialog"] form[data-fw-form="1"]{
+.dialog_host .dialog[role="dialog"] > form{
   max-width: 100%;
   box-sizing: border-box;
 }
@@ -470,27 +523,23 @@ A2) Dialog styling
 	width: min(32rem, calc(100vw - 2rem)) !important;
 	max-width: 100%;
 }
+
 /* dialog header */
-.dialog_host .dialog[role="dialog"] .header{
-	position: relative;
-	margin: 0;
-	padding: 1.25rem 4rem 1.25rem 1.5rem;
-	background: var(--color-surface-muted, #f5f7fa);
-	border-bottom: 1px solid var(--color-border-subtle, rgba(4,55,104,0.10));
-	font-family: inherit;
-	font-size: var(--fs-h3, 1.75rem);
-	font-weight: var(--fw-heading, 700);
-	line-height: 1.15;
-	color: var(--color-text-strong, #111);
-}
-/* Header as positioning context */
 .dialog_host .dialog[role="dialog"] .header{
 	position: relative;
 	display: flex;
 	align-items: center;
+	margin: 0;
 	min-height: 5rem;
-	padding: 1.25rem 8.5rem 1.25rem 1.5rem;
-	/* reserve room for nav + close */
+	padding: var(--space-s) 8.5rem var(--space-s) 1.5rem;
+	background: var(--color-brand-700);
+	border-bottom: 1px solid var(--color-border-strong);
+	font-family: inherit;
+	font-size: var(--fs-h4);
+	font-weight: 600;
+	line-height: 1.15;
+	color: var(--fc-inverse);
+	/* Preserve the branded header treatment as the canonical dialog visual. */
 }
 /* Navigation links block */
 .dialog_host .dialog[role="dialog"] .dialog_navigation_links{
@@ -518,31 +567,46 @@ A2) Dialog styling
 	justify-content: center;
 	min-height: 2rem;
 	padding: 0.125rem 0.25rem;
-	border-radius: var(--radius-s, 0.375rem);
+	border-radius: var(--radius-s);
 	font-size: 0.9375rem;
 	font-weight: 600 !important;
 	line-height: 1;
-	text-decoration: none !important;
-	color: var(--color-brand-700) !important;
+	color: var(--fc-inverse) !important;
 	transition:
-		color 0.2s ease,
-		background-color 0.2s ease;
+		color var(--transition-fast),
+		background-color var(--transition-fast);
 }
+
+/* Slate does not expose a stable disabled hook for dialog prev/next links
+   (no disabled class, aria-disabled, or alternate markup). Inactive states are
+   indicated only through inline styles, including cursor: default. We match that
+   inline state here as a localized dialog-chrome exception because it is the
+   least risky available hook without adding script or altering Slate output.
+   If Slate introduces a class or aria-disabled, replace this selector. */
+
 /* Hover/focus for active nav links */
 .dialog_host .dialog[role="dialog"] .dialog_navigation_prev[href]:not([style*="cursor: default"]):hover,
 .dialog_host .dialog[role="dialog"] .dialog_navigation_prev[href]:not([style*="cursor: default"]):focus-visible,
 .dialog_host .dialog[role="dialog"] .dialog_navigation_next:hover,
 .dialog_host .dialog[role="dialog"] .dialog_navigation_next:focus-visible{
-	background: var(--color-brand-050, rgba(4,55,104,0.04));
-	color: var(--color-brand-700) !important;
+	background: var(--color-brand-tint-08);
+	color: var(--fc-inverse) !important;
 	outline: none;
 }
 /* Disabled / inactive Prev */
 .dialog_host .dialog[role="dialog"] .dialog_navigation_prev[style*="cursor: default"]{
-	color: var(--color-text-muted, #7a7a7a) !important;
+	opacity: 0.25;
 	cursor: default !important;
 	pointer-events: none;
 }
+
+/* Disabled / inactive Next */
+.dialog_host .dialog[role="dialog"] .dialog_navigation_next[style*="cursor: default"]{
+	opacity: 0.25;
+	cursor: default !important;
+	pointer-events: none;
+}
+
 /* Clean close button pattern */
 .dialog_host .dialog[role="dialog"] .dialog_close{
 	position: absolute;
@@ -559,7 +623,7 @@ A2) Dialog styling
 	background: none !important;
 	background-image: none !important;
 	border: 0;
-	border-radius: var(--radius-pill, 9999px);
+	border-radius: var(--radius-pill);
 	font-size: 0 !important;
 	line-height: 0;
 	cursor: pointer;
@@ -574,15 +638,15 @@ A2) Dialog styling
 		linear-gradient(
 			45deg,
 			transparent calc(50% - 1px),
-			var(--color-text-strong, #111) calc(50% - 1px),
-			var(--color-text-strong, #111) calc(50% + 1px),
+			var(--fc-inverse) calc(50% - 1px),
+			var(--fc-inverse) calc(50% + 1px),
 			transparent calc(50% + 1px)
 		),
 		linear-gradient(
 			-45deg,
 			transparent calc(50% - 1px),
-			var(--color-text-strong, #111) calc(50% - 1px),
-			var(--color-text-strong, #111) calc(50% + 1px),
+			var(--fc-inverse) calc(50% - 1px),
+			var(--fc-inverse) calc(50% + 1px),
 			transparent calc(50% + 1px)
 		);
 }
@@ -590,7 +654,7 @@ A2) Dialog styling
 	content: none;
 }
 .dialog_host .dialog[role="dialog"] .dialog_close:hover{
-	background: var(--color-brand-050, rgba(4,55,104,0.04)) !important;
+	background: var(--color-brand-tint-08) !important;
 }
 .dialog_host .dialog[role="dialog"] .dialog_close:focus-visible{
 	outline: 2px solid var(--color-brand-700);
@@ -598,24 +662,28 @@ A2) Dialog styling
 }
 /* content area */
 .dialog_host .dialog[role="dialog"] .content{
-  flex: 1 1 auto;
-  min-height: 0;
-  max-height: 500px !important;
-  overflow: auto !important;
-  padding: 1.25rem 1.5rem !important;
+	display: block !important;
+	flex: 1 1 auto;
+	min-height: 0;
+	max-height: 500px !important;
+	overflow: auto !important;
+	width: 100%;
+	padding: 1.25rem 1.5rem !important;
+	color: inherit;
+	opacity: 1;
 }
 /* hr aligned with content width */
 .dialog_host .dialog[role="dialog"] hr,
 .dialog_host .dialog[role="dialog"] .content + hr{
 	margin: 0 1.5rem;
 	border: 0;
-	border-top: 1px solid var(--color-border-subtle, rgba(4,55,104,0.10));
+	border-top: 1px solid var(--color-border-subtle);
 }
 /* if you want the divider before actions without adding real hr markup */
 .dialog_host .dialog[role="dialog"] .action{
 	flex: 0 0 auto;
 	padding: 1.25rem 1.5rem 1.5rem;
-	border-top: 1px solid var(--color-border-subtle, rgba(4,55,104,0.10));
+	border-top: 1px solid var(--color-border-subtle);
 }
 /* dialog tables should feel like your cleaned-up table styling */
 .dialog_host .dialog[role="dialog"] .content table{
@@ -636,14 +704,19 @@ A2) Dialog styling
 	width: 7rem;
 	padding-right: 1rem;
 	font-weight: 600;
-	color: var(--color-text-muted, #44546a);
+	color: var(--fc-muted-strong); /* closer to the prior table heading fallback tone */
 }
 .dialog_host .dialog[role="dialog"] .content td{
-	color: var(--color-text, #1f2937);
+	color: var(--fc-body);
 }
 /* --------------------------------------------------------------------------
-A3) JBU message / alert system
-Modern documentation-style notice pattern
+Transition: dialog layer -> hosted-content layer
+Rules below are hosted-content components unless a header explicitly calls out
+an intentional shared primitive.
+-------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+A3) Hosted-content messages / alerts
+Canonical hosted-content notice pattern
 -------------------------------------------------------------------------- */
 /* Message tokens */
 .jbu-admissions-body #content{
@@ -706,7 +779,8 @@ Modern documentation-style notice pattern
 	border-left-color: var(--msg-warning-border);
 	color: var(--msg-warning-text);
 }
-.jbu-admissions-body #content .jbu-message--error{
+.jbu-admissions-body #content .jbu-message--error,
+.jbu-admissions-body #content .error{
 	background: var(--msg-error-bg);
 	border-left-color: var(--msg-error-border);
 	color: var(--msg-error-text);
@@ -727,19 +801,98 @@ Modern documentation-style notice pattern
 	border-left-color: var(--msg-info-border);
 	color: var(--msg-info-text);
 }
-.jbu-admissions-body #content .error{
-	background: var(--msg-error-bg);
-	border-left-color: var(--msg-error-border);
-	color: var(--msg-error-text);
-}
 .jbu-admissions-body #content .success{
 	background: var(--msg-success-bg);
 	border-left-color: var(--msg-success-border);
 	color: var(--msg-success-text);
 }
+
 /* --------------------------------------------------------------------------
-A4) Date-picker
-Shared visual system for:
+   Dialog layer: mobile chrome corrections
+   Dialog shell should remain fixed rather than flowing with page content
+   -------------------------------------------------------------------------- */
+
+@media only screen and (max-width: 736px){
+
+  .dialog_host{
+    position: fixed !important;
+    inset: 0 !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100vw !important;
+    /* Fallback order keeps the modal pinned when mobile browser chrome changes viewport height. */
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 5000;
+  }
+
+  .dialog_host .dialog[role="dialog"]{
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-height: 100vh !important;
+    max-height: 100dvh !important;
+    margin: 0;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* target actual form wrapper, not all direct divs */
+  .dialog_host .dialog[role="dialog"] > form{
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .dialog_host .dialog[role="dialog"] .content{
+    flex: 1 1 auto;
+    height: auto !important;
+    max-height: none !important;
+    overflow: auto !important;
+  }
+
+  /* action bar sticks to bottom */
+  .dialog_host .dialog[role="dialog"] .action{
+    position: sticky;
+    bottom: 0;
+    background: var(--color-surface-default);
+    border-top: 1px solid var(--color-border-subtle);
+    padding: var(--space-s);
+  }
+
+  .dialog_host .dialog[role="dialog"] .action button{
+    width: 100% !important;
+  }
+}
+/* --------------------------------------------------------------------------
+   Session-expired dialog
+   Lightweight modal variant for simple message + single CTA
+   Uses existing dialog tokens and button language
+   -------------------------------------------------------------------------- */
+.dialog_host #sessionExtendDialog {
+	padding: 15px;
+}
+
+@media (max-width: 480px){
+  .dialog_host #sessionExtendDialog > .content{
+    padding: var(--space-l) var(--space-m) !important;
+  }
+
+  .dialog_host #sessionExtendDialog button.default,
+  .dialog_host #sessionExtendDialog input[type="submit"],
+  .dialog_host #sessionExtendDialog input[type="button"]{
+    width: 100% !important;
+    min-width: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+A4) Shared calendar primitives across form and hosted-content layers
+Intentional shared visual system for:
 - Slate form calendars
 - Portal event date-pickers inside #content
 
@@ -784,24 +937,12 @@ A4.1) Shared cell sizing + base day box
 	box-shadow: none !important;
 }
 
-/* Slate form calendar - preserve existing pill treatment */
-.form_container .ui-datepicker td a.ui-state-default,
-.form_container .ui-datepicker td a.ui-state-default.ui-state-active,
-.form_container .ui-datepicker td a.ui-state-highlight,
-.form_container .ui-datepicker td span.ui-state-default{
-	width: 2rem !important;
-	height: 2rem !important;
-	margin: 0 auto !important;
-	line-height: 1.875rem !important;
-	border-radius: var(--radius-pill);
-}
-
 /* Portal calendar - td owns the visual block */
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td{
 	padding: 0 !important;
 	border-radius: 0;
 	background: transparent;
-	transition: background-color var(--transition-fast, 160ms ease);
+	transition: background-color var(--transition-fast);
 }
 
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td a.ui-state-default,
@@ -832,7 +973,7 @@ Regular Slate picker uses rounded block style, not circles
 	height: 2.25rem !important;
 	margin: 0 0.2rem !important;
 	line-height: 2.25rem !important;
-	border-radius: var(--radius-s) !important;
+	border-radius: var(--radius-xs) !important;
 	border: 0 !important;
 	box-shadow: none !important;
 }
@@ -843,8 +984,8 @@ Regular Slate picker uses rounded block style, not circles
 	color: var(--color-brand-700) !important;
 	font-weight: 600 !important;
 	transition:
-		background-color var(--transition-fast, 160ms ease),
-		color var(--transition-fast, 160ms ease);
+		background-color var(--transition-fast),
+		color var(--transition-fast);
 }
 
 /* hover */
@@ -940,10 +1081,19 @@ Paint on td, text on a/span
 	color: rgba(31,41,55,0.38) !important;
 }
 
-/* today when not selected */
-.jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td.ui-datepicker-today:not(.ui-datepicker-current-day){
+/* today marker - always visible, independent of selected-state fill */
+.jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td.ui-datepicker-today{
+	position: relative;
+}
+
+.jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td.ui-datepicker-today::after{
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: var(--radius-xs);
 	box-shadow: inset 0 0 0 2px var(--color-brand-500);
-	border-radius: var(--radius-s);
+	pointer-events: none;
+	z-index: 3;
 }
 
 /* --------------------------------------------------------------------------
@@ -1013,15 +1163,15 @@ Row edge rounding
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker tr td:first-child.available,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker tr td:first-child.unavailable,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker tr td:first-child.ui-datepicker-current-day{
-	border-top-left-radius: var(--radius-s);
-	border-bottom-left-radius: var(--radius-s);
+	border-top-left-radius: var(--radius-xs);
+	border-bottom-left-radius: var(--radius-xs);
 }
 
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker tr td:last-child.available,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker tr td:last-child.unavailable,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker tr td:last-child.ui-datepicker-current-day{
-	border-top-right-radius: var(--radius-s);
-	border-bottom-right-radius: var(--radius-s);
+	border-top-right-radius: var(--radius-xs);
+	border-bottom-right-radius: var(--radius-xs);
 }
 
 /* --------------------------------------------------------------------------
@@ -1030,8 +1180,8 @@ State start rounding
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td:not(.available) + td.available,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td:not(.unavailable) + td.unavailable,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td:not(.ui-datepicker-current-day) + td.ui-datepicker-current-day{
-	border-top-left-radius: var(--radius-s);
-	border-bottom-left-radius: var(--radius-s);
+	border-top-left-radius: var(--radius-xs);
+	border-bottom-left-radius: var(--radius-xs);
 }
 
 /* --------------------------------------------------------------------------
@@ -1040,16 +1190,8 @@ State end rounding
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td.available:has(+ td:not(.available)),
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td.unavailable:has(+ td:not(.unavailable)),
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker td.ui-datepicker-current-day:has(+ td:not(.ui-datepicker-current-day)){
-	border-top-right-radius: var(--radius-s);
-	border-bottom-right-radius: var(--radius-s);
-}
-
-/* row-end fallback */
-.jbu-admissions-body #content .portal_datepicker_container .ui-datepicker tr td:last-child.available,
-.jbu-admissions-body #content .portal_datepicker_container .ui-datepicker tr td:last-child.unavailable,
-.jbu-admissions-body #content .portal_datepicker_container .ui-datepicker tr td:last-child.ui-datepicker-current-day{
-	border-top-right-radius: var(--radius-s);
-	border-bottom-right-radius: var(--radius-s);
+	border-top-right-radius: var(--radius-xs);
+	border-bottom-right-radius: var(--radius-xs);
 }
 
 /* keep inner content aligned with td rounding */
@@ -1094,8 +1236,8 @@ A4.2) Shared header + weekday row
 	min-height: 2.5rem;
 	margin-bottom: 0.5rem;
 	padding: 0.25rem 2.5rem;
-	background: #f4f6f8;
-	border: 1px solid #d9e1e7;
+	background: var(--calendar-surface-header);
+	border: 1px solid var(--calendar-border);
 	border-radius: var(--radius-s);
 }
 
@@ -1110,7 +1252,7 @@ A4.2) Shared header + weekday row
 
 .form_container .form_question.form_calendar .ui-datepicker th,
 .jbu-admissions-body #content .portal_datepicker_container .ui-datepicker th{
-	font-size: 0.8rem;
+	font-size: var(--fs-help-sm);
 	font-weight: 600;
 	line-height: 1.2;
 	color: var(--color-brand-700);
@@ -1202,7 +1344,7 @@ A4.4) Portal legend
 	float: left;
 	margin-right: 0.5rem;
 	border: 1px solid transparent;
-	border-radius: var(--radius-s);
+	border-radius: var(--radius-xs);
 	background: transparent;
 }
 
@@ -1221,10 +1363,10 @@ A4.4) Portal legend
 	border-color: rgba(31,41,55,0.45);
 }
 /* --------------------------------------------------------------------------
-A5) Tables – modernized Slate table styling
+A5) Hosted-content tables + shared table paint reset.
 Scope:
-- Default branding pages inside #content
-- Applies to Slate tables without globally resetting all <table> elements
+- Shared reset keeps institutional table paint out of owned Slate surfaces
+- Canonical table shell remains hosted-content scoped under #content
 - Preserves existing Slate/mobile mechanics unless intentionally overridden
 -------------------------------------------------------------------------- */
 /* Neutralize broad institutional table paint inside Slate-owned content */
@@ -1240,7 +1382,7 @@ Scope:
 	border-collapse: separate;
 	border-spacing: 0;
 	table-layout: fixed;
-	margin: var(--space-m, 1.5rem) 0;
+	margin: var(--space-m) 0;
 	background: var(--table-bg);
 	border: 1px solid var(--table-border);
 	border-radius: var(--table-radius);
@@ -1272,7 +1414,7 @@ Scope:
 /* Main grouped header row */
 .jbu-admissions-body #content table.table > thead > tr.header > th,
 .jbu-admissions-body #content table.table > thead > tr.header > td{
-	padding: 0.875rem 1rem;
+	padding: 1rem 1.25rem;
 	background-color: var(--table-header-bg);
 	border-bottom: 1px solid var(--table-border-strong);
 	color: var(--color-brand-700);
@@ -1282,6 +1424,7 @@ Scope:
 	text-align: left;
 	vertical-align: middle;
 	background-image: none;
+	box-shadow: inset 0 -1px 0 var(--table-border-strong);
 }
 /* Column header row */
 .jbu-admissions-body #content table.table > thead > tr.column > th,
@@ -1309,21 +1452,12 @@ Scope:
 .jbu-admissions-body #content table.table > thead > .column {
 	background-color: var(--table-subheader-bg);
 }
-/* Subtle card-like emphasis for the table title row */
-.jbu-admissions-body #content table.table > thead > tr.header > th,
-.jbu-admissions-body #content table.table > thead > tr.header > td{
-	box-shadow: inset 0 -1px 0 var(--table-border-strong);
-}
-.jbu-admissions-body #content table.table > thead > tr.header > th,
-.jbu-admissions-body #content table.table > thead > tr.header > td{
-	padding: 1rem 1.25rem;
-}
 /* Informational row under headers */
 .jbu-admissions-body #content table.table > thead > tr:not(.header):not(.column) > td,
 .jbu-admissions-body #content table.table > thead > tr:not(.header):not(.column) > th{
 	padding-top: 0.875rem;
 	padding-bottom: 0.875rem;
-	background: #fff;
+	background: var(--color-surface-default);
 	color: var(--table-text-muted);
 	font-size: 0.9375rem;
 	line-height: 1.45;
@@ -1385,7 +1519,7 @@ Scope:
 	padding: 0.5rem 0.875rem;
 	border: 1px solid var(--color-brand-border-22);
 	border-radius: var(--radius-pill);
-	background: #fff;
+	background: var(--color-surface-default);
 	color: var(--color-brand-700) !important;
 	font-size: 0.9375rem;
 	font-weight: 500;
@@ -1407,7 +1541,7 @@ Scope:
 	padding: 0.5rem 0.875rem;
 	border: 1px solid var(--color-brand-border-22);
 	border-radius: var(--radius-pill);
-	background: #fff;
+	background: var(--color-surface-default);
 	color: var(--color-brand-700) !important;
 	font-size: 0.9375rem;
 	font-weight: 500;
@@ -1436,7 +1570,7 @@ Scope:
 .jbu-admissions-body #content table.table > thead > tr.row_hover > td > a:focus-visible,
 .jbu-admissions-body #content table.table tr.hover .widget_add:focus-visible,
 .jbu-admissions-body #content table.table tr.row_hover .widget_add:focus-visible{
-	outline: 2px solid var(--color-focus);
+	outline: 2px solid var(--focus-border-brand);
 	outline-offset: 2px;
 	text-decoration: none !important;
 }
@@ -1444,8 +1578,8 @@ Scope:
 .jbu-admissions-body #content table.table > thead > tr.row_hover > td > a:active,
 .jbu-admissions-body #content table.table tr.hover .widget_add:active,
 .jbu-admissions-body #content table.table tr.row_hover .widget_add:active{
-	background: var(--color-brand-100);
-	border-color: var(--color-brand-400);
+	background: var(--color-brand-tint-10);
+	border-color: var(--color-border-interactive);
 	color: var(--color-brand-700) !important;
 	text-decoration: none !important;
 }
@@ -1570,7 +1704,7 @@ Sortable table headers – single active chevron
 	padding: 0.5rem 0.875rem;
 	border: 1px solid var(--color-brand-border-22);
 	border-radius: var(--radius-pill);
-	background: #fff;
+	background: var(--color-surface-default);
 	color: var(--color-brand-700) !important;
 	font-size: 0.9375rem;
 	font-weight: 500;
@@ -1591,15 +1725,11 @@ Sortable table headers – single active chevron
 /* Mobile refinement ------------------------------------------------------ */
 /* Keep Slate’s block conversion, but improve spacing/labels/cards a bit. */
 @media (max-width: 736px){
-	.jbu-admissions-body #content table.table{
-		border-radius: var(--table-radius);
-		overflow: hidden;
-	}
 	.jbu-admissions-body #content table.table > tbody > tr,
 	.jbu-admissions-body #content table.table > thead > tr:not(.column){
 		margin: 0;
 		border-bottom: 1px solid var(--table-border);
-		background: #fff;
+		background: var(--color-surface-default);
 	}
 	.jbu-admissions-body #content table.table > tbody > tr:last-child{
 		border-bottom: 0;
@@ -1634,9 +1764,14 @@ Sortable table headers – single active chevron
 	}
 }
 /* --------------------------------------------------------------------------
-B) Form Styling
+Transition: shared/dialog/hosted foundations -> form-system layer
+Rules below should stay rooted in .form_container unless a comment documents a
+deliberate cross-layer exception.
 -------------------------------------------------------------------------- */
-/* Control + choice tokens (Slate only) */
+/* --------------------------------------------------------------------------
+B) Form-system layer (.form_container)
+-------------------------------------------------------------------------- */
+/* Control + choice tokens (form-system only) */
 .form_container {
 	--control-font-size: 1rem;
 	/* 16px */
@@ -1729,6 +1864,31 @@ Keep !important because institutional styles often use !important here.
 	line-height: 1.25 !important;
 	margin: var(--space-s) 0 var(--space-xxs) 0 !important;
 }
+
+/* --------------------------------------------------------------------------
+B2.5) Slate account banner (only appears on forms but is outside .form-container)
+-------------------------------------------------------------------------- */
+.jbu-admissions-body #form_response_banner{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: .75rem 1rem !important;
+	margin-bottom: 1.25rem !important;
+	background: var(--color-brand-700) !important;
+	color: var(--fc-on-dark) !important;
+	border-radius: var(--radius-s);
+	font-size: var(--fs-h5);
+	line-height: 1.4;
+}
+.jbu-admissions-body #form_response_banner a{
+	color: var(--fc-on-dark) !important;
+	text-decoration: underline !important;
+	float: none !important;
+}
+.jbu-admissions-body #form_response_banner a:hover{
+	text-decoration: none !important;
+}
+
 /* --------------------------------------------------------------------------
 B3) Controls: sizing + margin normalization (Slate .form_page only)
 We remove control margins to prevent “double spacing”; question rhythm handles spacing.
@@ -1889,7 +2049,7 @@ Intended for HTML placed inside Slate label fields
 }
 
 /* --------------------------------------------------------------------------
-B6) Slate table layout modernization
+B5) Slate table layout modernization
 Order:
 1. shared vars
 2. general label padding normalization
@@ -1907,14 +2067,10 @@ Order:
 	--address-row-gap: var(--space-s);
 }
 /* --------------------------------------------------------------------------
-B6a) General label padding normalization
+B5a) General label padding normalization
 Institutional CSS relies on vertical padding for many labels.
 Keep that generally, then neutralize it in table layout where needed.
 -------------------------------------------------------------------------- */
-/* Header rows keep their visual padding */
-.form_container .form_question.form_header{
-	padding-top: var(--space-xxs);
-}
 .form_container .form_question.form_header > .form_label{
 	padding: 10px 0 !important;
 }
@@ -1941,7 +2097,7 @@ Keep that generally, then neutralize it in table layout where needed.
 	padding: 0 !important;
 }
 /* --------------------------------------------------------------------------
-B6b) Standard table-layout field rows only
+B5b) Standard table-layout field rows only
 Excludes content rows and compound rows.
 -------------------------------------------------------------------------- */
 .form_container
@@ -1976,7 +2132,7 @@ Excludes content rows and compound rows.
 	margin-top: 0 !important;
 }
 /* --------------------------------------------------------------------------
-B6c) Content/display rows – always one column
+B5c) Content/display rows – always one column
 -------------------------------------------------------------------------- */
 .form_container
 .form_page .form_question.form_layout_table.form_h1,
@@ -2072,7 +2228,7 @@ B6c) Content/display rows – always one column
 	padding: 0 !important;
 }
 /* --------------------------------------------------------------------------
-B6d) Date compound rows
+B5d) Date compound rows
 Outer structure = label rail + response rail
 Inner structure = date-part grid
 -------------------------------------------------------------------------- */
@@ -2181,8 +2337,33 @@ Inner structure = date-part grid
 	min-width: 0;
 	margin-left: 0 !important;
 }
+
+.form_container .form_page .form_question.form_layout_table.form_birthdate:not(.hidden),
+.form_container .form_page .form_question.form_layout_table.form_date:not(.hidden),
+.form_container .form_page .form_question.form_layout_table.form_dateym:not(.hidden),
+.form_container .form_page .form_question.form_layout_table.form_datemd:not(.hidden){
+    display: block !important;
+    width: 100% !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_birthdate > fieldset,
+.form_container
+.form_page .form_question.form_layout_table.form_date > fieldset,
+.form_container
+.form_page .form_question.form_layout_table.form_dateym > fieldset,
+.form_container
+.form_page .form_question.form_layout_table.form_datemd > fieldset{
+	display: grid !important;
+	grid-template-columns: var(--table-label-col) minmax(0, 1fr);
+	column-gap: var(--table-col-gap);
+	row-gap: var(--table-row-gap);
+	padding: 0 !important;
+	margin: 0 !important;
+	border: 0;
+}
+
 /* --------------------------------------------------------------------------
-B6e) Address compound row
+B5e) Address compound row
 Outer label sits above the grouped address rows.
 Inner rows use sublabel + control only.
 -------------------------------------------------------------------------- */
@@ -2270,65 +2451,101 @@ Inner rows use sublabel + control only.
 .form_page .form_question.form_layout_table.form_address input[id$="_postal"]{
 	max-width: 9rem;
 }
+
+.form_container .form_page .form_question.form_address fieldset{
+	padding: 0 !important;
+}
+.form_container .form_page .form_question.form_address fieldset > .form_label{
+	margin-left: 0 !important;
+}
+.form_container
+.form_page .form_question.form_layout_table.form_address > fieldset > div:not(.form_label):not(.form_responses){
+	grid-template-columns: 7rem minmax(0, 1fr) !important;
+}
+.form_container 
+.form_page .form_question.form_address fieldset{
+	position: relative;
+	border: 0;
+	margin: 0;
+	padding: 0 0 0 var(--space-s);
+	min-width: 0;
+}
+/* Vertical rule indicating grouped fields. Starts below the group label. */
+.form_container 
+.form_page .form_question.form_address fieldset::before{
+	content: "";
+	position: absolute;
+	left: 0;
+	top: calc(1.25em + var(--space-xs));
+	bottom: 0;
+	width: 2px;
+	background: var(--color-border-soft);
+	border-radius: var(--radius-pill);
+}
+/* Pull the address group label back to the original alignment
+.form_container 
+.form_page .form_question.form_address fieldset > .form_label{
+margin-left: calc(-1 * var(--space-s)) !important;
+} */
+/* Reset inherited margins on internal wrappers */
+.form_container 
+.form_page .form_question.form_address fieldset > div{
+	margin: 0 !important;
+}
+/* Consistent spacing between rows */
+.form_container 
+.form_page .form_question.form_address fieldset > div + div{
+	margin: var(--address-row-gap) 0 0 var(--address-row-gap) !important;
+}
+/* Ensure internal field labels remain normal label styling */
+.form_container 
+.form_page .form_question.form_address fieldset label.form_label{
+	font-size: var(--fs-label) !important;
+	font-weight: var(--fw-label);
+	line-height: 1.25;
+	margin: 0 0 var(--space-xxs) 0 !important;
+}
 /* --------------------------------------------------------------------------
-B6f) Hidden row preservation – keep last
+B5f) Hidden row preservation – keep last
 -------------------------------------------------------------------------- */
-.form_container
-.form_page .form_question.hidden,
-.form_container
-.form_page .form_question.form_layout_table.hidden,
-.form_container
-.form_page .form_question[data-invisible="1"],
-.form_container
-.form_page .form_question.form_layout_table[data-invisible="1"]{
+.form_container .form_page .form_question.hidden,
+.form_container .form_page .form_question.form_layout_table.hidden,
+.form_container .form_page .form_question[data-invisible="1"],
+.form_container .form_page .form_question.form_layout_table[data-invisible="1"]{
 	display: none !important;
 }
 /* --------------------------------------------------------------------------
 Responsive collapse
 -------------------------------------------------------------------------- */
 @media (max-width: 760px){
-	.form_container
-	.form_page .form_question.form_layout_table.form_birthdate > fieldset,
-	.form_container
-	.form_page .form_question.form_layout_table.form_date > fieldset,
-	.form_container
-	.form_page .form_question.form_layout_table.form_dateym > fieldset,
-	.form_container
-	.form_page .form_question.form_layout_table.form_datemd > fieldset{
+	.form_container	.form_page .form_question.form_layout_table.form_birthdate > fieldset,
+	.form_container	.form_page .form_question.form_layout_table.form_date > fieldset,
+	.form_container	.form_page .form_question.form_layout_table.form_dateym > fieldset,
+	.form_container	.form_page .form_question.form_layout_table.form_datemd > fieldset{
 		display: block !important;
 	}
-	.form_container
-	.form_page .form_question.form_layout_table.form_birthdate > fieldset > .form_label,
-	.form_container
-	.form_page .form_question.form_layout_table.form_date > fieldset > .form_label,
-	.form_container
-	.form_page .form_question.form_layout_table.form_dateym > fieldset > .form_label,
-	.form_container
-	.form_page .form_question.form_layout_table.form_datemd > fieldset > .form_label{
+	.form_container	.form_page .form_question.form_layout_table.form_birthdate > fieldset > .form_label,
+	.form_container	.form_page .form_question.form_layout_table.form_date > fieldset > .form_label,
+	.form_container	.form_page .form_question.form_layout_table.form_dateym > fieldset > .form_label,
+	.form_container	.form_page .form_question.form_layout_table.form_datemd > fieldset > .form_label{
 		margin-bottom: var(--space-s) !important;
 	}
-	.form_container
-	.form_page .form_question.form_layout_table.form_birthdate > fieldset > .form_responses,
-	.form_container
-	.form_page .form_question.form_layout_table.form_date > fieldset > .form_responses,
-	.form_container
-	.form_page .form_question.form_layout_table.form_dateym > fieldset > .form_responses,
-	.form_container
-	.form_page .form_question.form_layout_table.form_datemd > fieldset > .form_responses{
+	.form_container	.form_page .form_question.form_layout_table.form_birthdate > fieldset > .form_responses,
+	.form_container	.form_page .form_question.form_layout_table.form_date > fieldset > .form_responses,
+	.form_container	.form_page .form_question.form_layout_table.form_dateym > fieldset > .form_responses,
+	.form_container	.form_page .form_question.form_layout_table.form_datemd > fieldset > .form_responses{
 		max-width: 100%;
 	}
 }
 @media (max-width: 520px){
-	.form_container
-	.form_page .form_question.form_layout_table.form_birthdate > fieldset > .form_responses,
-	.form_container
-	.form_page .form_question.form_layout_table.form_date > fieldset > .form_responses,
-	.form_container
-	.form_page .form_question.form_layout_table.form_dateym > fieldset > .form_responses,
-	.form_container
-	.form_page .form_question.form_layout_table.form_datemd > fieldset > .form_responses{
+	/* Removing for date fields as stacking is brutal on vertical space. 
+	If bad breaks on mobile encouuntered, consider narrower check than 520px for these date fields
+	.form_container .form_page .form_question.form_layout_table.form_birthdate > fieldset > .form_responses,
+	.form_container .form_page .form_question.form_layout_table.form_date > fieldset > .form_responses,
+	.form_container .form_page .form_question.form_layout_table.form_dateym > fieldset > .form_responses,
+	.form_container .form_page .form_question.form_layout_table.form_datemd > fieldset > .form_responses{
 		grid-template-columns: 1fr;
-	}
+	} */
 	.form_container
 	.form_page .form_question.form_layout_table.form_address > fieldset > div:not(.form_label):not(.form_responses){
 		display: block !important;
@@ -2340,7 +2557,7 @@ Responsive collapse
 	}
 }
 /* --------------------------------------------------------------------------
-B7) Slate select-based date groups (scoped to actual date question types)
+B6) Slate select-based date groups (scoped to actual date question types)
 Modernizes date-part selects without overriding the outer table layout.
 -------------------------------------------------------------------------- */
 /* Shared date-group container behavior */
@@ -2436,13 +2653,13 @@ Modernizes date-part selects without overriding the outer table layout.
 		max-width: 100%;
 	}
 }
+
+/* Removing as stacking is brutal on vertical space. If bad breaks on mobile encouuntered, consider narrower check than 520px.  
 @media (max-width: 520px){
 	.form_container
 	.form_page .form_question.form_birthdate .form_responses,
 	.form_container
-	.form_page .form_question.form_date .form_responses{
-		grid-template-columns: 1fr;
-	}
+	.form_page .form_question.form_date .form_responses,
 	.form_container
 	.form_page .form_question.form_dateym .form_responses,
 	.form_container
@@ -2450,47 +2667,11 @@ Modernizes date-part selects without overriding the outer table layout.
 		grid-template-columns: 1fr;
 	}
 }
-.form_container
-.form_page .form_question.hidden,
-.form_container
-.form_page .form_question[data-invisible="1"]{
-	display: none !important;
-}
-.form_container .form_page .form_question.form_address fieldset{
-	padding: 0 !important;
-}
-.form_container .form_page .form_question.form_address fieldset > .form_label{
-	margin-left: 0 !important;
-}
-.form_container
-.form_page .form_question.form_layout_table.form_address > fieldset > div:not(.form_label):not(.form_responses){
-	grid-template-columns: 7rem minmax(0, 1fr) !important;
-}
-.form_container .form_page .form_question.form_layout_table.form_birthdate:not(.hidden),
-.form_container .form_page .form_question.form_layout_table.form_date:not(.hidden),
-.form_container .form_page .form_question.form_layout_table.form_dateym:not(.hidden),
-.form_container .form_page .form_question.form_layout_table.form_datemd:not(.hidden){
-    display: block !important;
-    width: 100% !important;
-}
-.form_container
-.form_page .form_question.form_layout_table.form_birthdate > fieldset,
-.form_container
-.form_page .form_question.form_layout_table.form_date > fieldset,
-.form_container
-.form_page .form_question.form_layout_table.form_dateym > fieldset,
-.form_container
-.form_page .form_question.form_layout_table.form_datemd > fieldset{
-	display: grid !important;
-	grid-template-columns: var(--table-label-col) minmax(0, 1fr);
-	column-gap: var(--table-col-gap);
-	row-gap: var(--table-row-gap);
-	padding: 0 !important;
-	margin: 0 !important;
-	border: 0;
-}
+	*/
+
+
 /* --------------------------------------------------------------------------
-B8) Choice controls (checkbox / radio)
+B7) Choice controls (checkbox / radio)
 - Restore native appearance (institutional custom controls in TEST)
 - Normalize size + alignment
 - Make choice labels read like body text
@@ -2529,7 +2710,7 @@ B8) Choice controls (checkbox / radio)
 	color: var(--fc-body);
 }
 /* --------------------------------------------------------------------------
-B9) Slate “selectable” options – button-like radios/checkboxes
+B8) Slate “selectable” options – button-like radios/checkboxes
 Light touch: reduce heaviness/density without changing the concept.
 -------------------------------------------------------------------------- */
 .form_container .form_page .form_selectable .form_response{
@@ -2572,7 +2753,7 @@ Light touch: reduce heaviness/density without changing the concept.
 	outline-offset: 2px;
 }
 /* --------------------------------------------------------------------------
-B10) Likert as selectable boxes – match .form_selectable look/feel
+B9) Likert as selectable boxes – match .form_selectable look/feel
 Notes:
 - Likert radios don’t have a label sibling we can style, so we style the
 radio itself as the “button” and mirror your selectable tokens.
@@ -2684,13 +2865,13 @@ radio itself as the “button” and mirror your selectable tokens.
 	}
 }
 @media (min-width: 481px) {
-div.form_container div.form_question[data-type="likert"]>fieldset>.form_label {
-	margin-bottom: var(--space-xxs) !important;
-}
+  .form_container .form_question[data-type="likert"] > fieldset > .form_label {
+    margin-bottom: var(--space-xxs) !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
-B11) Slate form controls – stable focus state (no layout shift)
+B10) Slate form controls – stable focus state (no layout shift)
 - Keep border width constant (1px)
 - Focus state changes color + adds subtle focus ring
 - Scoped only to Slate-hosted forms
@@ -2717,54 +2898,9 @@ textarea:focus{
 	outline: none;
 	box-shadow: var(--focus-ring-brand);
 }
+
 /* --------------------------------------------------------------------------
-B12) Slate Address Fieldset – grouping + spacing normalization
--------------------------------------------------------------------------- */
-.form_container 
-.form_page .form_question.form_address fieldset{
-	position: relative;
-	border: 0;
-	margin: 0;
-	padding: 0 0 0 var(--space-s);
-	min-width: 0;
-}
-/* Vertical rule indicating grouped fields. Starts below the group label. */
-.form_container 
-.form_page .form_question.form_address fieldset::before{
-	content: "";
-	position: absolute;
-	left: 0;
-	top: calc(1.25em + var(--space-xs));
-	bottom: 0;
-	width: 2px;
-	background: var(--color-border-soft);
-	border-radius: var(--radius-pill);
-}
-/* Pull the address group label back to the original alignment
-.form_container 
-.form_page .form_question.form_address fieldset > .form_label{
-margin-left: calc(-1 * var(--space-s)) !important;
-} */
-/* Reset inherited margins on internal wrappers */
-.form_container 
-.form_page .form_question.form_address fieldset > div{
-	margin: 0 !important;
-}
-/* Consistent spacing between rows */
-.form_container 
-.form_page .form_question.form_address fieldset > div + div{
-	margin: var(--address-row-gap) 0 0 var(--address-row-gap) !important;
-}
-/* Ensure internal field labels remain normal label styling */
-.form_container 
-.form_page .form_question.form_address fieldset label.form_label{
-	font-size: var(--fs-label) !important;
-	font-weight: var(--fw-label);
-	line-height: 1.25;
-	margin: 0 0 var(--space-xxs) 0 !important;
-}
-/* --------------------------------------------------------------------------
-B13) Material upload – native file input optimization
+B11) Material upload – native file input optimization
 Keep native behavior, improve width, spacing, and button styling
 -------------------------------------------------------------------------- */
 .form_container 
@@ -2796,8 +2932,8 @@ Keep native behavior, improve width, spacing, and button styling
 	padding: 0.625rem 0.875rem;
 	min-height: 2.5rem;
 	border: 1px solid #707070;
-	border-radius: 4px;
-	background: #fff;
+	border-radius: var(--radius-xs);
+	background: var(--color-surface-default);
 	color: inherit;
 	font: inherit;
 	font-weight: 600;
@@ -2814,6 +2950,12 @@ Keep native behavior, improve width, spacing, and button styling
 	outline: 2px solid #000;
 	outline-offset: 2px;
 }
+/* Keep focus visible on the host control when button-subpart focus styling is inconsistent. */
+.form_container
+.form_page .form_question[data-type="plugin:material"] input[type="file"]:focus-visible{
+	outline: 2px solid var(--color-brand-700);
+	outline-offset: 2px;
+}
 /* Safari / older WebKit fallback */
 .form_container 
 .form_page .form_question[data-type="plugin:material"] input[type="file"]::-webkit-file-upload-button{
@@ -2821,15 +2963,93 @@ Keep native behavior, improve width, spacing, and button styling
 	padding: 0.625rem 0.875rem;
 	min-height: 2.5rem;
 	border: 1px solid #707070;
-	border-radius: 4px;
-	background: #fff;
+	border-radius: var(--radius-xs);
+	background: var(--color-surface-default);
 	color: inherit;
 	font: inherit;
 	font-weight: 600;
 	cursor: pointer;
 }
+
 /* --------------------------------------------------------------------------
-B14) Form action buttons – pill-style CTA system
+B11.5) Signature field
+Form-system control with matching signature-dialog editor follow-up
+-------------------------------------------------------------------------- */
+
+.form_container .form_signature_editable{
+  display: block;
+  width: 100%;
+  max-width: 36rem;
+  min-height: 6rem;
+  
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-s);
+  background: var(--color-surface-subtle);
+
+  cursor: pointer;
+
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+/* Instruction text (empty state) */
+.form_container .form_signature_editable .form_signature_instructions{
+  font-size: var(--fs-h3);
+  color: var(--fc-muted);
+  line-height: 1.4;
+}
+
+/* When signature exists */
+.form_container .form_signature_editable .form_signature{
+  min-height: 1.75rem;
+}
+
+/* Hover state */
+.form_container .form_signature_editable:hover{
+  background: var(--color-surface-subtle-hover);
+  border-color: var(--color-border-interactive);
+}
+
+/* Focus (keyboard accessibility) */
+.form_container .form_signature_editable:focus-visible{
+  outline: none;
+  border-color: var(--color-brand-500);
+  box-shadow: var(--focus-ring-brand);
+}
+
+/* Signed state – stronger surface */
+.form_container .form_signature_editable:has(.form_signature img),
+.form_container .form_signature_editable:has(.form_signature canvas){
+  background: var(--color-surface-default);
+  border-color: var(--color-border-strong);
+}
+
+.form_container .form_signature_details {
+	color: var(--fc-muted)
+}
+
+.form_signature_preview > div {
+	border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-s);
+}
+
+.form_signature_preview>div.selected {
+	border-color: var(--color-brand-border-45) !important;
+	background: var(--color-brand-tint-10) !important;
+}
+
+/* Signature editor fields should follow Slate stable-focus behavior */
+.dialog_host .dialog[role="dialog"] form[id^="form_signature"] input[type="text"]:focus,
+.dialog_host .dialog[role="dialog"] form[id^="form_signature"] input[type="text"]:focus-visible{
+	border: 1px solid var(--color-brand-500) !important;
+	outline: none;
+	box-shadow: var(--focus-ring-brand);
+}
+
+/* --------------------------------------------------------------------------
+B12) Form action buttons – pill-style CTA system
 -------------------------------------------------------------------------- */
 /* Kill any older full-width submit rule */
 .form_container .action button.form_button_submit{
@@ -2865,7 +3085,7 @@ B14) Form action buttons – pill-style CTA system
 }
 /* Tertiary – Save For Later */
 .form_container .action button.form_button_save{
-	background: #ffffff !important;
+	background: var(--color-surface-default) !important;
 	border-color: var(--color-brand-border-22) !important;
 	color: var(--color-brand-700) !important;
 }
@@ -2901,8 +3121,9 @@ B14) Form action buttons – pill-style CTA system
 }
 
 /* --------------------------------------------------------------------------
-   B14A) Slate replicate blocks
-   Section header + stacked cards + integrated add action
+   B12A) Slate replicate blocks
+   Canonical form-system component: section header, stacked cards,
+   and integrated add action
    -------------------------------------------------------------------------- */
 
 .form_container table[id^="replicate_table_"]{
@@ -2927,11 +3148,6 @@ B14) Form action buttons – pill-style CTA system
 
 .form_container table[id^="replicate_table_"]
 > tbody:first-of-type ~ tbody.replicate_destination{
-  padding-top: var(--space-s);
-}
-
-.form_container table[id^="replicate_table_"]
-> tbody.replicate_destination + tbody.replicate_destination{
   padding-top: var(--space-s);
 }
 
@@ -2983,7 +3199,7 @@ B14) Form action buttons – pill-style CTA system
   height: 1.7rem;
   margin-left: 0.5rem;
   padding: 0 0.45rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--color-brand-tint-08);
   color: var(--color-brand-700);
   font-size: var(--fs-help-sm);
@@ -3020,12 +3236,12 @@ B14) Form action buttons – pill-style CTA system
   border: 1px solid var(--table-border);
   border-top: none;
   border-radius: 0 0 var(--radius-m) var(--radius-m);
-  background: var(--color-white);
+  background: var(--color-surface-default);
 }
 
 /* Space between set header and first card */
 .form_container table[id^="replicate_table_"] > tbody:first-child + tbody.replicate_destination{
-  padding-top: var(--space-2xs);
+  padding-top: var(--space-xxs);
 }
 
 /* Add-action container */
@@ -3052,7 +3268,7 @@ B14) Form action buttons – pill-style CTA system
   gap: 0.375rem;
   min-height: 2.5rem;
   padding: 0.625rem 0.9375rem;
-  background: var(--color-white);
+  background: var(--color-surface-default);
   border: 1px solid var(--color-brand-border-22);
   border-radius: var(--radius-pill);
   color: var(--color-brand-700) !important;
@@ -3089,30 +3305,88 @@ B14) Form action buttons – pill-style CTA system
 }
 
 /* --------------------------------------------------------------------------
-B15) Slate account banner
--------------------------------------------------------------------------- */
-.jbu-admissions-body #form_response_banner{
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: .75rem 1rem !important;
-	margin-bottom: 1.25rem !important;
-	background: var(--color-brand-700) !important;
-	color: var(--fc-on-dark) !important;
-	border-radius: var(--radius-s);
-	font-size: var(--fs-h5);
-	line-height: 1.4;
+   B12B) Mobilified add-item tables
+   Mobile-only form-system follow-up for add-action treatment
+   -------------------------------------------------------------------------- */
+
+@media only screen and (max-width: 736px){
+
+  .form_container .table.table_mobilified thead tr.row_hover td[colspan]{
+    padding: var(--space-s) !important;
+    text-align: center !important;
+  }
+
+  .form_container .table.table_mobilified thead tr.row_hover td[colspan] > a{
+    display: block;
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.75rem 1rem;
+
+    background: var(--color-brand-700);
+    color: var(--fc-inverse);
+    border: 1px solid var(--color-brand-700);
+    border-radius: var(--radius-pill);
+
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .form_container .table.table_mobilified thead tr.row_hover td[colspan] > a:hover,
+  .form_container .table.table_mobilified thead tr.row_hover td[colspan] > a:focus{
+    background: var(--color-surface-default);
+    color: var(--color-brand-700);
+    border-color: var(--color-brand-700);
+    text-decoration: none;
+  }
+  .form_container .table_mobilified thead tr.row_hover td{
+    padding: var(--space-s);
+    text-align: center;
+    border-bottom: 1px solid var(--color-border-subtle);
+    background: var(--color-surface-default);
+  }
+
+  .form_container .table_mobilified thead tr.row_hover td > a{
+    display: block;
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.75rem 1rem;
+
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+
+    background: var(--color-surface-default);
+    color: var(--color-brand-700);
+    text-decoration: none;
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .form_container .table_mobilified thead tr.row_hover td > a:hover,
+  .form_container .table_mobilified thead tr.row_hover td > a:focus{
+    background: var(--color-surface-subtle);
+    text-decoration: none;
+  }
+
+  /* give each record a little more breathing room */
+  .form_container .table_mobilified tbody tr.row_hover td{
+    padding-top: var(--space-m);
+    padding-bottom: var(--space-m);
+  }
+
+  /* make long names wrap cleanly */
+  .form_container .table_mobilified tbody tr.row_hover td > a{
+    display: inline-block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
 }
-.jbu-admissions-body #form_response_banner a{
-	color: var(--fc-on-dark) !important;
-	text-decoration: underline !important;
-	float: none !important;
-}
-.jbu-admissions-body #form_response_banner a:hover{
-	text-decoration: none !important;
-}
+
 /* --------------------------------------------------------------------------
-B16) Required field states + validation helpers
+B13) Required field states + validation helpers
 -------------------------------------------------------------------------- */
 .form_container 
 .form_page .form_question.required{
@@ -3213,8 +3487,8 @@ B16) Required field states + validation helpers
 }
 
 /* --------------------------------------------------------------------------
-   B17) Universal mobile form stacking
-   Real Slate forms should stack label + control on small screens
+   B14) Universal mobile form stacking
+   Form-system mobile fallback for table-layout questions
    -------------------------------------------------------------------------- */
 
 @media only screen and (max-width: 736px){
@@ -3291,12 +3565,18 @@ B16) Required field states + validation helpers
 }
 
 /* --------------------------------------------------------------------------
-C) Application Styling
+Transition: form-system layer -> application/page-specific hosted components
+Rules below are page-specific hosted-content components and promoted
+application patterns rather than reusable cross-layer foundations.
+-------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+C) Application/page-specific hosted components
 -------------------------------------------------------------------------- */
 /* --------------------------------------------------------------------------
 Portal/application step navigation
-Desktop = polished sidebar step nav
-Mobile = styled Slate-generated select
+Canonical hosted application navigation:
+- desktop sidebar list
+- mobile Slate-generated select
 -------------------------------------------------------------------------- */
 /*.jbu-admissions-body #content #main{
 	width: auto;
@@ -3338,14 +3618,14 @@ Mobile = styled Slate-generated select
 	font-size: 1rem;
 	font-weight: 600;
 	line-height: 1.35;
-	color: #199ddc !important;
+	color: var(--color-brand-500) !important;
 	text-decoration: none !important;
 	background: transparent;
 	border-radius: 0 0.75rem 0.75rem 0;
 	transition:
-		background-color 0.2s ease,
-		color 0.2s ease,
-		box-shadow 0.2s ease;
+		background-color var(--transition-fast),
+		color var(--transition-fast),
+		box-shadow var(--transition-fast);
 }
 /* subtle divider rhythm */
 .jbu-admissions-body #content #side #menu > ul > li + li > a{
@@ -3358,13 +3638,13 @@ Mobile = styled Slate-generated select
 }
 /* Focus */
 .jbu-admissions-body #content #side #menu > ul > li > a:focus-visible{
-	outline: 2px solid #043768;
+	outline: 2px solid var(--color-brand-700);
 	outline-offset: 2px;
 }
 /* Current step */
 .jbu-admissions-body #content #side #menu > ul > li > a.selected,
 .jbu-admissions-body #content #side #menu > ul > li > a[aria-current="page"]{
-	color: #043768 !important;
+	color: var(--color-brand-700) !important;
 	background: rgba(25,157,220,0.14);
 	box-shadow: inset 0 0 0 1px rgba(25,157,220,0.22);
 }
@@ -3377,8 +3657,8 @@ Mobile = styled Slate-generated select
 	bottom: 0.375rem;
 	left: -1px;
 	width: 4px;
-	border-radius: 999px;
-	background: #199ddc;
+	border-radius: var(--radius-pill);
+	background: var(--color-brand-500);
 }
 /* Mobile select */
 .jbu-admissions-body #content #side #menu > select{
@@ -3392,14 +3672,14 @@ Mobile = styled Slate-generated select
 	font-size: 1rem;
 	font-weight: 600;
 	line-height: 1.25;
-	color: #043768;
-	background: #fff;
+	color: var(--color-brand-700);
+	background: var(--color-surface-default);
 	border: 1px solid rgba(4,55,104,0.28);
 	border-radius: 0.75rem;
 	appearance: auto;
 }
 .jbu-admissions-body #content #side #menu > select:focus{
-	border-color: #199ddc;
+	border-color: var(--color-brand-500);
 	outline: none;
 	box-shadow: 0 0 0 2px rgba(25,157,220,0.2);
 }
@@ -3467,320 +3747,24 @@ Mobile = styled Slate-generated select
   }
 }
 
+/* Legacy application signature fields should follow Slate stable-focus behavior */
+form[action="certify"] input[type="text"]:focus,
+form[action="certify"] input[type="text"]:focus-visible{
+	border: 1px solid var(--color-brand-500) !important;
+	outline: none;
+	box-shadow: var(--focus-ring-brand);
+}
+
+
 /* --------------------------------------------------------------------------
-   Experiment promotions
-   Moved from _experiments.css after validation
+   Payment page hosted component shell
+   Local cleanup for the payment page container only
    -------------------------------------------------------------------------- */
-
-/* --------------------------------------------------------------------------
-B17) Signature field
-Treat as interactive control (like textarea / selectable surface)
--------------------------------------------------------------------------- */
-
-.form_container .form_signature_editable{
-  display: block;
-  width: 100%;
-  max-width: 36rem;
-  min-height: 6rem;
-  
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-s);
-  background: var(--color-surface-subtle);
-
-  cursor: pointer;
-
-  transition:
-    border-color var(--transition-fast),
-    background-color var(--transition-fast),
-    box-shadow var(--transition-fast);
-}
-
-/* Instruction text (empty state) */
-.form_container .form_signature_editable .form_signature_instructions{
-  font-size: var(--fs-h3);
-  color: var(--fc-muted);
-  line-height: 1.4;
-}
-
-/* When signature exists */
-.form_container .form_signature_editable .form_signature{
-  min-height: 1.75rem;
-}
-
-/* Hover state */
-.form_container .form_signature_editable:hover{
-  background: var(--color-surface-subtle-hover);
-  border-color: var(--color-border-interactive);
-}
-
-/* Focus (keyboard accessibility) */
-.form_container .form_signature_editable:focus-visible{
-  outline: none;
-  border-color: var(--color-brand-500);
-  box-shadow: var(--focus-ring-brand);
-}
-
-/* Signed state – stronger surface */
-.form_container .form_signature_editable:has(.form_signature img),
-.form_container .form_signature_editable:has(.form_signature canvas){
-  background: var(--color-surface-default);
-  border-color: var(--color-border-strong);
-}
-
-
-.form_container .form_signature_details {
-	color: var(--fc-muted)
-}
-
-.form_signature_preview > div {
-	border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-s);
-}
-
-.form_signature_preview>div.selected {
-	border-color: var(--color-brand-border-45) !important;
-	background: var(--color-brand-tint-10) !important;
-}
-
-
-
-/* --------------------------------------------------------------------------
-   Mobilified add-item tables
-   Improve action treatment on mobile
-   -------------------------------------------------------------------------- */
-
-@media only screen and (max-width: 736px){
-
-  .form_container .table.table_mobilified thead tr.row_hover td[colspan]{
-    padding: var(--space-s) !important;
-    text-align: center !important;
-  }
-
-  .form_container .table.table_mobilified thead tr.row_hover td[colspan] > a{
-    display: block;
-    width: 100%;
-    min-height: 2.75rem;
-    padding: 0.75rem 1rem;
-
-    background: var(--color-brand-700);
-    color: var(--fc-inverse, #fff);
-    border: 1px solid var(--color-brand-700);
-    border-radius: var(--radius-pill);
-
-    font-weight: 600;
-    line-height: 1.2;
-    text-align: center;
-    text-decoration: none;
-    box-shadow: var(--shadow-xs);
-  }
-
-  .form_container .table.table_mobilified thead tr.row_hover td[colspan] > a:hover,
-  .form_container .table.table_mobilified thead tr.row_hover td[colspan] > a:focus{
-    background: var(--color-surface-default);
-    color: var(--color-brand-700);
-    border-color: var(--color-brand-700);
-    text-decoration: none;
-  }
-  .form_container .table_mobilified thead tr.row_hover td{
-    padding: var(--space-s);
-    text-align: center;
-    border-bottom: 1px solid var(--color-border-subtle);
-    background: var(--color-surface-default);
-  }
-
-  .form_container .table_mobilified thead tr.row_hover td > a{
-    display: block;
-    width: 100%;
-    min-height: 2.75rem;
-    padding: 0.75rem 1rem;
-
-    border: 1px solid var(--color-border-strong);
-    border-radius: var(--radius-pill);
-
-    background: var(--color-surface-default);
-    color: var(--color-brand-700);
-    text-decoration: none;
-    text-align: center;
-    font-weight: 600;
-    line-height: 1.2;
-  }
-
-  .form_container .table_mobilified thead tr.row_hover td > a:hover,
-  .form_container .table_mobilified thead tr.row_hover td > a:focus{
-    background: var(--color-surface-subtle);
-    text-decoration: none;
-  }
-
-  /* give each record a little more breathing room */
-  .form_container .table_mobilified tbody tr.row_hover td{
-    padding-top: var(--space-m);
-    padding-bottom: var(--space-m);
-  }
-
-  /* make long names wrap cleanly */
-  .form_container .table_mobilified tbody tr.row_hover td > a{
-    display: inline-block;
-    max-width: 100%;
-    overflow-wrap: anywhere;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   List styling reset
-   Restores list indentation after institutional ul/ol reset
-   -------------------------------------------------------------------------- */
-
-
-.jbu-admissions-body #content ul,
-.jbu-admissions-body #content ol {
-	margin-left: 1.75rem;
-	padding-left: 0;
-	list-style-position: outside;
-}
-
-
-
-.jbu-admissions-body #content li {
-	margin-top: 0.25rem;
-	padding-left: 0;
-	padding-inline-start: 0.25rem;
-}
-
-/* --------------------------------------------------------------------------
-   MOBILE DIALOG FIX – restore modal behavior
-   Dialog shell should remain fixed, not flow content
-   -------------------------------------------------------------------------- */
-
-@media only screen and (max-width: 736px){
-
-  .dialog_host{
-    position: fixed !important;
-    inset: 0 !important;
-    left: 0 !important;
-    top: 0 !important;
-    width: 100vw !important;
-    height: 100dvh !important;
-    z-index: 5000;
-  }
-
-  .dialog_host .dialog[role="dialog"]{
-    width: 100vw !important;
-    max-width: 100vw !important;
-    height: 100dvh !important;
-    max-height: 100dvh !important;
-    margin: 0;
-    border-radius: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* target actual form wrapper, not all direct divs */
-  .dialog_host .dialog[role="dialog"] > form{
-    width: 100% !important;
-    max-width: 100% !important;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .dialog_host .dialog[role="dialog"] .content{
-    flex: 1 1 auto;
-    height: auto !important;
-    max-height: none !important;
-    overflow: auto !important;
-  }
-
-  /* action bar sticks to bottom */
-  .dialog_host .dialog[role="dialog"] .action{
-    position: sticky;
-    bottom: 0;
-    background: var(--color-surface-default);
-    border-top: 1px solid var(--color-border-subtle);
-    padding: var(--space-s);
-  }
-
-  .dialog_host .dialog[role="dialog"] .action button{
-    width: 100% !important;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   DIALOG HEADER – branded modal header
-   -------------------------------------------------------------------------- */
-
-.dialog_host .dialog[role="dialog"] .header{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: var(--space-s) var(--space-m);
-  background: var(--color-brand-700);
-  color: var(--fc-inverse);
-
-  font-size: var(--fs-h4);
-  font-weight: 600;
-
-  border-bottom: 1px solid var(--color-border-strong);
-}
-
-/* --------------------------------------------------------------------------
-   CLOSE BUTTON – align with dark header
-   -------------------------------------------------------------------------- */
-
-
-
-.dialog_host .dialog[role="dialog"] .dialog_close::before {
-  background:
-    linear-gradient(
-      45deg,
-      transparent calc(50% - 1px),
-      var(--fc-inverse, #fff) calc(50% - 1px),
-      var(--fc-inverse, #fff) calc(50% + 1px),
-      transparent calc(50% + 1px)
-    ),
-    linear-gradient(
-      -45deg,
-      transparent calc(50% - 1px),
-      var(--fc-inverse, #fff) calc(50% - 1px),
-      var(--fc-inverse, #fff) calc(50% + 1px),
-      transparent calc(50% + 1px)
-    );
-}
-
-/* --------------------------------------------------------------------------
-   Session-expired dialog
-   Lightweight modal variant for simple message + single CTA
-   Uses existing dialog tokens and button language
-   -------------------------------------------------------------------------- */
-
-@media (max-width: 480px){
-  .dialog_host #sessionExtendDialog > .content{
-    padding: var(--space-l) var(--space-m) !important;
-  }
-
-  .dialog_host #sessionExtendDialog button.default,
-  .dialog_host #sessionExtendDialog input[type="submit"],
-  .dialog_host #sessionExtendDialog input[type="button"]{
-    width: 100%;
-    min-width: 0;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   Hosted-page content experiments
-   Promoted from _experiments.css
-   -------------------------------------------------------------------------- */
-
-/* --------------------------------------------------------------------------
-   Payment Page
-   Real Slate forms should stack label + control on small screens
-   -------------------------------------------------------------------------- */
-#card-location {
+.jbu-admissions-body #content #card-location {
 	background-color: inherit;
     border: none;
     padding: 0;
     max-width: 100%;
-    border-radius: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -3866,7 +3850,7 @@ Treat as interactive control (like textarea / selectable surface)
 
 /* --------------------------------------------------------------------------
    RSVP details card
-   Hosted-content component styled to match JBU default-branding patterns
+   Hosted-content component aligned to shared branding patterns
    -------------------------------------------------------------------------- */
 
 
@@ -4092,7 +4076,7 @@ Treat as interactive control (like textarea / selectable surface)
 
 /* --------------------------------------------------------------------------
    Event details
-   Date, timezone, map, and location block cleanup
+   Canonical hosted-content component for date, timezone, map, and location
    -------------------------------------------------------------------------- */
 
 
@@ -4102,7 +4086,11 @@ Treat as interactive control (like textarea / selectable surface)
 }
 
 
-
+/* 
+  Slate does not provide a hook for the Timezone element. 
+  We rely on inline style detection as the least fragile available option.
+  If Slate introduces a class, replace this selector.
+*/
 .jbu-admissions-body #content p > span[style*="font-size: 0.9em"] {
 	color: var(--fc-muted) !important;
 }
@@ -4193,7 +4181,7 @@ Treat as interactive control (like textarea / selectable surface)
 
 /* --------------------------------------------------------------------------
    Unsubscribe page
-   Hosted page form – styled to align with default-branding form patterns
+   Canonical hosted-content opt-out form
    Not a true Slate .form_container form, so scope to hosted content only
    -------------------------------------------------------------------------- */
 
@@ -4247,6 +4235,7 @@ Treat as interactive control (like textarea / selectable surface)
 	border-radius: 0 var(--radius-s) var(--radius-s) 0;
 }
 
+/* undo legacy <br><br> spacing once grid gap is active */
 .jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:last-of-type br{
 	display: none;
 }
@@ -4276,23 +4265,6 @@ Treat as interactive control (like textarea / selectable surface)
 	border-color: var(--color-brand-500);
 }
 
-.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:last-of-type input[type="checkbox"]:checked::after{
-	content: "";
-	position: absolute;
-	left: 0.38rem;
-	top: 0.14rem;
-	width: 0.28rem;
-	height: 0.56rem;
-	border: solid #fff;
-	border-width: 0 2px 2px 0;
-	transform: rotate(45deg);
-}
-
-.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:last-of-type input[type="checkbox"]:focus-visible{
-	outline: 2px solid var(--color-brand-700);
-	outline-offset: 2px;
-}
-
 .jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:last-of-type input[type="checkbox"] + label{
 	display: inline-block;
 	width: calc(100% - 2.25rem);
@@ -4303,11 +4275,6 @@ Treat as interactive control (like textarea / selectable surface)
 	line-height: var(--lh-body);
 	color: var(--fc-body);
 	cursor: pointer;
-}
-
-/* undo legacy <br><br> spacing once grid gap is active */
-.jbu-admissions-body #content form[action*="go?r=optout"] > blockquote:last-of-type br{
-	display: none;
 }
 
 /* each checkbox + label pair */
@@ -4323,7 +4290,7 @@ Treat as interactive control (like textarea / selectable surface)
     top: 0.11rem;
 	width: 0.28rem;
 	height: 0.55rem;
-	border: solid #fff;
+	border: solid var(--fc-on-dark);
 	border-width: 0 2px 2px 0;
 	transform: rotate(45deg);
 }
